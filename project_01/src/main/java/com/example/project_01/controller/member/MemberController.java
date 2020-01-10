@@ -6,7 +6,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 public class MemberController {
 	@RequestMapping("/login")
-	public String home() {
+	public String login() {
 		return "login";
+	}
+	
+	@RequestMapping("/join")
+	public String join() {
+		return "join";
 	}
 }
