@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.project_01.model.member.dao.MemberDAO">
+	<select id="idCheck" resultType="com.example.project_01.model.member.dto.MemberDTO">
+		select * from member
+		where mem_id=#{mem_id}
+	</select>
+	<insert id="join" parameterType="com.example.project_01.model.member.dto.MemberDTO">
+		insert into member
+		(mem_name, mem_birth, mem_id, mem_pw, mem_phone, mem_addr1, mem_addr2) 
+		values (#{mem_name}, #{mem_birth}, #{mem_id},
+				#{mem_pw}, #{mem_phone}, #{mem_addr1}, 
+				#{mem_addr2})
+	</insert>
+</mapper>

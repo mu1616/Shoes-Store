@@ -18,28 +18,28 @@ table {
 <div class="row">
 	<div class="col-md-9 ml-auto mr-auto">
 	<h3 align="center">회원가입</h3><br><br>
-	<form class="form-inline" action="#">	
+	<form class="form-inline" method="post" id="frm" action="/join">	
 		<font size=2>	
 		<table class="table">
 		<tbody>
 		<tr>
 		<th scope="row" >이름&nbsp</th>
-		<td colspan="3"><input type="text" class="form-control mb-2 mr-sm-2" placeholder="이름" id="name" ></td>
+		<td colspan="3"><input type="text" class="form-control mb-2 mr-sm-2" placeholder="이름" id="name" name=mem_name></td>
 		</tr>
 		<tr>
 		<th scope="row">생년월일&nbsp</th>
-		<td><input type="text" class="form-control mb-2 mr-sm-2" placeholder="생년월일" id="birth" onkeyup="birthCheck(this);"></td>
+		<td><input type="text" class="form-control mb-2 mr-sm-2" placeholder="생년월일" id="birth" name="mem_birth" onkeyup="birthCheck(this);"></td>
 		<td colspan="2" id="birthText">예시)19970816</td>
 		</tr>
 		<tr>
 		<th scope="row">아이디&nbsp</th>
-		<td><input type="text" class="form-control mb-2 mr-sm-2" placeholder="ID" id="id" onkeyup="idCheck(this);"></td>
+		<td><input type="text" class="form-control mb-2 mr-sm-2" placeholder="ID" id="id" name="mem_id" onkeyup="idCheck2(this);"></td>
 		<td id="idText">(영문/숫자, 4~16자)</td>
-		<td><input type="button" class="btn btn-outline-secondary" value="중복확인">
+		<td><input type="button" class="btn btn-outline-secondary" value="중복확인" onclick="idCheck();">
 		</tr>
 		<tr>
 		<th scope="row">비밀번호&nbsp</th>
-		<td><input type="password" class="form-control mb-2 mr-sm-2" placeholder="Password" id="password1" onkeyup="pwCheck(this);"></td>
+		<td><input type="password" class="form-control mb-2 mr-sm-2" placeholder="Password" id="password1" name="mem_pw" onkeyup="pwCheck(this);"></td>
 		<td colspan="2" id='pwText1'> (영문/숫자/특수문자 조합 8자 이상)</td>
 		</tr>
 		<tr>
@@ -49,14 +49,14 @@ table {
 		</tr>
 		<tr>
 		<th scope="row">연락처&nbsp</th>
-		<td><input type="text" class="form-control mb-2 mr-sm-2" placeholder="연락처" id="phone" onkeyup="phoneCheck(this);"></td>
+		<td><input type="text" class="form-control mb-2 mr-sm-2" placeholder="연락처" id="phone" name="mem_phone" onkeyup="phoneCheck(this);"></td>
 		<td colspan="2" id="phoneText">예시)01047156017</td>
 		</tr>
 		<tr>
 		<th scope="row" rowspan="">주소&nbsp</th>
-		<td width="100px"><input type="text" class="form-control mb-2 mr-sm-2" id="sample6_postcode" placeholder="우편번호"><br>
-			<input type="text" class="form-control mb-2 mr-sm-2" style="width:300px;"id="sample6_address" placeholder="주소"><br>
-			<input type="text" class="form-control mb-2 mr-sm-2" id="sample6_detailAddress" placeholder="상세주소"></td>
+		<td width="100px"><input type="text" class="form-control mb-2 mr-sm-2" id="sample6_postcode" placeholder="우편번호" readonly><br>
+			<input type="text" class="form-control mb-2 mr-sm-2" style="width:300px;"id="sample6_address" name="mem_addr1" placeholder="주소" readonly><br>
+			<input type="text" class="form-control mb-2 mr-sm-2" id="sample6_detailAddress" name="mem_addr2" placeholder="상세주소"></td>
 		<td colspan="2"><input type="button" class="btn btn-outline-secondary" onclick="sample6_execDaumPostcode()" value="우편번호 찾기"><br>
 		</td>
 		</tr>
@@ -189,7 +189,7 @@ table {
 ②제1항의 규정에도 불구하고 동 분쟁으로 인하여 소송이 제기될 경우 동 소송은 회사의 본사 소재지를 관할하는 법원의 관할로 본다.
 		</textarea><br>
 		이용약관에 동의하십니까?&nbsp&nbsp&nbsp
-		<input type="checkbox" class="form-check-input" id="exampleCheck1">동의함
+		<input type="checkbox" class="form-check-input" id="check1">동의함
 		</td>
 		</tr>
 		<tr>
@@ -205,6 +205,24 @@ table {
 </div>
 <hr>
 <script>
+var idck = 0;
+function idCheck(){
+	var mem_id = document.getElementById("id").value;
+	$.ajax({
+		url: "/join/idcheck",
+		type: "POST",
+		data: {"mem_id":mem_id},
+		dataType: "json",
+		success: function(data) {
+			if(data==0){
+				alert('사용 가능한 아이디입니다.');
+				idck=1;
+			}else {
+				alert('이미 존재하는 아이디입니다.')
+			}
+		}
+	});
+}
 function sample6_execDaumPostcode() {
     new daum.Postcode({
         oncomplete: function(data) {
@@ -252,7 +270,8 @@ function sample6_execDaumPostcode() {
         }
     }).open();
 }
-function idCheck(obj){
+function idCheck2(obj){
+	idck=0;
 	var re = /^[a-zA-Z0-9]{4,16}$/;
 	if(!re.test(obj.value)){
 		document.getElementById('idText').style.color='red';
@@ -264,8 +283,10 @@ function pwCheck(obj){
 	var re= /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9])/;	
     if(!re.test(obj.value)) {
     	document.getElementById('pwText1').style.color='red';
+    	return false;
     } else {
     	document.getElementById('pwText1').style.color='black';
+    	return true;
     }
 }
 function isMatch(obj){
@@ -274,29 +295,70 @@ function isMatch(obj){
 	if(!(pw1==pw2)){
 		document.getElementById('pwText2').style.color='red';
 		document.getElementById('pwText2').innerHTML='비밀번호를 확인해주세요';
-		
+		return false;
 	}else {
 		document.getElementById('pwText2').style.color='blue';
 		document.getElementById('pwText2').innerHTML='비밀번호가 일치합니다';
+		return true;
 	}
 }
 function birthCheck(obj){
 	var re = /^[0-9]{8}$/;
 	if(!re.test(obj.value)){
 		document.getElementById('birthText').style.color='red';
+		return false;
 	}else {
 		document.getElementById('birthText').style.color='black';
+		return true;
 	}
 }
 function phoneCheck(obj){
 	var re = /^[0-9]{11}$/;
 	if(!re.test(obj.value)){
 		document.getElementById('phoneText').style.color='red';
+		return false;
 	}else {
 		document.getElementById('phoneText').style.color='black';
+		return true;
 	}
 }
 function joinBtn(){
+	var name = $('#name').val();
+	var birth = document.getElementById("birth");
+	var password1 = document.getElementById("password1");
+	var password2 = document.getElementById("password2");
+	var phone = document.getElementById("phone");
+
+	if(name==""){
+		alert('이름을 확인해주세요.');
+		return;
+	}
+	if(idck==0) {
+		alert('아이디를 확인해주세요');
+		return;
+	}
+	if(!birthCheck(birth)) {
+		alert('생년월일을 확인해주세요');
+		return;
+	}
+	if(!pwCheck(password1) || !isMatch(password2)){
+		alert('비밀번호를 확인해주세요');
+		return;
+	}
+
+	if(!phoneCheck(phone)){
+		alert('연락처를 확인해주세요');
+		return;
+	}
+	if($('#sample6_postcode').val()=="" || $('#sample6_detailAddress').val()==""){
+		alert('주소를 확인해주세요');
+		return;
+	}
+	if(!$('#check1').prop("checked")){
+		alert('약관에 동의해주세요');
+		return;
+	}
+	$('#frm').submit();
 	
 }
 
