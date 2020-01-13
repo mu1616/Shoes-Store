@@ -2,9 +2,20 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>Shoes Factory</title>
+<th:block th:include="./bootstrap.html::bootstrap"></th:block>
 </head>
 <body>
-
+<div class="container">
+<th:block th:include="./home.html::header"></th:block><br><br><br>
+<div align="center">
+<h2 >환영 합니다!</h2><br><br>
+<span class="text-danger">Shoes Factory</span> 회원 가입을 축하합니다. <br><br>
+즐거운 쇼핑 되세요!<br><br><br>
+<button class="btn btn-outline-primary btn-lg" style="width:300;" onclick="location.href='./login';">로그인하기</button>
+<br><br><hr>
+</div>
+<th:block th:include="./home.html::footer"></th:block>
+</div>
 </body>
 </html>

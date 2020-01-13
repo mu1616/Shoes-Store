@@ -2,6 +2,7 @@ package com.example.project_01.controller.member;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,6 +16,8 @@ import com.example.project_01.model.member.dto.MemberDTO;
 public class MemberController {
 	@Autowired
 	MemberDAO memberDao;
+	@Autowired
+	BCryptPasswordEncoder encoder;
 
 	@RequestMapping("/login")
 	public String login() {
@@ -28,12 +31,14 @@ public class MemberController {
 	
 	@RequestMapping(value = "/join", method=RequestMethod.POST)
 	public String joinOk(@ModelAttribute MemberDTO memberDto) {
-		System.out.println(memberDto);
+		memberDto.setMem_pw(encoder.encode(memberDto.getMem_pw()));
+		//System.out.println(memberDto);
 		try {
 		memberDao.join(memberDto);
 		} catch (DataIntegrityViolationException e) {
 			return "error/joinError";
 		}
+		
 		return "welcome";
 	}
 
@@ -45,5 +50,9 @@ public class MemberController {
 		} else {
 			return 1;
 		}
+	}
+	@RequestMapping("/welcome")
+	public String welcome() {
+		return "welcome";
 	}
 }

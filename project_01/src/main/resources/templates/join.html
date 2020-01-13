@@ -5,6 +5,7 @@
 <title>Shoes Factory</title>
 <th:block th:include="./bootstrap.html::bootstrap"></th:block>
 <script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+
 <style>
 table {
   border-collapse: separate;
@@ -18,7 +19,8 @@ table {
 <div class="row">
 	<div class="col-md-9 ml-auto mr-auto">
 	<h3 align="center">회원가입</h3><br><br>
-	<form class="form-inline" method="post" id="frm" action="/join">	
+	<form class="form-inline" method="post" id="frm" action="/join">
+	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />	
 		<font size=2>	
 		<table class="table">
 		<tbody>
@@ -358,7 +360,9 @@ function joinBtn(){
 		alert('약관에 동의해주세요');
 		return;
 	}
-	$('#frm').submit();
+	if(confirm('회원가입을 하시겠습니까?')){
+		$('#frm').submit();
+	}
 	
 }
 
