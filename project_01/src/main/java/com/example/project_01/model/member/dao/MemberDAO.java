@@ -9,4 +9,5 @@ public interface MemberDAO {
 	
 	public MemberDTO idCheck(String mem_id);
 	public void join(MemberDTO memberDto);
+	
 }

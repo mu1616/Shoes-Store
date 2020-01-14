@@ -17,13 +17,14 @@
         <form accept-charset="UTF-8" role="form" method="post" action="/login">
             <h3>로그인</h3><br>
             <div class="form-group">
-                <input name="user_id" value='' id="username-email" placeholder="ID" type="text" class="form-control" />
+                <input name="mem_id"  id="username-email" placeholder="ID" type="text" class="form-control" />
             </div>
             <div class="form-group">
-                <input name="password" id="password" value='' placeholder="Password" type="password" class="form-control" />
+                <input name="mem_pw" id="password"  placeholder="Password" type="password" class="form-control" />
             </div>
+            <span class="text-danger" th:text="${loginFail}"></span>
             <div class="form-group">
-                <input type="button" class="btn btn-default btn-login-submit btn-block m-t-md" value="로그인" />
+                <input type="submit" class="btn btn-default btn-login-submit btn-block m-t-md" value="로그인" />
             </div>
             <div class="form-group">
                 <input type="button" class="btn btn-default btn-login-submit btn-block m-t-md" value="회원가입" onclick="location.href='./join';"/>
