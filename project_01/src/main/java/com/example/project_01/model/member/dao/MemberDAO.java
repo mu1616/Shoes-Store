@@ -7,7 +7,7 @@ import com.example.project_01.model.member.dto.MemberDTO;
 @Mapper
 public interface MemberDAO {
 	
-	public MemberDTO idCheck(String mem_id);
+	public MemberDTO findById(String mem_id);
 	public void join(MemberDTO memberDto);
 	
 }

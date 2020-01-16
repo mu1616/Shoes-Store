@@ -18,7 +18,7 @@ class MemberDaoTest {
 	MemberDAO memberDAO;
 	@Test
 	void contextLoads() {
-		System.out.println(memberDAO.idCheck("asdf"));
+		System.out.println(memberDAO.findById("asdf"));
 	}
 
 }

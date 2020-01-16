@@ -9,10 +9,10 @@
 	<div class="container">
 	<div th:fragment="header">
 		<div class="shop-menu clearfix pull-right" th:object="${session.memberDto}">
-			<a href="#" th:if="${session.memberDto} ne null"class="text-dark"><i class="fa text-primary" th:text="*{mem_name}+'님'"></i></a>&nbsp
+			<a href="#" sec:authorize="isAuthenticated()"class="text-dark"><i class="fa text-primary" th:text="${#authentication.principal.username}+'님'"></i></a>&nbsp
 			<a href="cart.html" class="text-dark"><i class="fa fa-shopping-cart"></i> Cart</a>&nbsp&nbsp 
-			<a th:if="${session.memberDto} eq null" href="/login"class="text-dark"><i class="fa fa-lock"></i> Login</a>
-			<a th:if="${session.memberDto} ne null" href="/logout"class="text-dark"><i class="fa fa-lock"></i> Logout</a>
+			<a sec:authorize="!isAuthenticated()" href="/login"class="text-dark"><i class="fa fa-lock"></i> Login</a>
+			<a sec:authorize="isAuthenticated()" href="/logout"class="text-dark"><i class="fa fa-lock"></i> Logout</a>
 		</div>
 		<br>
 		<h2 class="text-danger text-center"><a href="/" class="text-danger">Shoes Factory</a></h2><br>

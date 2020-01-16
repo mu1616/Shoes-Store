@@ -9,4 +9,14 @@ public class HomeController {
 	public String home() {
 		return "home";
 	}
+	
+	@RequestMapping("/admin")
+	public String admin() {
+		return "admin";
+	}
+	
+	@RequestMapping("/access-denied")
+	public String accessDenied() {
+		return "error/accessError";
+	}
 }

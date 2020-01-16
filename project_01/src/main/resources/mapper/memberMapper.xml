@@ -4,9 +4,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.example.project_01.model.member.dao.MemberDAO">
-	<select id="idCheck" resultType="com.example.project_01.model.member.dto.MemberDTO">
-		select * from member
-		where mem_id=#{mem_id}
+	<select id="findById" resultType="com.example.project_01.model.member.dto.MemberDTO">
+		select mem_idx,mem_name,mem_birth,mem_id,mem_pw,mem_phone,mem_addr1,
+			mem_addr2,mem_regdate,r.role_name as mem_role from member 
+		join role as r 
+		on mem_role=role_idx 
+		where mem_id=#{mem_id};
 	</select>
 	<insert id="join" parameterType="com.example.project_01.model.member.dto.MemberDTO">
 		insert into member

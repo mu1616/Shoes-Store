@@ -29,7 +29,14 @@ public class MemberController {
 	public String login() {
 		return "login";
 	}
+	
+	@RequestMapping("/login/fail")
+	public String loginFail(Model model) {
+		model.addAttribute("loginFail", "로그인에 실패하였습니다.");
+		return "/login";
+	}
 
+	/*
 	@RequestMapping(value = "/login", method = RequestMethod.POST)
 	public String loginOk(@ModelAttribute MemberDTO memberDto, Model model, HttpSession session) {
 		MemberDTO memberDto_select = memberService.login(memberDto);
@@ -42,6 +49,7 @@ public class MemberController {
 		return "home";
 
 	}
+	*/
 	@RequestMapping("/logout")
 	public String logout(HttpSession session) {
 		session.invalidate();
@@ -70,12 +78,14 @@ public class MemberController {
 	@ResponseBody
 	@RequestMapping("/join/idcheck")
 	public int idCheck(String mem_id) {
-		if (memberDao.idCheck(mem_id) == null) {
+		if (memberDao.findById(mem_id) == null) {
 			return 0;
 		} else {
 			return 1;
 		}
 	}
+	
+	
 	/*
 	 * @RequestMapping("/welcome") public String welcome() { return "welcome"; }
 	 */
