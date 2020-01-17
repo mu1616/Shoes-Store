@@ -1,10 +1,190 @@
 <!DOCTYPE html>
-<html>
-<head>
-<meta charset="EUC-KR">
-<title>Insert title here</title>
-</head>
-<body>
+<html xmlns:th="http://www.thymeleaf.org">
 
+<head>
+<meta charset="UTF-8">
+<title>Admin Page</title>
+<th:block th:include="./bootstrap.html::bootstrap"></th:block>
+
+</head>
+
+
+<body>
+<nav class="navbar navbar-dark fixed-top bg-dark flex-md-nowrap p-0 shadow">
+      <span class="navbar-brand col-sm-3 col-md-2 mr-0" >Shoes Factory</span>	
+</nav><br><br>
+
+ <div class="container-fluid">
+      <div class="row">
+        <nav class="col-md-2 d-none d-md-block sidebar" style="background-color:#e6e6e6;">
+          <div class="sidebar-sticky">
+            <ul class="nav flex-column">
+              <li class="nav-item">
+                <span class="nav-link " href="#">
+                  <font color="black"><span data-feather="file"></span>
+                	  상품관리</font><span class="sr-only">(current)</span>
+                </span>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link " href="#">
+                  <font color="gray">상품등록</font><span class="sr-only">(current)</span>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link " href="#">
+                  <font color="gray">상품목록</font><span class="sr-only">(current)</span>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link " href="#">
+                  <font color="gray">메인상품 진열</font><span class="sr-only">(current)</span>
+                </a>
+              </li>
+              <li class="nav-item">
+                <span class="nav-link " href="#">
+                  <font color="black"><span data-feather="file"></span>
+                	  주문관리</font><span class="sr-only">(current)</span>
+                </span>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link " href="#">
+                  <font color="gray">주문목록</font><span class="sr-only">(current)</span>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link " href="#">
+                  <font color="gray">취소/교환/반품/환불</font><span class="sr-only">(current)</span>
+                </a>
+              </li>
+              
+              <li class="nav-item">
+                <span class="nav-link " href="#">
+                  <font color="black"><span data-feather="file"></span>
+                	  회원관리</font><span class="sr-only">(current)</span>
+                </span>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link " href="#">
+                  <font color="gray">회원목록</font><span class="sr-only">(current)</span>
+                </a>
+              </li>
+            
+              <li class="nav-item">
+                <span class="nav-link " href="#">
+                  <font color="black"><span data-feather="file"></span>
+                	  게시판관리</font><span class="sr-only">(current)</span>
+                </span>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link " href="#">
+                  <font color="gray">게시판 설정</font><span class="sr-only">(current)</span>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link " href="#">
+                  <font color="gray">게시물 관리</font><span class="sr-only">(current)</span>
+                </a>
+              </li>
+             </ul>
+            </div>
+           <br><br><br>
+          </nav>
+          <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
+      <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+        <h1 class="h2">상품등록</h1>
+        
+        </div><br>
+        <form class="form-inline" method="post" id="frm" action="#" enctype="multipart/form-data">
+        <table class="table">
+        <tr>
+        <th scope="row" >상품명</th>
+        <td><input type="text" class="form-control" style="width:500px" ></td>
+        </tr>
+        <tr>
+        <th scope="row" >판매가</th>
+        <td><input type="text" class="form-control" style="width:200px" >원</td>
+        </tr>
+        <tr>
+        <th scope="row" >제조 브랜드</th>
+        <td>
+        <select class="custom-select mr-sm-2" id="inlineFormCustomSelect" style="width:200px;">
+        <option selected>제조 브랜드</option>
+        <option value="Nike">Nike</option>
+        <option value="Adidas">Adidas</option>
+        <option value="Puma">Puma</option>
+        <option value="NewBalance">NewBalance</option>
+        <option value="Reebok">Reebok</option>
+        <option value="Vans">Vans</option>
+      </select>
+        </td>
+        </tr>
+        <tr>
+        <th scope="row" >재고</th>
+        <td><input type="text" class="form-control" style="width:200px" ></td>
+        </tr>
+        <tr>
+        <th scope="row" >상품 분류</th>
+        <td>
+        <select class="custom-select mr-sm-2" id="inlineFormCustomSelect" style="width:200px;">
+        <option selected>상품 분류</option>
+        <option value="운동화">운동화</option>
+        <option value="스니커즈">스니커즈</option>
+        <option value="구두">구두</option>
+        <option value="샌들">샌들</option>
+        <option value="워커">워커</option>
+        <option value="슬립온">슬립온</option>
+      </select>
+        </td>
+        </tr>
+        <tr>
+        <th scope="row" >상품 상세설명</th>
+        <td>
+        <script type="text/javascript" th:src="@{/static/smarteditor/js/HuskyEZCreator.js}" charset="utf-8"></script>
+        <textarea name="ir1" id="ir1" rows="10" cols="100"></textarea>
+        </td>
+        </tr>
+        <tr>
+        <th scope="row" >대표이미지</th>
+        <td><input type="file" name="profile">
+        	<span class="text-primary">권장사이즈: 250px*250px</span>
+        </td>        
+        </tr>
+        <tr>
+        <th scope="row" >진열상태</th>
+        <td>       
+			<input type="radio" class="radio"name="chk_info" value="HTML">진열함&nbsp&nbsp&nbsp
+			<input type="radio" name="chk_info" value="CSS">진열안함
+		</td>
+        </tr>
+        <tr>
+        <th scope="row" >메인 진열</th>
+        <td>
+        <input type="checkbox" class="form-check-input" id="check1">BestAward&nbsp&nbsp&nbsp
+        <input type="checkbox" class="form-check-input" id="check1">Sale&nbsp&nbsp&nbsp
+        <input type="checkbox" class="form-check-input" id="check1">New&nbsp&nbsp&nbsp
+        </td>
+        </tr>
+        </table>        
+        </form><hr>
+        <div align="center"><input type="button" class="btn btn-outline-primary btn-lg" style="width:200pt;" value="상품등록"></div>
+        </main>
+        
+              </div>
+              </div><br>
+              
+<!-- Icons -->
+<script src="https://unpkg.com/feather-icons/dist/feather.min.js"></script>
+<script>
+  feather.replace()
+</script>
+<script type="text/javascript">
+var oEditors = [];
+nhn.husky.EZCreator.createInIFrame({
+ oAppRef: oEditors,
+ elPlaceHolder: "ir1",
+ sSkinURI: "/static/smarteditor/SmartEditor2Skin.html",
+ fCreator: "createSEditor2"
+});
+</script>
 </body>
 </html>

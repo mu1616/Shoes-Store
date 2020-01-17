@@ -42,7 +42,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         	 .invalidateHttpSession(true);
         
         http.exceptionHandling().accessDeniedPage("/access-denied");
-        									
+        http
+        .headers()
+           .frameOptions()
+              .sameOrigin();
         
 
     }
