@@ -10,5 +10,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry.addResourceHandler("/smarteditor/img/**")
                 .addResourceLocations("file:///C:/smarteditor/img/"); 
+        registry.addResourceHandler("/shoesFactory/img/**")
+        .addResourceLocations("file:///C:/shoesFactory/img/"); 
     }
 }

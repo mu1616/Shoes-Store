@@ -94,20 +94,20 @@
         <h1 class="h2">상품등록</h1>
         
         </div><br>
-        <form class="form-inline" method="post" id="frm" action="#" enctype="multipart/form-data">
+        <form class="form-inline" method="post" id="frm" action="/admin/product/register" enctype="multipart/form-data">
         <table class="table">
         <tr>
         <th scope="row" >상품명</th>
-        <td><input type="text" class="form-control" style="width:500px" ></td>
+        <td><input type="text" name="product_name" id="product_name" class="form-control" style="width:500px" ></td>
         </tr>
         <tr>
         <th scope="row" >판매가</th>
-        <td><input type="text" class="form-control" style="width:200px" >원</td>
+        <td><input type="text" name="product_price" id="product_price" class="form-control" style="width:200px" >원</td>
         </tr>
         <tr>
         <th scope="row" >제조 브랜드</th>
         <td>
-        <select class="custom-select mr-sm-2" id="inlineFormCustomSelect" style="width:200px;">
+        <select class="custom-select mr-sm-2" name="product_brand"id="product_brand" style="width:200px;">
         <option selected>제조 브랜드</option>
         <option value="1">Nike</option>
         <option value="2">Adidas</option>
@@ -120,12 +120,12 @@
         </tr>
         <tr>
         <th scope="row" >재고</th>
-        <td><input type="text" class="form-control" style="width:200px" ></td>
+        <td><input type="text" name="product_stock" id="product_stock" class="form-control" style="width:200px" ></td>
         </tr>
         <tr>
         <th scope="row" >상품 분류</th>
         <td>
-        <select class="custom-select mr-sm-2" id="inlineFormCustomSelect" style="width:200px;">
+        <select class="custom-select mr-sm-2" name="product_category"id="product_category" style="width:200px;">
         <option selected>상품 분류</option>
         <option value="1">운동화</option>
         <option value="2">스니커즈</option>
@@ -140,38 +140,41 @@
         <th scope="row" >상품 상세설명</th>
         <td>
         <script type="text/javascript" th:src="@{/static/smarteditor/js/HuskyEZCreator.js}" charset="utf-8"></script>
-        <textarea name="ir1" id="ir1" rows="10" cols="80"></textarea>
+        <textarea name="product_contents" id="ir1" rows="10" cols="80"></textarea>
         </td>
         </tr>
         <tr>
         <th scope="row" >대표이미지</th>
-        <td><input type="file" name="profile">
+        <td><input type="file" name="profile" id="profile">
         	<span class="text-primary">권장사이즈: 250px*250px</span>
         </td>        
         </tr>
         <tr>
         <th scope="row" >진열상태</th>
         <td>       
-			<input type="radio" class="radio"name="chk_info" value="HTML">진열함&nbsp&nbsp&nbsp
-			<input type="radio" name="chk_info" value="CSS">진열안함
+			<input type="radio" class="radio"name="product_isDisplay" id="product_isDisplay"value="1">진열함&nbsp&nbsp&nbsp
+			<input type="radio" name="product_isDisplay" id="product_isDisplay" value="0">진열안함
 		</td>
         </tr>
         <tr>
         <th scope="row" >메인 진열</th>
         <td>
-        <input type="checkbox" class="form-check-input" id="check1">BestAward&nbsp&nbsp&nbsp
-        <input type="checkbox" class="form-check-input" id="check1">Sale&nbsp&nbsp&nbsp
-        <input type="checkbox" class="form-check-input" id="check1">New&nbsp&nbsp&nbsp
+        <input type="checkbox" class="form-check-input" name="mainDisplay" value="1">BestAward&nbsp&nbsp&nbsp
+        <input type="checkbox" class="form-check-input" name="mainDisplay" value="2">Sale&nbsp&nbsp&nbsp
+        <input type="checkbox" class="form-check-input" name="mainDisplay" value="3">New&nbsp&nbsp&nbsp
         </td>
         </tr>
         </table>        
         </form><hr>
-        <div align="center"><input type="button" class="btn btn-outline-primary btn-lg" style="width:200pt;" value="상품등록"></div>
+        <div align="center">
+        	<input type="button" class="btn btn-outline-primary btn-lg" style="width:200pt;" value="상품등록" onclick="register();">
+        </div>
         </main>
         
               </div>
               </div><br>
               
+         
 <!-- Icons -->
 <script src="https://unpkg.com/feather-icons/dist/feather.min.js"></script>
 <script>
@@ -184,7 +187,53 @@ nhn.husky.EZCreator.createInIFrame({
  elPlaceHolder: "ir1",
  sSkinURI: "/static/smarteditor/SmartEditor2Skin.html",
  fCreator: "createSEditor2"
+ 
 });
+function register(){
+	var name = $("#product_name").val();
+	var price = $("#product_price").val();
+	var brand = document.getElementById("product_brand");
+	var stock = $("#product_stock").val();
+	var category = document.getElementById("product_category");
+	var profile = $("#profile").val();
+	var isDisplay = $("input:radio[name='product_isDisplay']").is(':checked');
+
+	if(name=="") {
+		alert('상품명을 확인해주세요');
+		return;
+	}
+	if(price==""){
+		alert('판매가를 확인해주세요');
+		return;
+	}
+	if(brand.options[brand.selectedIndex].value=="제조 브랜드") {
+		alert('제조 브랜드를 확인해주세요');
+		return;
+	}
+	if(stock==""){
+		alert('재고를 확인해주세요');
+		return;
+	}
+	if(category.options[category.selectedIndex].value=="상품 분류") {
+		alert('상품분류를 확인해주세요');
+		return;
+	}
+	if(profile==""){
+		alert('대표이미지를 확인해주세요');
+		return;
+	}
+	if(isDisplay==false) {
+		alert('진열상태를 확인해주세요');
+		return;
+	}
+	
+	if(confirm('상품을 등록하시겠습니까?')){
+		document.getElementById('ir1').value = oEditors.getById["ir1"].getIR();
+		$('#frm').submit();
+	}
+
+}
+
 </script>
 </body>
 </html>

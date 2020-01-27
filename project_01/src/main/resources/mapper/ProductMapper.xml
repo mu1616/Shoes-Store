@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper
+	namespace="com.example.project_01.model.product.dao.ProductDAO">
+	<insert id="productRegister"
+		parameterType="com.example.project_01.model.product.dto.ProductDTO"
+		useGeneratedKeys="true" keyProperty="product_idx">
+		insert into product
+		(product_name,product_price,product_brand,product_stock,product_category,
+			product_contents,product_image,product_isdisplay) 
+		values (#{product_name},#{product_price},#{product_brand},#{product_stock},
+			#{product_category},#{product_contents},#{product_image},
+			#{product_isdisplay})
+	</insert>
+	
+	<insert id="displayRegister" >
+		insert into display
+		(display_product, display_md) 
+		values (#{product_idx}, #{md_idx})
+	</insert>
+</mapper>
