@@ -1,12 +1,13 @@
 package com.example.project_01.model.product.dto;
 
-public class ProductDTO {
+public class ProductEntity {
+	
 	private int product_idx;
 	private String product_name;
 	private int product_price;
-	private String product_brand;
+	private int product_brand;
 	private int product_stock;
-	private String product_category;
+	private int product_category;
 	private String product_contents;
 	private String product_image;
 	private int product_isDisplay;
@@ -28,10 +29,10 @@ public class ProductDTO {
 	public void setProduct_price(int product_price) {
 		this.product_price = product_price;
 	}
-	public String getProduct_brand() {
+	public int getProduct_brand() {
 		return product_brand;
 	}
-	public void setProduct_brand(String product_brand) {
+	public void setProduct_brand(int product_brand) {
 		this.product_brand = product_brand;
 	}
 	public int getProduct_stock() {
@@ -40,10 +41,10 @@ public class ProductDTO {
 	public void setProduct_stock(int product_stock) {
 		this.product_stock = product_stock;
 	}
-	public String getProduct_category() {
+	public int getProduct_category() {
 		return product_category;
 	}
-	public void setProduct_category(String product_category) {
+	public void setProduct_category(int product_category) {
 		this.product_category = product_category;
 	}
 	public String getProduct_contents() {
@@ -58,19 +59,22 @@ public class ProductDTO {
 	public void setProduct_image(String product_image) {
 		this.product_image = product_image;
 	}
-	public int getProduct_isDisplay() {
+	public int getProduct_isdisplay() {
 		return product_isDisplay;
 	}
 	public void setProduct_isDisplay(int product_isDisplay) {
 		this.product_isDisplay = product_isDisplay;
 	}
+
 	@Override
 	public String toString() {
 		return "ProductDTO [product_idx=" + product_idx + ", product_name=" + product_name + ", product_price="
 				+ product_price + ", product_brand=" + product_brand + ", product_stock=" + product_stock
 				+ ", product_category=" + product_category + ", product_contents=" + product_contents
-				+ ", product_image=" + product_image + ", product_isDisplay=" + product_isDisplay + "]";
+				+ ", product_image=" + product_image + ", product_isDisplay=" + product_isDisplay
+				+  "]";
 	}
+	
 	
 	
 }

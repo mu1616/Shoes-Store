@@ -6,7 +6,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 <mapper
 	namespace="com.example.project_01.model.product.dao.ProductDAO">
 	<insert id="productRegister"
-		parameterType="com.example.project_01.model.product.dto.ProductDTO"
+		parameterType="com.example.project_01.model.product.dto.ProductEntity"
 		useGeneratedKeys="true" keyProperty="product_idx">
 		insert into product
 		(product_name,product_price,product_brand,product_stock,product_category,
@@ -21,4 +21,22 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		(display_product, display_md) 
 		values (#{product_idx}, #{md_idx})
 	</insert>
+	
+	<select id="countProduct" resultType="int">
+		select count(*) 
+		from product
+	</select>
+
+	<select id="selectProduct" 
+		resultType="com.example.project_01.model.product.dto.ProductDTO">
+		SELECT product_idx, product_name, product_price, product_stock, 
+			product_contents, product_image, product_isDisplay, 
+			b.brand_name AS product_brand, c.category_name AS product_category
+		FROM product
+		JOIN brand AS b
+		ON product_brand = brand_idx
+		JOIN category AS c 
+		ON product_category = category_idx
+		LIMIT #{start},#{length}
+	</select>
 </mapper>

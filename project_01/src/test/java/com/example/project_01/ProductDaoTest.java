@@ -1,14 +1,20 @@
 package com.example.project_01;
 
+import java.util.List;
+
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import com.example.project_01.model.pagination.dto.PageDTO;
 import com.example.project_01.model.product.dao.ProductDAO;
 import com.example.project_01.model.product.dto.ProductDTO;
+import com.example.project_01.model.product.dto.ProductEntity;
+import com.example.project_01.service.admin.product.ManageProductService;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK)
@@ -16,14 +22,19 @@ import com.example.project_01.model.product.dto.ProductDTO;
 public class ProductDaoTest {
 	@Autowired
 	ProductDAO productDao;
-	
+	@Value("${file.upload.directory}")
+	String filePath;
+	@Value("${smarteditor.upload.directory")
+	String editorPath;
+	@Autowired
+	ManageProductService productService;
 	
 	public void productRegister() {
 		/*
 		 * (product_name,product_price,product_brand,product_stock,product_category,
 			product_contents,product_image,product_isdisplay,)
 		*/
-		ProductDTO dto = new ProductDTO();
+		ProductEntity dto = new ProductEntity();
 		dto.setProduct_name("상품명");
 		dto.setProduct_price(10000);
 		dto.setProduct_brand(1);
@@ -34,8 +45,22 @@ public class ProductDaoTest {
 		productDao.productRegister(dto);
 	
 	}
-	@Test
+
 	public void displayRegister() {
 		productDao.displayRegister(1, 1);
+
+	}
+	
+	public void countProduct() {
+		PageDTO pageDto = productService.calPage(21);
+		System.out.println(pageDto);
+		
+	}
+	@Test
+	public void selectProduct() {
+		List<ProductDTO> list = productDao.selectProduct(0, 9);
+		for(ProductDTO dto : list) {
+			System.out.println(dto);
+		}
 	}
 }

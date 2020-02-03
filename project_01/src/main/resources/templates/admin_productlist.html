@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+<meta charset="UTF-8">
+<title>Admin Page</title>
+<th:block th:include="./bootstrap.html::bootstrap"></th:block>
+    <style>
+      th,td {
+        text-align: center;
+      }
+
+    </style>
+</head>
+<body>
+<th:block th:include="./admin.html::header"></th:block>
+ <div class="container-fluid">
+     <div class="row">
+	<th:block th:include="./admin.html::side"></th:block>
+	<main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
+		<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+        <h1 class="h2">상품목록</h1>
+        </div><br>
+        <font color="grey"><p>[총 <font color="red" th:text="${pageDto.countRecord}"></font>개]</p></font>
+        <input type="button" value="선택삭제" class="btn btn-outline-primary btn-sm">
+        <table class="table table-bordered">
+        <thead class="thead-light">
+        <tr>
+        <th scope="col"><input type="checkbox" id="allCheck"></th>
+        <th scope="col">상품명</th>
+        <th scope="col">판매가</th>
+        <th scope="col">브랜드</th>
+        <th scope="col">상품분류</th>
+        <th scope="col">진열상태</th>
+        <th scope="col">재고</th>
+        <th scope="col"></th>
+        </tr>
+        </thead>
+        <th:block th:each="productDto:${productList}">
+        <tr>
+        <td style="vertical-align:middle;"><input type="checkbox" value="1"></td>
+        <td style="text-align:left;"><img th:src="${productDto.product_image}" width="75" height="75"><a href="#" ><font color="black" th:text=${productDto.product_name}></font></a></td>
+        <td style="vertical-align:middle;" th:text="${productDto.product_price}"></td>
+        <td style="vertical-align:middle;" th:text="${productDto.product_brand}"></td>
+        <td style="vertical-align:middle;" th:text="${productDto.product_category}"></td>
+        <td style="vertical-align:middle;" >
+	        <th:block th:if="${productDto.product_isDisplay}==1">
+	        	<span th:text="O"></span>
+	        </th:block>
+	        <th:block th:if="${productDto.product_isDisplay}==0">
+	        	<span th:text="X"></span>
+	        </th:block>
+        </td>
+        <td style="vertical-align:middle;" th:text="${productDto.product_stock}" ></td>
+        <td style="vertical-align:middle;"><input type="button" value="수정" class="btn btn-outline-secondary btn-sm">
+       		 <input type="button" value="삭제" class="btn btn-outline-secondary btn-sm"></td>
+        </tr>
+        </th:block>
+        </table><br>
+        <div align="center">
+        <th:block th:if="${pageDto.totalPage}>0">
+	        <th:block th:if="${pageDto.startPage}>10" >				
+				<button class="btn btn-outline-secondary btn-sm" style="WIDTH: 20pt; HEIGHT: 23pt" onclick="clickFirstBtn()">&#171</button>
+	        	<button class="btn btn-outline-secondary btn-sm" th:onclick="'clickPreviousBtn('+${pageDto.startPage}+')'">&#60</button>
+	        </th:block>
+	        <th:block th:each="num:${#numbers.sequence(pageDto.startPage,pageDto.endPage)}">
+	        	<button class="btn btn-outline-secondary btn-sm" th:onclick="'clickNumberBtn('+${num}+')'"><th:block th:text="${num}"></th:block></button>
+	        </th:block>
+	        <th:block th:if="${pageDto.endPage}<${pageDto.totalPage}" >
+				<button class="btn btn-outline-secondary btn-sm" th:onclick="'clickNextBtn('+${pageDto.startPage}+')'">></button>
+				<button class="btn btn-outline-secondary btn-sm" style="WIDTH: 20pt; HEIGHT: 23pt" onclick="clickLastBtn();">&#187</button>
+	        </th:block>
+        </th:block>
+        </div>
+        <br><br>
+	</main>
+	</div>
+</div>
+
+<!-- Icons -->
+<script src="https://unpkg.com/feather-icons/dist/feather.min.js"></script>
+<script>
+  feather.replace()
+</script>
+<script th:inline="javascript">
+$(function(){ 
+	//전체선택 체크박스 클릭 
+	$("#allCheck").click(function(){ 
+		//만약 전체 선택 체크박스가 체크된상태일경우 
+		if($("#allCheck").prop("checked")) { 
+			//해당화면에 전체 checkbox들을 체크해준다 
+			$("input[type=checkbox]").prop("checked",true); 
+			// 전체선택 체크박스가 해제된 경우 
+		}else { 
+			//해당화면에 모든 checkbox들의 체크를해제시킨다. 
+			$("input[type=checkbox]").prop("checked",false); 
+		} 
+	}) 
+	var currentPage = [[${pageDto.currentPage}]];
+	var startPage = [[${pageDto.startPage}]];
+	var num = currentPage%10;
+	if(num==0) num = 10;
+	console.log(num);
+	if(startPage==1){
+		$("button").eq(num-1).removeClass('btn-outline-secondary');
+		$("button").eq(num-1).addClass('btn-outline-primary');
+	} else {
+		$("button").eq(num+1).removeClass('btn-outline-secondary');
+		$("button").eq(num+1).addClass('btn-outline-primary');
+	}
+
+
+})
+
+function clickNumberBtn(num){
+	location.href = '/admin/product/list/' + num ;
+}
+
+function clickNextBtn(startPage){
+	var nextPage = startPage + 10;
+	location.href = '/admin/product/list/' + nextPage;
+}
+		
+function clickLastBtn() {
+	var totalPage = [[${pageDto.totalPage}]];
+	location.href = '/admin/product/list/' + totalPage;
+}
+
+function clickFirstBtn() {
+	location.href = '/admin/product/list/1';
+}
+
+function clickPreviousBtn(startPage){
+	var previousPage = startPage - 10;
+	location.href = '/admin/product/list/' + previousPage;
+}
+</script>
+</body>
+</html>

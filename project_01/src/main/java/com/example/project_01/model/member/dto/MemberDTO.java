@@ -5,17 +5,17 @@ import java.util.Date;
 import org.springframework.format.annotation.DateTimeFormat;
 
 public class MemberDTO {
-	int mem_idx;
-	String mem_name;
+	private int mem_idx;
+	private String mem_name;
 	@DateTimeFormat(pattern = "yyyyMMdd")
-	Date mem_birth;
-	String mem_id;
-	String mem_pw;
-	String mem_phone;
-	String mem_addr1;
-	String mem_addr2;
-	Date mem_regdate;
-	String mem_role;
+	private Date mem_birth;
+	private String mem_id;
+	private String mem_pw;
+	private String mem_phone;
+	private String mem_addr1;
+	private String mem_addr2;
+	private Date mem_regdate;
+	private String mem_role;
 	public int getMem_idx() {
 		return mem_idx;
 	}

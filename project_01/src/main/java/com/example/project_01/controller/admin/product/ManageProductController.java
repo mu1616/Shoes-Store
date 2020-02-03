@@ -5,6 +5,8 @@ import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.PrintWriter;
+import java.util.List;
+import java.util.Optional;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -12,7 +14,9 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -20,7 +24,9 @@ import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.example.project_01.model.pagination.dto.PageDTO;
 import com.example.project_01.model.product.dto.ProductDTO;
+import com.example.project_01.model.product.dto.ProductEntity;
 import com.example.project_01.service.admin.product.ManageProductService;
 
 @Controller
@@ -29,7 +35,7 @@ public class ManageProductController {
 	ManageProductService productService;
 	@Value("${file.upload.directory}")
 	String filePath;
-	@Value("${smarteditor.upload.directory")
+	@Value("${smarteditor.upload.directory}")
 	String editorPath;
 
 	@RequestMapping(value = "/admin/product/register", method = RequestMethod.GET)
@@ -38,11 +44,10 @@ public class ManageProductController {
 	}
 
 	@RequestMapping(value = "/admin/product/register", method = RequestMethod.POST)
-	public String registerProduct(@ModelAttribute ProductDTO productDto, 
-			@RequestPart("profile") MultipartFile files,
-			@RequestParam(value="mainDisplay", required=false) int []mainDisplay) {
-		
-		productService.register(productDto, files, mainDisplay);
+	public String registerProduct(@ModelAttribute ProductEntity productEntity, @RequestPart("profile") MultipartFile files,
+			@RequestParam(value = "mainDisplay", required = false) int[] mainDisplay) {
+
+		productService.register(productEntity, files, mainDisplay);
 		return "admin";
 	}
 
@@ -74,7 +79,6 @@ public class ManageProductController {
 				print.close();
 			} else {
 				// 이미지이므로 신규 파일로 디렉토리 설정 및 업로드
-				String editorPath = File.separator + "smarteditor" + File.separator + "img" + File.separator;
 				File file = new File(editorPath);
 				if (!file.exists()) {
 					file.mkdirs();
@@ -109,6 +113,19 @@ public class ManageProductController {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+
+	@RequestMapping("/admin/product/list/{idx}")
+	public String productList(@PathVariable(value = "idx", required = false) Optional<Integer> idx, Model model) {
+		int currentPage = 1;
+		if (idx.isPresent())
+			currentPage = idx.get();
+		PageDTO pageDto = productService.calPage(currentPage);
+		System.out.println(pageDto);
+		model.addAttribute("pageDto", pageDto);
+		List<ProductDTO> productList = productService.selectProduct(currentPage);
+		model.addAttribute("productList", productList);
+		return "admin_productlist";
 	}
 
 }
