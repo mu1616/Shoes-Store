@@ -45,9 +45,11 @@ public class ManageProductController {
 
 	@RequestMapping(value = "/admin/product/register", method = RequestMethod.POST)
 	public String registerProduct(@ModelAttribute ProductEntity productEntity, @RequestPart("profile") MultipartFile files,
-			@RequestParam(value = "mainDisplay", required = false) int[] mainDisplay) {
-
-		productService.register(productEntity, files, mainDisplay);
+			@RequestParam(value = "mainDisplay", required = false) int[] mainDisplay, 
+			int size[], int count[]) {
+		//for(int num : size) System.out.println(num);
+		//for(int num : count) System.out.println(num);
+		productService.register(productEntity, files, mainDisplay, size, count);
 		return "admin";
 	}
 
@@ -126,6 +128,10 @@ public class ManageProductController {
 		List<ProductDTO> productList = productService.selectProduct(currentPage);
 		model.addAttribute("productList", productList);
 		return "admin_productlist";
+	}
+	@RequestMapping("/admin/product/stock")
+	public String showStock() {
+		return "popup/stock";
 	}
 
 }

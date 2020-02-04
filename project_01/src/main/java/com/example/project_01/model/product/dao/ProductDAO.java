@@ -13,4 +13,5 @@ public interface ProductDAO {
 	public void displayRegister(int product_idx, int md_idx);
 	public int countProduct();
 	public List<ProductDTO> selectProduct(int start, int length);
+	public void insertStock(int product_idx, int size, int count);
 }

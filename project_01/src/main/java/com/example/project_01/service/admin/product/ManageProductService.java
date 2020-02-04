@@ -29,7 +29,8 @@ public class ManageProductService {
 	}
 	
 	@Transactional
-	public void register(ProductEntity productEntity, MultipartFile files, int []mainDisplay) {
+	public void register(ProductEntity productEntity, MultipartFile files, 
+			int []mainDisplay, int size[], int count[]) {
 		String filename = files.getOriginalFilename();
 		String file_ext = filename.substring(filename.lastIndexOf(".") + 1);
 		file_ext = file_ext.toLowerCase();
@@ -52,6 +53,7 @@ public class ManageProductService {
 			e.printStackTrace();
 		}
 		productEntity.setProduct_image(filePath + filename);
+		//prorduct테이블에 추가
 		dao.productRegister(productEntity);
 		System.out.println(productEntity);
 		System.out.println(mainDisplay);
@@ -59,9 +61,15 @@ public class ManageProductService {
 		//display 테이블에 추가
 		if(mainDisplay !=null) {
 			for(int i=0; i<mainDisplay.length ; i++) {
-				System.out.println("maindisplay에 저장"+ productEntity.getProduct_idx()+" "+mainDisplay[i]);
+				System.out.println("maindisplay테이블에 저장 "+ productEntity.getProduct_idx()+" "+mainDisplay[i]);
 				dao.displayRegister(productEntity.getProduct_idx(), mainDisplay[i]);
 			}
+		}
+		
+		//stock 테이블에 추가
+		for(int i=0; i < size.length; i++) {
+			System.out.println("stock테이블에 저장 " + productEntity.getProduct_idx()+" "+ size[i]+" "+count[i]);
+			dao.insertStock(productEntity.getProduct_idx(), size[i], count[i]);
 		}
 	}
 	//페이지당 상품개수 = 10

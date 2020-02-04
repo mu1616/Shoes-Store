@@ -122,10 +122,6 @@
         </td>
         </tr>
         <tr>
-        <th scope="row" >재고</th>
-        <td><input type="text" name="product_stock" id="product_stock" class="form-control" style="width:200px" ></td>
-        </tr>
-        <tr>
         <th scope="row" >상품 분류</th>
         <td>
         <select class="custom-select mr-sm-2" name="product_category"id="product_category" style="width:200px;">
@@ -165,6 +161,13 @@
         <input type="checkbox" class="form-check-input" name="mainDisplay" value="1">BestAward&nbsp&nbsp&nbsp
         <input type="checkbox" class="form-check-input" name="mainDisplay" value="2">Sale&nbsp&nbsp&nbsp
         <input type="checkbox" class="form-check-input" name="mainDisplay" value="3">New&nbsp&nbsp&nbsp
+        </td>
+        </tr>
+        <tr>
+        <th scope="row">재고</th>
+        <td id="place">사이즈  <input type="text" class="form-control" id="size" style="width:100px">&nbsp&nbsp&nbsp
+        	재고  <input type="text" class="form-control" id="stock" style="width:100px">&nbsp&nbsp
+        		<button type="button"class="btn btn-sm btn-primary" onclick="addStock()">추가</button>
         </td>
         </tr>
         </table>        
@@ -237,6 +240,23 @@ function register(){
 
 }
 
+function addStock() {
+	var size = $("#size").val();
+	var count = $("#stock").val();
+	console.log(size);
+	console.log(count);
+	var append = "<span><br>사이즈 <input type='text' class='form-control' value='" +size+ "'style='width:100px' name='size' readonly>" +
+			 	 "&nbsp&nbsp&nbsp&nbsp" +
+			 	 "재고 <input type='text' class='form-control' value='" +count+ "'style='width:100px' name='count' readonly>" +
+			 	 "&nbsp&nbsp&nbsp" +
+			 	 "<button type='button' class='btn btn-sm btn-secondary' onclick='delStock(this)'>삭제</button></span>";
+	$("#place").append(append);
+	return;
+}
+
+function delStock(btn) {
+	btn.parentNode.innerHTML ="";
+}
 </script>
 </body>
 </html>

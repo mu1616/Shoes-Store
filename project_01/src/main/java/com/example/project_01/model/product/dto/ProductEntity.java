@@ -6,7 +6,6 @@ public class ProductEntity {
 	private String product_name;
 	private int product_price;
 	private int product_brand;
-	private int product_stock;
 	private int product_category;
 	private String product_contents;
 	private String product_image;
@@ -35,12 +34,6 @@ public class ProductEntity {
 	public void setProduct_brand(int product_brand) {
 		this.product_brand = product_brand;
 	}
-	public int getProduct_stock() {
-		return product_stock;
-	}
-	public void setProduct_stock(int product_stock) {
-		this.product_stock = product_stock;
-	}
 	public int getProduct_category() {
 		return product_category;
 	}
@@ -65,15 +58,15 @@ public class ProductEntity {
 	public void setProduct_isDisplay(int product_isDisplay) {
 		this.product_isDisplay = product_isDisplay;
 	}
-
 	@Override
 	public String toString() {
-		return "ProductDTO [product_idx=" + product_idx + ", product_name=" + product_name + ", product_price="
-				+ product_price + ", product_brand=" + product_brand + ", product_stock=" + product_stock
-				+ ", product_category=" + product_category + ", product_contents=" + product_contents
-				+ ", product_image=" + product_image + ", product_isDisplay=" + product_isDisplay
-				+  "]";
+		return "ProductEntity [product_idx=" + product_idx + ", product_name=" + product_name + ", product_price="
+				+ product_price + ", product_brand=" + product_brand + ", product_category=" + product_category
+				+ ", product_contents=" + product_contents + ", product_image=" + product_image + ", product_isDisplay="
+				+ product_isDisplay + "]";
 	}
+
+
 	
 	
 	

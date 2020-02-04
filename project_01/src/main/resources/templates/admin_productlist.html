@@ -40,7 +40,7 @@
         <tr>
         <td style="vertical-align:middle;"><input type="checkbox" value="1"></td>
         <td style="text-align:left;"><img th:src="${productDto.product_image}" width="75" height="75"><a href="#" ><font color="black" th:text=${productDto.product_name}></font></a></td>
-        <td style="vertical-align:middle;" th:text="${productDto.product_price}"></td>
+        <td style="vertical-align:middle;" th:text="${#numbers.formatInteger(productDto.product_price, 3, 'COMMA')}"></td>
         <td style="vertical-align:middle;" th:text="${productDto.product_brand}"></td>
         <td style="vertical-align:middle;" th:text="${productDto.product_category}"></td>
         <td style="vertical-align:middle;" >
@@ -51,7 +51,7 @@
 	        	<span th:text="X"></span>
 	        </th:block>
         </td>
-        <td style="vertical-align:middle;" th:text="${productDto.product_stock}" ></td>
+        <td style="vertical-align:middle;"><input type="button" value="재고관리" class="btn btn-link" onclick="showStock();"></td>
         <td style="vertical-align:middle;"><input type="button" value="수정" class="btn btn-outline-secondary btn-sm">
        		 <input type="button" value="삭제" class="btn btn-outline-secondary btn-sm"></td>
         </tr>
@@ -133,6 +133,10 @@ function clickFirstBtn() {
 function clickPreviousBtn(startPage){
 	var previousPage = startPage - 10;
 	location.href = '/admin/product/list/' + previousPage;
+}
+
+function showStock(){
+	window.open("/admin/product/stock","stock","width=400, height=300");
 }
 </script>
 </body>

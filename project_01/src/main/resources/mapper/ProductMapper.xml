@@ -9,9 +9,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		parameterType="com.example.project_01.model.product.dto.ProductEntity"
 		useGeneratedKeys="true" keyProperty="product_idx">
 		insert into product
-		(product_name,product_price,product_brand,product_stock,product_category,
+		(product_name,product_price,product_brand,product_category,
 			product_contents,product_image,product_isdisplay) 
-		values (#{product_name},#{product_price},#{product_brand},#{product_stock},
+		values (#{product_name},#{product_price},#{product_brand},
 			#{product_category},#{product_contents},#{product_image},
 			#{product_isdisplay})
 	</insert>
@@ -29,7 +29,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
 	<select id="selectProduct" 
 		resultType="com.example.project_01.model.product.dto.ProductDTO">
-		SELECT product_idx, product_name, product_price, product_stock, 
+		SELECT product_idx, product_name, product_price, 
 			product_contents, product_image, product_isDisplay, 
 			b.brand_name AS product_brand, c.category_name AS product_category
 		FROM product
@@ -37,6 +37,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		ON product_brand = brand_idx
 		JOIN category AS c 
 		ON product_category = category_idx
+		ORDER BY product_idx desc
 		LIMIT #{start},#{length}
 	</select>
+	<insert id="insertStock">
+		insert into stock
+		(product_idx, size, count)
+		values (#{product_idx}, #{size}, #{count})
+	</insert>
 </mapper>
