@@ -217,7 +217,6 @@ function idCheck(){
 		url: "/join/idcheck",
 		type: "POST",
 		data: {"mem_id":mem_id},
-		dataType: "json",
 		success: function(data) {
 			if(data==0){
 				alert('사용 가능한 아이디입니다.');

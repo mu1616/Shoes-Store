@@ -51,7 +51,7 @@
 	        	<span th:text="X"></span>
 	        </th:block>
         </td>
-        <td style="vertical-align:middle;"><input type="button" value="재고관리" class="btn btn-link" onclick="showStock();"></td>
+        <td style="vertical-align:middle;"><input type="button" value="재고관리" class="btn btn-link" th:onclick="'showStock('+${productDto.product_idx}+')'"></td>
         <td style="vertical-align:middle;"><input type="button" value="수정" class="btn btn-outline-secondary btn-sm">
        		 <input type="button" value="삭제" class="btn btn-outline-secondary btn-sm"></td>
         </tr>
@@ -98,9 +98,9 @@ $(function(){
 	}) 
 	var currentPage = [[${pageDto.currentPage}]];
 	var startPage = [[${pageDto.startPage}]];
+	console.log([[${pageDto}]]);
 	var num = currentPage%10;
 	if(num==0) num = 10;
-	console.log(num);
 	if(startPage==1){
 		$("button").eq(num-1).removeClass('btn-outline-secondary');
 		$("button").eq(num-1).addClass('btn-outline-primary');
@@ -135,8 +135,9 @@ function clickPreviousBtn(startPage){
 	location.href = '/admin/product/list/' + previousPage;
 }
 
-function showStock(){
-	window.open("/admin/product/stock","stock","width=400, height=300");
+
+function showStock(product_idx){
+	window.open("/admin/product/stock?product_idx="+product_idx,"stock","width=600, height=500");
 }
 </script>
 </body>

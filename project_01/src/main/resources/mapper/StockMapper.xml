@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper
+	namespace="com.example.project_01.model.stock.dao.StockDAO">
+
+	<insert id="insertStock">
+		insert into stock
+		(product_idx, size, count)
+		values (#{product_idx}, #{size}, #{count})
+	</insert>
+	
+	<select id="selectByProduct" resultType = "com.example.project_01.model.stock.dto.StockDTO">
+		select size, count
+		from stock
+		where product_idx=#{product_idx}
+	</select>
+	
+	<update id="updateStock">
+		update stock
+		set count = #{count}
+		where product_idx=#{product_idx} and size=#{size}
+	</update>
+	
+	<delete id="deleteStock">
+		delete from stock
+		where product_idx=#{product_idx} and size=#{size}
+	</delete>
+</mapper>

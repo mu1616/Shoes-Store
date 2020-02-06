@@ -27,6 +27,8 @@ import org.springframework.web.multipart.MultipartFile;
 import com.example.project_01.model.pagination.dto.PageDTO;
 import com.example.project_01.model.product.dto.ProductDTO;
 import com.example.project_01.model.product.dto.ProductEntity;
+import com.example.project_01.model.stock.dao.StockDAO;
+import com.example.project_01.model.stock.dto.StockDTO;
 import com.example.project_01.service.admin.product.ManageProductService;
 
 @Controller
@@ -37,6 +39,8 @@ public class ManageProductController {
 	String filePath;
 	@Value("${smarteditor.upload.directory}")
 	String editorPath;
+	@Autowired
+	StockDAO stockDao;
 
 	@RequestMapping(value = "/admin/product/register", method = RequestMethod.GET)
 	public String registerPage() {
@@ -130,8 +134,33 @@ public class ManageProductController {
 		return "admin_productlist";
 	}
 	@RequestMapping("/admin/product/stock")
-	public String showStock() {
+	public String showStock(Model model, int product_idx) {
+		List<StockDTO> stockList = stockDao.selectByProduct(product_idx);
+		model.addAttribute("stockList", stockList);
+		model.addAttribute("product_idx",product_idx);
 		return "popup/stock";
 	}
-
+	
+	@ResponseBody
+	@RequestMapping("/admin/product/stock/add")
+	public void addStock(int product_idx, int size, int count) {
+		System.out.printf("%d %d %d", product_idx,size,count);
+		stockDao.insertStock(product_idx, size, count);
+		
+	}
+	
+	@ResponseBody
+	@RequestMapping("/admin/product/stock/modify")
+	public void modifyStock(int product_idx, int size, int count) {
+		System.out.printf("%d %d %d", product_idx,size,count);
+		stockDao.updateStock(product_idx, size, count);
+		
+	}
+	
+	@ResponseBody
+	@RequestMapping("/admin/product/stock/delete")
+	public void deleteStock(int product_idx, int size) {
+		stockDao.deleteStock(product_idx, size);
+		
+	}
 }

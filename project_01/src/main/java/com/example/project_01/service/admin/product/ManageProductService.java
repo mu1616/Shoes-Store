@@ -15,12 +15,15 @@ import com.example.project_01.model.pagination.dto.PageDTO;
 import com.example.project_01.model.product.dao.ProductDAO;
 import com.example.project_01.model.product.dto.ProductDTO;
 import com.example.project_01.model.product.dto.ProductEntity;
+import com.example.project_01.model.stock.dao.StockDAO;
 @Service
 public class ManageProductService {
 	@Value("${file.upload.directory}")
 	String filePath;
 	@Autowired
-	ProductDAO dao;
+	ProductDAO productDao;
+	@Autowired
+	StockDAO stockDao; 
 	public String makeFileName(String filename) {
 		SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMddHHmmss");
 		String today = formatter.format(new java.util.Date());
@@ -54,7 +57,7 @@ public class ManageProductService {
 		}
 		productEntity.setProduct_image(filePath + filename);
 		//prorduct테이블에 추가
-		dao.productRegister(productEntity);
+		productDao.productRegister(productEntity);
 		System.out.println(productEntity);
 		System.out.println(mainDisplay);
 		
@@ -62,14 +65,14 @@ public class ManageProductService {
 		if(mainDisplay !=null) {
 			for(int i=0; i<mainDisplay.length ; i++) {
 				System.out.println("maindisplay테이블에 저장 "+ productEntity.getProduct_idx()+" "+mainDisplay[i]);
-				dao.displayRegister(productEntity.getProduct_idx(), mainDisplay[i]);
+				productDao.displayRegister(productEntity.getProduct_idx(), mainDisplay[i]);
 			}
 		}
 		
 		//stock 테이블에 추가
 		for(int i=0; i < size.length; i++) {
 			System.out.println("stock테이블에 저장 " + productEntity.getProduct_idx()+" "+ size[i]+" "+count[i]);
-			dao.insertStock(productEntity.getProduct_idx(), size[i], count[i]);
+			stockDao.insertStock(productEntity.getProduct_idx(), size[i], count[i]);
 		}
 	}
 	//페이지당 상품개수 = 10
@@ -80,7 +83,7 @@ public class ManageProductService {
 		int totalPage;
 		PageDTO pageDto = new PageDTO();
 		pageDto.setCurrentPage(currentPage);
-		countRecord = dao.countProduct();
+		countRecord = productDao.countProduct();
 		pageDto.setCountRecord(countRecord);
 		totalPage = (int)Math.ceil(countRecord/(double)10);
 		pageDto.setTotalPage(totalPage);
@@ -95,7 +98,7 @@ public class ManageProductService {
 	public List<ProductDTO> selectProduct(int currentPage) {
 		int start = (currentPage-1) * 10;
 		int length = 10;
-		List<ProductDTO> productList = dao.selectProduct(start, length);
+		List<ProductDTO> productList = productDao.selectProduct(start, length);
 		return productList;
 	}
 }
