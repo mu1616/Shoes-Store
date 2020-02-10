@@ -15,6 +15,7 @@ import com.example.project_01.model.pagination.dto.PageDTO;
 import com.example.project_01.model.product.dao.ProductDAO;
 import com.example.project_01.model.product.dto.ProductDTO;
 import com.example.project_01.model.product.dto.ProductEntity;
+import com.example.project_01.model.search.dto.SearchDTO;
 import com.example.project_01.model.stock.dao.StockDAO;
 @Service
 public class ManageProductService {
@@ -76,14 +77,14 @@ public class ManageProductService {
 		}
 	}
 	//페이지당 상품개수 = 10
-	public PageDTO calPage(int currentPage) {
+	public PageDTO calPage(int currentPage, SearchDTO searchDto) {
 		int countRecord;
 		int startPage;
 		int endPage;
 		int totalPage;
 		PageDTO pageDto = new PageDTO();
 		pageDto.setCurrentPage(currentPage);
-		countRecord = productDao.countProduct();
+		countRecord = productDao.countProduct(searchDto);
 		pageDto.setCountRecord(countRecord);
 		totalPage = (int)Math.ceil(countRecord/(double)10);
 		pageDto.setTotalPage(totalPage);
@@ -91,14 +92,13 @@ public class ManageProductService {
 		pageDto.setStartPage(startPage);
 		endPage = (startPage+9>totalPage)?totalPage:startPage+9;
 		pageDto.setEndPage(endPage);
-		
 		return pageDto;
 	}
 	
-	public List<ProductDTO> selectProduct(int currentPage) {
+	public List<ProductDTO> selectProduct(int currentPage, SearchDTO searchDto) {
 		int start = (currentPage-1) * 10;
 		int length = 10;
-		List<ProductDTO> productList = productDao.selectProduct(start, length);
+		List<ProductDTO> productList = productDao.selectProduct(start, length, searchDto);
 		return productList;
 	}
 }

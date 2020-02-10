@@ -9,6 +9,9 @@
       th,td {
         text-align: center;
       }
+      .left{
+      	text-align: left;
+      }
 
     </style>
 </head>
@@ -20,13 +23,67 @@
 	<main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
 		<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
         <h1 class="h2">상품목록</h1>
+        </div>
+        <div>
+        <font color="gray">[검색옵션]</font>
+        <form id="searchFrm" action="/admin/product/list/1" method="post">
+        <table class="table table-bordered">
+        <tr>
+        <th scope="row" style="width:100px" class="table-active">검색분류</th>
+        <td class="left" style="width:200px">        	
+	        <select class="custom-select mr-sm-2" name="searchOption"style="width:200px;float:left;">
+	        <option id="option" value="검색분류" selected>검색분류</option>
+	        <option id="pName" value="상품명">상품명</option>
+	        <option id="pNumber" value="상품번호">상품번호</option>
+	     	</select> 	     
+	     	<input type="text" id="search" name="search" class="form-control" style="width:250px;">
+        </td>
+        </tr>
+        <tr>
+        <th scope="row"class="table-active">상품분류</th>
+        <td colspan="2" class="left">
+        	<select class="custom-select mr-sm-2" name="product_category"id="product_category" style="width:200px;">
+		        <option value="%" selected>상품 분류</option>
+		        <option value="1">운동화</option>
+		        <option value="2">스니커즈</option>
+		        <option value="3">슬리퍼</option>
+		        <option value="4">샌들</option>
+		        <option value="5">축구/농구</option>
+	        <option value="6">슬립온</option>
+     		 </select>
+     		 <select class="custom-select mr-sm-2" name="product_brand"id="product_brand" style="width:200px;">
+		        <option value="%" selected>제조 브랜드</option>
+		        <option value="1">Nike</option>
+		        <option value="2">Adidas</option>
+		        <option value="3">Puma</option>
+		        <option value="4">NewBalance</option>
+		        <option value="5">Reebok</option>
+		        <option value="6">Vans</option>
+     		 </select>
+        </td>
+        </tr>
+        <tr>
+        <th scope="row"class="table-active">진열상태</th>
+        <td colspan="2" class="left" id="product_isDisplay">
+        	<input type="radio" name="product_isDisplay" value="%" checked>전체&nbsp&nbsp&nbsp
+        	<input type="radio" name="product_isDisplay" value="1">진열함&nbsp&nbsp&nbsp
+			<input type="radio" name="product_isDisplay" value="0">진열안함
+        </td>
+        </tr>
+        </table>
+        <div align="center">
+        	<input type="submit" class="btn btn-primary" style="width:100px"value="검색">
+        </div>
+        </form>
         </div><br>
+        <hr>
         <font color="grey"><p>[총 <font color="red" th:text="${pageDto.countRecord}"></font>개]</p></font>
         <input type="button" value="선택삭제" class="btn btn-outline-primary btn-sm">
         <table class="table table-bordered">
         <thead class="thead-light">
         <tr>
         <th scope="col"><input type="checkbox" id="allCheck"></th>
+        <th scop="col">상품번호</th>
         <th scope="col">상품명</th>
         <th scope="col">판매가</th>
         <th scope="col">브랜드</th>
@@ -39,7 +96,8 @@
         <th:block th:each="productDto:${productList}">
         <tr>
         <td style="vertical-align:middle;"><input type="checkbox" value="1"></td>
-        <td style="text-align:left;"><img th:src="${productDto.product_image}" width="75" height="75"><a href="#" ><font color="black" th:text=${productDto.product_name}></font></a></td>
+        <td style="vertical-align:middle;" th:text="${productDto.product_idx}"></td>
+        <td style="text-align:left;"><a href="#"><img th:src="${productDto.product_image}" width="75" height="75"></a><a href="#" ><font color="black" th:text=${productDto.product_name}></font></a></td>
         <td style="vertical-align:middle;" th:text="${#numbers.formatInteger(productDto.product_price, 3, 'COMMA')}"></td>
         <td style="vertical-align:middle;" th:text="${productDto.product_brand}"></td>
         <td style="vertical-align:middle;" th:text="${productDto.product_category}"></td>
@@ -52,23 +110,23 @@
 	        </th:block>
         </td>
         <td style="vertical-align:middle;"><input type="button" value="재고관리" class="btn btn-link" th:onclick="'showStock('+${productDto.product_idx}+')'"></td>
-        <td style="vertical-align:middle;"><input type="button" value="수정" class="btn btn-outline-secondary btn-sm">
-       		 <input type="button" value="삭제" class="btn btn-outline-secondary btn-sm"></td>
+        <td style="vertical-align:middle;"><input type="button" value="수정" class="btn btn-sm">
+       		 <input type="button" value="삭제" class="btn btn-sm"></td>
         </tr>
         </th:block>
         </table><br>
         <div align="center">
         <th:block th:if="${pageDto.totalPage}>0">
 	        <th:block th:if="${pageDto.startPage}>10" >				
-				<button class="btn btn-outline-secondary btn-sm" style="WIDTH: 20pt; HEIGHT: 23pt" onclick="clickFirstBtn()">&#171</button>
-	        	<button class="btn btn-outline-secondary btn-sm" th:onclick="'clickPreviousBtn('+${pageDto.startPage}+')'">&#60</button>
+				<button class="btn btn-outline-secondary btn-sm pageBtn" style="WIDTH: 20pt; HEIGHT: 23pt" onclick="clickFirstBtn()">&#171</button>
+	        	<button class="btn btn-outline-secondary btn-sm pageBtn" th:onclick="'clickPreviousBtn('+${pageDto.startPage}+')'">&#60</button>
 	        </th:block>
 	        <th:block th:each="num:${#numbers.sequence(pageDto.startPage,pageDto.endPage)}">
-	        	<button class="btn btn-outline-secondary btn-sm" th:onclick="'clickNumberBtn('+${num}+')'"><th:block th:text="${num}"></th:block></button>
+	        	<button class="btn btn-outline-secondary btn-sm pageBtn" th:onclick="'clickNumberBtn('+${num}+')'"><th:block th:text="${num}"></th:block></button>
 	        </th:block>
 	        <th:block th:if="${pageDto.endPage}<${pageDto.totalPage}" >
-				<button class="btn btn-outline-secondary btn-sm" th:onclick="'clickNextBtn('+${pageDto.startPage}+')'">></button>
-				<button class="btn btn-outline-secondary btn-sm" style="WIDTH: 20pt; HEIGHT: 23pt" onclick="clickLastBtn();">&#187</button>
+				<button class="btn btn-outline-secondary btn-sm pageBtn" th:onclick="'clickNextBtn('+${pageDto.startPage}+')'">></button>
+				<button class="btn btn-outline-secondary btn-sm pageBtn" style="WIDTH: 20pt; HEIGHT: 23pt" onclick="clickLastBtn();">&#187</button>
 	        </th:block>
         </th:block>
         </div>
@@ -96,49 +154,102 @@ $(function(){
 			$("input[type=checkbox]").prop("checked",false); 
 		} 
 	}) 
+	//var html = $("#place").html();
+	//$("#place").html("");
+	makePageBtn();
+	searchOption();
+	
+
+})
+
+
+function searchOption(){
+	var searchOption = [[${searchOption}]];
+	if(searchOption == "상품명") {
+		$("#search").val([[${searchDto.product_name}]]);
+		$("#option").prop("selected",false);
+		$("#pName").prop("selected",true);
+	}
+	if(searchOption == "상품번호"){
+		$("#search").val([[${searchDto.product_idx}]]);
+		$("#option").prop("selected",false);
+		$("#pNumber").prop("selected",true);
+	}
+	
+	var category = [[${searchDto.product_category}]];
+	if(category != "%") {
+		var num = category;
+		$("#product_category").children().eq(0).prop("selected",false);
+		$("#product_category").children().eq(num).prop("selected",true);
+	}
+	
+	var brand = [[${searchDto.product_brand}]];
+	if(brand != "%") {
+		var num = brand;
+		$("#product_brand").children().eq(0).prop("selected",false);
+		$("#product_brand").children().eq(num).prop("selected",true);
+	}
+	
+	var isDisplay = [[${searchDto.product_isDisplay}]];
+	if(isDisplay != "%") {
+		var num = isDisplay;
+		$("#product_isDisplay").children().eq(0).prop("checked",false);
+		if(isDisplay == 1)
+			$("#product_isDisplay").children().eq(1).prop("checked",true);
+		if(isDisplay == 0)
+			$("#product_isDisplay").children().eq(2).prop("checked",true);
+	}
+}
+
+function makePageBtn(){
 	var currentPage = [[${pageDto.currentPage}]];
 	var startPage = [[${pageDto.startPage}]];
 	console.log([[${pageDto}]]);
 	var num = currentPage%10;
 	if(num==0) num = 10;
 	if(startPage==1){
-		$("button").eq(num-1).removeClass('btn-outline-secondary');
-		$("button").eq(num-1).addClass('btn-outline-primary');
+		$(".pageBtn").eq(num-1).removeClass('btn-outline-secondary');
+		$(".pageBtn").eq(num-1).addClass('btn-outline-danger');
 	} else {
-		$("button").eq(num+1).removeClass('btn-outline-secondary');
-		$("button").eq(num+1).addClass('btn-outline-primary');
+		$(".pageBtn").eq(num+1).removeClass('btn-outline-secondary');
+		$(".pageBtn").eq(num+1).addClass('btn-outline-danger');
 	}
-
-
-})
+}
 
 function clickNumberBtn(num){
-	location.href = '/admin/product/list/' + num ;
+	$("#searchFrm").attr("action", '/admin/product/list/' + num);
+	$("#searchFrm").submit();
 }
 
 function clickNextBtn(startPage){
 	var nextPage = startPage + 10;
-	location.href = '/admin/product/list/' + nextPage;
+	$("#searchFrm").attr("action", '/admin/product/list/' + nextPage);
+	$("#searchFrm").submit();
 }
 		
 function clickLastBtn() {
 	var totalPage = [[${pageDto.totalPage}]];
-	location.href = '/admin/product/list/' + totalPage;
+	$("#searchFrm").attr("action", '/admin/product/list/' + totalPage);
+	$("#searchFrm").submit();
 }
 
 function clickFirstBtn() {
-	location.href = '/admin/product/list/1';
+	$("#searchFrm").attr("action", '/admin/product/list/1');
+	$("#searchFrm").submit();
 }
 
 function clickPreviousBtn(startPage){
 	var previousPage = startPage - 10;
-	location.href = '/admin/product/list/' + previousPage;
+	$("#searchFrm").attr("action", '/admin/product/list/' + previousPage);
+	$("#searchFrm").submit();
 }
 
 
 function showStock(product_idx){
-	window.open("/admin/product/stock?product_idx="+product_idx,"stock","width=600, height=500");
+	window.open("/admin/product/stock?product_idx="+product_idx,"stock","width=450, height=500");
 }
+
+
 </script>
 </body>
 </html>

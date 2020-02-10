@@ -22,12 +22,22 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		values (#{product_idx}, #{md_idx})
 	</insert>
 	
-	<select id="countProduct" resultType="int">
-		select count(*) 
-		from product
+	<select id="countProduct"  parameterType="com.example.project_01.model.search.dto.SearchDTO" 
+		resultType="int">
+		SELECT count(*)        
+		FROM product
+		JOIN brand AS b
+		ON product_brand = brand_idx
+		JOIN category AS c 
+		ON product_category = category_idx
+		where product_name like '${product_name}' and
+			product_idx like '${product_idx}' and
+			product_category like '${product_category}' and
+			product_brand like '${product_brand}' and
+			product_isDisplay like '${product_isDisplay}'
 	</select>
 
-	<select id="selectProduct" 
+	<select id="selectProduct"  parameterType="com.example.project_01.model.search.dto.SearchDTO"
 		resultType="com.example.project_01.model.product.dto.ProductDTO">
 		SELECT product_idx, product_name, product_price, 
 			product_contents, product_image, product_isDisplay, 
@@ -37,6 +47,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		ON product_brand = brand_idx
 		JOIN category AS c 
 		ON product_category = category_idx
+		where product_name like '${searchDto.product_name}' and
+			product_idx like '${searchDto.product_idx}' and
+			product_category like '${searchDto.product_category}' and
+			product_brand like '${searchDto.product_brand}' and
+			product_isDisplay like '${searchDto.product_isDisplay}'
 		ORDER BY product_idx desc
 		LIMIT #{start},#{length}
 	</select>

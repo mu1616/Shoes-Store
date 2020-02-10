@@ -16,7 +16,7 @@
 <br>
 <div align="center">
 <h3 align="center">재고관리</h3><hr>
-사이즈  <input type="text"  id="size"style="width:100px">
+사이즈  <input type="text"  id="size"style="width:100px;float:center">
 재고  <input type="text"  id="count" style="width:100px">&nbsp&nbsp
 <button type="button"class="btn btn-sm btn-primary" onclick="addStock()">추가</button>
 <hr>
@@ -31,7 +31,7 @@
 	<th:block th:each="stock:${stockList}">
 	<tr>
 	<td><span th:text="${stock.size}"></span></td>
-	<td><input type="text" id="stock" style="width:100px" th:value="${stock.count}"></td>
+	<td><input type="text"  id="stock" style="width:100px;float:center;" th:value="${stock.count}"></td>
 	<td><input type="button" id="modifyBtn"class="btn btn-sm" value="수정" onclick="modifyStock(this)">
 		<input type="button" id="deleteBtn"class="btn btn-sm" value="삭제" onclick="deleteStock(this)">
 	</td>

@@ -9,6 +9,8 @@ public class ProductDTO {
 	private String product_contents;
 	private String product_image;
 	private int product_isDisplay;
+
+	
 	public int getProduct_idx() {
 		return product_idx;
 	}

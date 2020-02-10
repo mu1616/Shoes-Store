@@ -27,6 +27,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.example.project_01.model.pagination.dto.PageDTO;
 import com.example.project_01.model.product.dto.ProductDTO;
 import com.example.project_01.model.product.dto.ProductEntity;
+import com.example.project_01.model.search.dto.SearchDTO;
 import com.example.project_01.model.stock.dao.StockDAO;
 import com.example.project_01.model.stock.dto.StockDTO;
 import com.example.project_01.service.admin.product.ManageProductService;
@@ -120,17 +121,36 @@ public class ManageProductController {
 			e.printStackTrace();
 		}
 	}
-
+	
+	
 	@RequestMapping("/admin/product/list/{idx}")
-	public String productList(@PathVariable(value = "idx", required = false) Optional<Integer> idx, Model model) {
+	public String productList(@PathVariable(value = "idx", required = false) Optional<Integer> idx, 
+			@ModelAttribute SearchDTO searchDto, Model model, String searchOption, String search) {
+		System.out.println(searchOption);
+		if(searchOption !=null) {
+			if(searchOption.equals("상품명")) {
+				searchDto.setProduct_name("%"+search+"%");
+			}
+			if(searchOption.equals("상품번호")) 
+				if(search.equals("")) {
+					searchDto.setProduct_idx("%");
+				} else {
+					searchDto.setProduct_idx(search);
+				}
+		}
+		System.out.println(searchDto);
 		int currentPage = 1;
 		if (idx.isPresent())
 			currentPage = idx.get();
-		PageDTO pageDto = productService.calPage(currentPage);
+		PageDTO pageDto = productService.calPage(currentPage, searchDto);
 		System.out.println(pageDto);
 		model.addAttribute("pageDto", pageDto);
-		List<ProductDTO> productList = productService.selectProduct(currentPage);
+		List<ProductDTO> productList = productService.selectProduct(currentPage, searchDto);
 		model.addAttribute("productList", productList);
+		searchDto.setProduct_name(search);
+		searchDto.setProduct_idx(search);
+		model.addAttribute("searchDto",searchDto);
+		model.addAttribute("searchOption",searchOption);
 		return "admin_productlist";
 	}
 	@RequestMapping("/admin/product/stock")
@@ -163,4 +183,5 @@ public class ManageProductController {
 		stockDao.deleteStock(product_idx, size);
 		
 	}
+
 }
