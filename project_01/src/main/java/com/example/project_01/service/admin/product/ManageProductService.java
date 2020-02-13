@@ -35,28 +35,7 @@ public class ManageProductService {
 	@Transactional
 	public void register(ProductEntity productEntity, MultipartFile files, 
 			int []mainDisplay, int size[], int count[]) {
-		String filename = files.getOriginalFilename();
-		String file_ext = filename.substring(filename.lastIndexOf(".") + 1);
-		file_ext = file_ext.toLowerCase();
-		String[] allow_file = { "jpg", "png", "bmp", "gif" };
-		try {
-			int cnt = 0;
-			for (int i = 0; i < allow_file.length; i++) {
-				if (file_ext.equals(allow_file[i])) {
-					cnt++;
-				}
-			}
-			if (cnt == 0) {
-				// 에러
-			} else {
-				filename = makeFileName(filename);
-				files.transferTo(new File("C://shoesfactory/img/" + filename));
-			}
-
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		productEntity.setProduct_image(filePath + filename);
+		fileUpload(productEntity, files);
 		//prorduct테이블에 추가
 		productDao.productRegister(productEntity);
 		System.out.println(productEntity);
@@ -71,9 +50,11 @@ public class ManageProductService {
 		}
 		
 		//stock 테이블에 추가
-		for(int i=0; i < size.length; i++) {
-			System.out.println("stock테이블에 저장 " + productEntity.getProduct_idx()+" "+ size[i]+" "+count[i]);
-			stockDao.insertStock(productEntity.getProduct_idx(), size[i], count[i]);
+		if(size!=null) {
+			for(int i=0; i < size.length; i++) {
+				System.out.println("stock테이블에 저장 " + productEntity.getProduct_idx()+" "+ size[i]+" "+count[i]);
+				stockDao.insertStock(productEntity.getProduct_idx(), size[i], count[i]);
+			}
 		}
 	}
 	//페이지당 상품개수 = 10
@@ -100,5 +81,30 @@ public class ManageProductService {
 		int length = 10;
 		List<ProductDTO> productList = productDao.selectProduct(start, length, searchDto);
 		return productList;
+	}
+	
+	public void fileUpload(ProductEntity productEntity, MultipartFile files) {
+		String filename = files.getOriginalFilename();
+		String file_ext = filename.substring(filename.lastIndexOf(".") + 1);
+		file_ext = file_ext.toLowerCase();
+		String[] allow_file = { "jpg", "png", "bmp", "gif" };
+		try {
+			int cnt = 0;
+			for (int i = 0; i < allow_file.length; i++) {
+				if (file_ext.equals(allow_file[i])) {
+					cnt++;
+				}
+			}
+			if (cnt == 0) {
+				// 에러
+			} else {
+				filename = makeFileName(filename);
+				files.transferTo(new File("C://shoesfactory/img/" + filename));
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		productEntity.setProduct_image(filePath + filename);
 	}
 }

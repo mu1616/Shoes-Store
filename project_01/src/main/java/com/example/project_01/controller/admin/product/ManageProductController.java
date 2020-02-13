@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.example.project_01.model.pagination.dto.PageDTO;
+import com.example.project_01.model.product.dao.ProductDAO;
 import com.example.project_01.model.product.dto.ProductDTO;
 import com.example.project_01.model.product.dto.ProductEntity;
 import com.example.project_01.model.search.dto.SearchDTO;
@@ -42,7 +43,8 @@ public class ManageProductController {
 	String editorPath;
 	@Autowired
 	StockDAO stockDao;
-
+	@Autowired
+	ProductDAO productDao;
 	@RequestMapping(value = "/admin/product/register", method = RequestMethod.GET)
 	public String registerPage() {
 		return "admin";
@@ -52,10 +54,8 @@ public class ManageProductController {
 	public String registerProduct(@ModelAttribute ProductEntity productEntity, @RequestPart("profile") MultipartFile files,
 			@RequestParam(value = "mainDisplay", required = false) int[] mainDisplay, 
 			int size[], int count[]) {
-		//for(int num : size) System.out.println(num);
-		//for(int num : count) System.out.println(num);
 		productService.register(productEntity, files, mainDisplay, size, count);
-		return "admin";
+		return "redirect:/admin/product/list/1";
 	}
 
 	@ResponseBody
@@ -126,7 +126,7 @@ public class ManageProductController {
 	@RequestMapping("/admin/product/list/{idx}")
 	public String productList(@PathVariable(value = "idx", required = false) Optional<Integer> idx, 
 			@ModelAttribute SearchDTO searchDto, Model model, String searchOption, String search) {
-		System.out.println(searchOption);
+
 		if(searchOption !=null) {
 			if(searchOption.equals("상품명")) {
 				searchDto.setProduct_name("%"+search+"%");
@@ -138,12 +138,12 @@ public class ManageProductController {
 					searchDto.setProduct_idx(search);
 				}
 		}
-		System.out.println(searchDto);
 		int currentPage = 1;
 		if (idx.isPresent())
 			currentPage = idx.get();
 		PageDTO pageDto = productService.calPage(currentPage, searchDto);
-		System.out.println(pageDto);
+		if(currentPage > pageDto.getTotalPage()) 
+			return "redirect:/admin/product/list/"+pageDto.getTotalPage();
 		model.addAttribute("pageDto", pageDto);
 		List<ProductDTO> productList = productService.selectProduct(currentPage, searchDto);
 		model.addAttribute("productList", productList);
@@ -182,6 +182,33 @@ public class ManageProductController {
 	public void deleteStock(int product_idx, int size) {
 		stockDao.deleteStock(product_idx, size);
 		
+	}
+	
+	@ResponseBody
+	@RequestMapping("/admin/product/delete")
+	public void productDelete(@RequestParam("product_idx") String[] product_idx) {
+		//for(String a : product_idx) System.out.println(a);
+		productDao.deleteProduct(product_idx);
+	}
+	
+	@RequestMapping(value = "/admin/product/modify", method = RequestMethod.GET)
+	public String modifyPage(int product_idx, Model model) {
+		ProductEntity productEntity = productDao.selectOne(product_idx);
+		model.addAttribute("productEntity",productEntity);
+		return "admin_productmodify";
+	}
+	
+	@RequestMapping(value = "/admin/product/modify", method = RequestMethod.POST)
+	public String modify(@ModelAttribute ProductEntity productEntity, int product_idx,
+			@RequestPart(value="profile", required=false) MultipartFile files) {
+		
+		if(files != null) {
+			productService.fileUpload(productEntity, files);
+		} else {
+			productEntity.setProduct_image(null);
+		}
+		productDao.updateProduct(productEntity, product_idx);
+		return "admin_modifyComplete";
 	}
 
 }

@@ -60,4 +60,27 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		(product_idx, size, count)
 		values (#{product_idx}, #{size}, #{count})
 	</insert>
+	
+	<delete id="deleteProduct" parameterType="map">
+		delete from product
+		<where>
+		<foreach collection="array" item="idx" open="" close="" separator="OR">
+			(product_idx = #{idx})
+		</foreach>
+		</where>
+	</delete>
+	<select id="selectOne" resultType="com.example.project_01.model.product.dto.ProductEntity">
+		select * from product
+		where product_idx=#{product_idx}
+	</select>
+	<update id="updateProduct" parameterType="com.example.project_01.model.product.dto.ProductEntity">
+		update product
+		set product_name = #{productEntity.product_name}, product_price = #{productEntity.product_price},
+			product_brand = #{productEntity.product_brand}, product_category = #{productEntity.product_category},
+			product_contents = #{productEntity.product_contents}, product_isDisplay = #{productEntity.product_isDisplay}
+			<if test="productEntity.product_image != null">
+				,product_image = #{productEntity.product_image}
+    		</if>
+			where product_idx = #{product_idx}
+	</update>
 </mapper>

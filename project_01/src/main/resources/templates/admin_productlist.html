@@ -26,7 +26,7 @@
         </div>
         <div>
         <font color="gray">[검색옵션]</font>
-        <form id="searchFrm" action="/admin/product/list/1" method="post">
+        <form id="searchFrm" action="/admin/product/list/1" method="get">
         <table class="table table-bordered">
         <tr>
         <th scope="row" style="width:100px" class="table-active">검색분류</th>
@@ -78,7 +78,7 @@
         </div><br>
         <hr>
         <font color="grey"><p>[총 <font color="red" th:text="${pageDto.countRecord}"></font>개]</p></font>
-        <input type="button" value="선택삭제" class="btn btn-outline-primary btn-sm">
+        <input type="button" value="선택삭제" class="btn btn-outline-primary btn-sm" onclick="deleteList();">
         <table class="table table-bordered">
         <thead class="thead-light">
         <tr>
@@ -95,7 +95,7 @@
         </thead>
         <th:block th:each="productDto:${productList}">
         <tr>
-        <td style="vertical-align:middle;"><input type="checkbox" value="1"></td>
+        <td style="vertical-align:middle;"><input type="checkbox" class="checkList" th:value="${productDto.product_idx}"></td>
         <td style="vertical-align:middle;" th:text="${productDto.product_idx}"></td>
         <td style="text-align:left;"><a href="#"><img th:src="${productDto.product_image}" width="75" height="75"></a><a href="#" ><font color="black" th:text=${productDto.product_name}></font></a></td>
         <td style="vertical-align:middle;" th:text="${#numbers.formatInteger(productDto.product_price, 3, 'COMMA')}"></td>
@@ -110,8 +110,8 @@
 	        </th:block>
         </td>
         <td style="vertical-align:middle;"><input type="button" value="재고관리" class="btn btn-link" th:onclick="'showStock('+${productDto.product_idx}+')'"></td>
-        <td style="vertical-align:middle;"><input type="button" value="수정" class="btn btn-sm">
-       		 <input type="button" value="삭제" class="btn btn-sm"></td>
+        <td style="vertical-align:middle;"><input type="button" value="수정" class="btn btn-sm" th:onclick="'modify('+${productDto.product_idx}+')'" >
+       		 <input type="button" value="삭제" class="btn btn-sm" th:onclick="'deleteOne('+${productDto.product_idx}+')'"></td>
         </tr>
         </th:block>
         </table><br>
@@ -249,7 +249,43 @@ function showStock(product_idx){
 	window.open("/admin/product/stock?product_idx="+product_idx,"stock","width=450, height=500");
 }
 
+function deleteOne(idx) {
+	var product_idx = new Array();
+	product_idx[0] = idx;
+	deleteProduct(product_idx);
+}
 
+function deleteProduct(product_idx){	
+	if(confirm('삭제하시겠습니까?')) {		
+		$.ajax({
+			url: "/admin/product/delete",
+			type: "POST",
+			traditional: true,
+			data: {'product_idx':product_idx},
+			error:function(request,status,error){
+		        alert("code = "+ request.status + " message = " + request.responseText + " error = " + error); // 실패 시 처리
+		       },
+		    success : function(data) {
+		    	alert('해당 상품을 삭제하였습니다.');
+		    	document.location.reload(true);
+		    }
+		});
+	}
+}
+
+function deleteList() {
+	var product_idx = new Array();
+	for(var i = 0; i<10; i++){
+		if($(".checkList").eq(i).prop("checked")) {
+			product_idx.push($(".checkList").eq(i).val())
+		}
+	}
+	deleteProduct(product_idx);
+}
+
+function modify(product_idx) {
+	location.href = '/admin/product/modify?product_idx='+product_idx;
+}
 </script>
 </body>
 </html>

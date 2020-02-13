@@ -144,8 +144,9 @@
         </tr>
         <tr>
         <th scope="row" >대표이미지</th>
-        <td><input type="file" name="profile" id="profile"><br>
+        <td><input type="file" name="profile" id="profile" onchange="displayImage(this);"><br>
         	<span class="text-primary">Size : 500px*500px</span>
+        	<br><img id="loadImg">
         </td>        
         </tr>
         <tr>
@@ -256,6 +257,16 @@ function addStock() {
 
 function delStock(btn) {
 	btn.parentNode.innerHTML ="";
+}
+
+function displayImage(value) { 
+	if(value.files && value.files[0]) {
+		var reader = new FileReader();
+		reader.onload = function(e) {
+			$('#loadImg').attr('src',e.target.result);
+		}
+		reader.readAsDataURL(value.files[0]);
+	}
 }
 </script>
 </body>

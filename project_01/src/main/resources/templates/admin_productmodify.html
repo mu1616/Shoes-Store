@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+<meta charset="UTF-8">
+<title>Admin Page</title>
+<th:block th:include="./bootstrap.html::bootstrap"></th:block>
+    
+</head>
+<body>
+<th:block th:include="./admin.html::header"></th:block>
+ <div class="container-fluid">
+     <div class="row">
+	<th:block th:include="./admin.html::side"></th:block>
+	<main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
+		<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+        <h1 class="h2">상품정보 수정</h1>
+        </div>
+        <form class="form-inline" method="post" id="frm" action="/admin/product/modify" enctype="multipart/form-data">
+        <table class="table">
+        <tr>
+        <th scope="row" >상품명</th>
+        <td><input type="text" name="product_name" id="product_name" class="form-control" style="width:500px" th:value="${productEntity.product_name}"></td>
+        </tr>
+        <tr>
+        <th scope="row" >판매가</th>
+        <td><input type="text" name="product_price" id="product_price" class="form-control" style="width:200px" th:value="${productEntity.product_price}">원</td>
+        </tr>
+        <tr>
+        <th scope="row" >제조 브랜드</th>
+        <td>
+        <select class="custom-select mr-sm-2" name="product_brand"id="product_brand" style="width:200px;">
+        <option selected>제조 브랜드</option>
+        <option value="1">Nike</option>
+        <option value="2">Adidas</option>
+        <option value="3">Puma</option>
+        <option value="4">NewBalance</option>
+        <option value="5">Reebok</option>
+        <option value="6">Vans</option>
+      </select>
+        </td>
+        </tr>
+        <tr>
+        <th scope="row" >상품 분류</th>
+        <td>
+        <select class="custom-select mr-sm-2" name="product_category"id="product_category" style="width:200px;">
+        <option selected>상품 분류</option>
+        <option value="1">운동화</option>
+        <option value="2">스니커즈</option>
+        <option value="3">슬리퍼</option>
+        <option value="4">샌들</option>
+        <option value="5">축구/농구</option>
+        <option value="6">슬립온</option>
+      </select>
+        </td>
+        </tr>
+        <tr>
+        <th scope="row" >상품 상세설명</th>
+        <td>
+        <button type="button" class="btn btn-sm btn-dark" onclick="setContents()">Click</button><font color="blue">(기존의 내용이 보이지 않는다면 눌러주세요.)</font>
+        <script type="text/javascript" th:src="@{/static/smarteditor/js/HuskyEZCreator.js}" charset="utf-8"></script>
+        <textarea name="product_contents" id="ir1" rows="10" cols="80"></textarea>
+        </td>
+        </tr>
+        <tr>
+        <th scope="row" >대표이미지</th>
+        <td>
+        	<div id="file">
+        		<button type="button" class="btn btn-sm btn-dark" onclick="displayFile();">수정하기</button>
+        	</div>
+        	<img id="loadImg" th:src = "${productEntity.product_image}">
+        </td>        
+        </tr>
+        <tr>
+        <th scope="row" >진열상태</th>
+        <td id="isDisplay">       
+			<input type="radio" name="product_isDisplay" id="product_isDisplay"value="1">진열함&nbsp&nbsp&nbsp
+			<input type="radio" name="product_isDisplay" id="product_isDisplay" value="0">진열안함
+		</td>
+        </tr>
+        <input type="hidden" name="product_idx" th:value="${productEntity.product_idx}"> 
+        
+        </table>        
+        </form><hr>
+        <div align="center">
+        	<input type="button" class="btn btn-outline-primary btn-lg" style="width:200pt;" value="수정" onclick="register();">
+        </div>
+        </main>
+        </div>
+        </div>><br>
+<script src="https://unpkg.com/feather-icons/dist/feather.min.js"></script>
+<script>
+  feather.replace()
+</script>
+<script th:inline="javascript">
+var oEditors = [];
+nhn.husky.EZCreator.createInIFrame({
+ oAppRef: oEditors,
+ elPlaceHolder: "ir1",
+ sSkinURI: "/static/smarteditor/SmartEditor2Skin.html",
+ fCreator: "createSEditor2"
+ 
+});
+
+
+setBrand();
+setCategory();
+setIsDisplay();
+//setContents();
+$(window).on('load',(function(){		
+		setContents();
+	})
+	); 
+
+function setContents(){
+	var contents = [[${productEntity.product_contents}]]
+	var a = oEditors.getById["ir1"].setIR(contents);
+}
+
+function setBrand() {
+	var num = [[${productEntity.product_brand}]];
+	$("#product_brand").children().eq(0).prop("selected",false);
+	$("#product_brand").children().eq(num).prop("selected",true);
+}
+function setCategory(){
+	var num = [[${productEntity.product_category}]];
+	$("#product_category").children().eq(0).prop("selected",false);
+	$("#product_category").children().eq(num).prop("selected",true);
+}
+function setIsDisplay(){
+	var isDisplay = [[${productEntity.product_isdisplay}]];
+	if(isDisplay == 1)
+		$("#isDisplay").children().eq(0).prop("checked",true);
+	if(isDisplay == 0)
+		$("#isDisplay").children().eq(1).prop("checked",true);
+}
+function register(){
+	var name = $("#product_name").val();
+	var price = $("#product_price").val();
+	var brand = document.getElementById("product_brand");
+	var stock = $("#product_stock").val();
+	var category = document.getElementById("product_category");
+	var profile = $("#profile").val();
+	var isDisplay = $("input:radio[name='product_isDisplay']").is(':checked');
+
+	if(name=="") {
+		alert('상품명을 확인해주세요');
+		return;
+	}
+	if(price==""){
+		alert('판매가를 확인해주세요');
+		return;
+	}
+	if(brand.options[brand.selectedIndex].value=="제조 브랜드") {
+		alert('제조 브랜드를 확인해주세요');
+		return;
+	}
+	if(stock==""){
+		alert('재고를 확인해주세요');
+		return;
+	}
+	if(category.options[category.selectedIndex].value=="상품 분류") {
+		alert('상품분류를 확인해주세요');
+		return;
+	}
+	if(profile==""){
+		alert('대표이미지를 확인해주세요');
+		return;
+	}
+	if(isDisplay==false) {
+		alert('진열상태를 확인해주세요');
+		return;
+	}
+	//왜인지는 모르겠는데 스마트에디터에 기존내용이 표기가 안되고 <p><br></p> 라고만나올때가 있음
+	if(oEditors.getById["ir1"].getIR() =="<p><br></p>") {
+		alert('상품 상세설명을 확인해주세요');
+		return;
+	}
+	
+	if(confirm('상품을 수정하시겠습니까?')){
+		document.getElementById('ir1').value = oEditors.getById["ir1"].getIR();
+		$('#frm').submit();
+	}
+
+}
+
+function displayImage(value) { 
+	if(value.files && value.files[0]) {
+		var reader = new FileReader();
+		reader.onload = function(e) {
+			$('#loadImg').attr('src',e.target.result);
+		}
+		reader.readAsDataURL(value.files[0]);
+	}
+}
+
+function displayFile(){
+	var html = '<input type="file" name="profile" id="profile" onchange="displayImage(this);"><br><span class="text-primary">Size : 500px*500px</span>'
+	$("#file").html(html);
+}
+</script>
+
+</body>
+</html>

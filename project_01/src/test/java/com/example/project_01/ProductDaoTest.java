@@ -14,6 +14,7 @@ import com.example.project_01.model.pagination.dto.PageDTO;
 import com.example.project_01.model.product.dao.ProductDAO;
 import com.example.project_01.model.product.dto.ProductDTO;
 import com.example.project_01.model.product.dto.ProductEntity;
+import com.example.project_01.model.search.dto.SearchDTO;
 import com.example.project_01.service.admin.product.ManageProductService;
 
 @RunWith(SpringRunner.class)
@@ -52,13 +53,13 @@ public class ProductDaoTest {
 	}
 	
 	public void countProduct() {
-		PageDTO pageDto = productService.calPage(21);
+		PageDTO pageDto = productService.calPage(21, new SearchDTO());
 		System.out.println(pageDto);
 		
 	}
 	@Test
 	public void selectProduct() {
-		List<ProductDTO> list = productDao.selectProduct(0, 9);
+		List<ProductDTO> list = productDao.selectProduct(0, 9, new SearchDTO());
 		for(ProductDTO dto : list) {
 			System.out.println(dto);
 		}
