@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Shoes Factory</title>
+<th:block th:include="./bootstrap.html::bootstrap"></th:block>
+<style>
+      th,td,tr {
+        text-align: center;
+        height:15px;
+      }
+
+    </style>
+</head>
+<body>
+<br>
+<div align="center">
+<h3>회원 상세정보</h3><hr>
+<table class="table table-bordered">
+<tr>
+<th scope="row" class="table-active" width="150px">아이디</th>
+<td th:text="${memberDto.mem_id}"></td>
+</tr>
+<tr>
+<th scope="row" class="table-active" width="150px">이름</th>
+<td th:text="${memberDto.mem_name}"></td>
+</tr>
+<tr>
+<th scope="row" class="table-active" width="150px">등급</th>
+<td th:text="${memberDto.mem_role}"></td>
+</tr>
+<tr>
+<th scope="row" class="table-active" width="150px">생년월일</th>
+<td th:text="${#calendars.format(memberDto.mem_birth,'yyyy-MM-dd')}"></td>
+</tr>
+<tr>
+<th scope="row" class="table-active" width="150px">가입날짜</th>
+<td th:text="${#calendars.format(memberDto.mem_regdate,'yyyy-MM-dd')}"></td>
+</tr>
+<tr>
+<th scope="row" class="table-active" width="150px">연락처</th>
+<td th:text="${memberDto.mem_phone}"></td>
+</tr>
+<tr>
+<th scope="row" class="table-active">주소</th>
+<td th:text="${memberDto.mem_addr1}"></td>
+</tr>
+<tr>
+<th scope="row" class="table-active">상세주소</th>
+<td th:text="${memberDto.mem_addr2}"></td>
+</tr>
+<tr>
+<th scope="row" class="table-active">총 주문금액</th>
+<td th:text="${#numbers.formatInteger(memberDto.mem_total, 0, 'COMMA')}"></td>
+</tr>
+</table>
+</div>
+</html>

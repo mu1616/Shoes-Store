@@ -19,11 +19,12 @@ public class StockDaoTest {
 	@Autowired
 	StockDAO stockDao;
 	
-	@Test
+	
 	public void selectByProduct() {
 		List<StockDTO> list= stockDao.selectByProduct(327);
 		for(StockDTO dto : list) {
 			System.out.println(dto);
 		}
 	}
+	
 }

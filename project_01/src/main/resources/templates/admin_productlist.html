@@ -72,7 +72,7 @@
         </tr>
         </table>
         <div align="center">
-        	<input type="submit" class="btn btn-primary" style="width:100px"value="검색">
+        	<input type="button" class="btn btn-primary" style="width:100px"value="검색" onclick="searchBtn()" > 
         </div>
         </form>
         </div><br>
@@ -98,7 +98,7 @@
         <td style="vertical-align:middle;"><input type="checkbox" class="checkList" th:value="${productDto.product_idx}"></td>
         <td style="vertical-align:middle;" th:text="${productDto.product_idx}"></td>
         <td style="text-align:left;"><a href="#"><img th:src="${productDto.product_image}" width="75" height="75"></a><a href="#" ><font color="black" th:text=${productDto.product_name}></font></a></td>
-        <td style="vertical-align:middle;" th:text="${#numbers.formatInteger(productDto.product_price, 3, 'COMMA')}"></td>
+        <td style="vertical-align:middle;" th:text="${#numbers.formatInteger(productDto.product_price, 0, 'COMMA')}"></td>
         <td style="vertical-align:middle;" th:text="${productDto.product_brand}"></td>
         <td style="vertical-align:middle;" th:text="${productDto.product_category}"></td>
         <td style="vertical-align:middle;" >
@@ -204,7 +204,6 @@ function searchOption(){
 function makePageBtn(){
 	var currentPage = [[${pageDto.currentPage}]];
 	var startPage = [[${pageDto.startPage}]];
-	console.log([[${pageDto}]]);
 	var num = currentPage%10;
 	if(num==0) num = 10;
 	if(startPage==1){
@@ -285,6 +284,12 @@ function deleteList() {
 
 function modify(product_idx) {
 	location.href = '/admin/product/modify?product_idx='+product_idx;
+}
+
+function searchBtn() {
+	$("#searchFrm").attr("action", '/admin/product/list/1');
+	$("#searchFrm").submit();
+
 }
 </script>
 </body>

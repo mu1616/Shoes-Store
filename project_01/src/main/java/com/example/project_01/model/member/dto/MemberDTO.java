@@ -16,6 +16,7 @@ public class MemberDTO {
 	private String mem_addr2;
 	private Date mem_regdate;
 	private String mem_role;
+	private int mem_total;
 	public int getMem_idx() {
 		return mem_idx;
 	}
@@ -76,12 +77,22 @@ public class MemberDTO {
 	public void setMem_role(String mem_role) {
 		this.mem_role = mem_role;
 	}
+	
+	
+	public int getMem_total() {
+		return mem_total;
+	}
+	public void setMem_total(int mem_total) {
+		this.mem_total = mem_total;
+	}
 	@Override
 	public String toString() {
 		return "MemberDTO [mem_idx=" + mem_idx + ", mem_name=" + mem_name + ", mem_birth=" + mem_birth + ", mem_id="
 				+ mem_id + ", mem_pw=" + mem_pw + ", mem_phone=" + mem_phone + ", mem_addr1=" + mem_addr1
-				+ ", mem_addr2=" + mem_addr2 + ", mem_regdate=" + mem_regdate + ", mem_role=" + mem_role + "]";
+				+ ", mem_addr2=" + mem_addr2 + ", mem_regdate=" + mem_regdate + ", mem_role=" + mem_role
+				+ ", mem_total=" + mem_total + "]";
 	}
+	
 	
 	
 

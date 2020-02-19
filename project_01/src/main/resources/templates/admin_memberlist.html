@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+<meta charset="UTF-8">
+<title>Admin Page</title>
+<th:block th:include="./bootstrap.html::bootstrap"></th:block>
+    <style>
+      th,td {
+        text-align: center;
+      }
+      .left{
+      	text-align: left;
+      }
+
+    </style>
+</head>
+<body>
+<th:block th:include="./admin.html::header"></th:block>
+ <div class="container-fluid">
+     <div class="row">
+	<th:block th:include="./admin.html::side"></th:block>
+	<main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
+		<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+        <h1 class="h2">회원목록</h1>
+        </div>
+        <div>
+        <font color="gray">[검색옵션]</font>
+        <form id="searchFrm" action="/admin/member/list/1" method="post">
+        <table class="table table-bordered">
+        <tr>
+        <th scope="row" style="width:100px" class="table-active">검색분류</th>
+        <td class="left" style="width:200px">        	
+	        <select class="custom-select mr-sm-2" name="searchOption"style="width:200px;float:left;">
+	        <option id="option" value="검색분류"  selected>검색분류</option>
+	        <option id="member_id" value="아이디" >아이디</option>
+	     	</select> 	     
+	     	<input type="text" id="search" name="search" class="form-control" style="width:250px;">
+        </td>
+        </tr>
+        <tr>
+        <th scope="row" class="table-active">등급</th>
+	        <td class="left">
+	        	<select class="custom-select mr-sm-2" name="mem_role"id="mem_role" style="width:200px;">
+			        <option value="%" selected>등급</option>
+			        <option value="1">ADMIN</option>
+			        <option value="2">USER</option>
+			        <option value="3">VIP</option>
+	     		 </select>
+     		 </td>
+        </tr>
+        </table>
+        <div align="center">
+        	<input type="button" class="btn btn-primary" style="width:100px"value="검색" onclick="searchBtn()" > 
+        </div>
+        </form>
+        </div><br>
+        <hr>
+        <font color="grey"><p>[총 <font color="red" th:text="${pageDto.countRecord}"></font>명]</p></font>
+        <table class="table table-bordered">
+        <thead class="thead-light">
+        <tr>
+        <th scope="col">회원번호</th>
+        <th scope="col">아이디</th>
+        <th scope="col">총 주문금액</th>
+        <th scope="col">등급</th>
+        <th scope="col"></th>
+        </tr>
+        </thead>
+        <th:block th:each="memberDto:${memberList}">
+        <tr>
+          <td style="vertical-align:middle;" th:text="${memberDto.mem_idx}"></td>
+          <td style="vertical-align:middle;" th:text="${memberDto.mem_id}"></td>
+          <td style="vertical-align:middle;" th:text="${#numbers.formatInteger(memberDto.mem_total, 0, 'COMMA')}"></td>
+          <td style="vertical-align:middle;" ><a href="#" th:text="${memberDto.mem_role}"></a></td>
+          <td style="vertical-align:middle;">
+	          <button type="button" class="btn" th:onclick="'showDetail('+${memberDto.mem_idx}+')'">상세정보</button>
+	          <button type="button" class="btn" th:onclick="'deleteMember('+${memberDto.mem_idx}+')'">탈퇴</button>
+          </td>						
+        </tr>
+        </th:block>
+        </table>
+        <br>
+        <div align="center">
+        <th:block th:if="${pageDto.totalPage}>0">
+	        <th:block th:if="${pageDto.startPage}>10" >				
+				<button class="btn btn-outline-secondary btn-sm pageBtn" style="WIDTH: 20pt; HEIGHT: 23pt" onclick="clickFirstBtn()">&#171</button>
+	        	<button class="btn btn-outline-secondary btn-sm pageBtn" th:onclick="'clickPreviousBtn('+${pageDto.startPage}+')'">&#60</button>
+	        </th:block>
+	        <th:block th:each="num:${#numbers.sequence(pageDto.startPage,pageDto.endPage)}">
+	        	<button class="btn btn-outline-secondary btn-sm pageBtn" th:onclick="'clickNumberBtn('+${num}+')'"><th:block th:text="${num}"></th:block></button>
+	        </th:block>
+	        <th:block th:if="${pageDto.endPage}<${pageDto.totalPage}" >
+				<button class="btn btn-outline-secondary btn-sm pageBtn" th:onclick="'clickNextBtn('+${pageDto.startPage}+')'">></button>
+				<button class="btn btn-outline-secondary btn-sm pageBtn" style="WIDTH: 20pt; HEIGHT: 23pt" onclick="clickLastBtn();">&#187</button>
+	        </th:block>
+        </th:block>
+        </div>
+        <br><br>
+        </main>
+        </div>
+        </div>
+
+
+<!-- Icons -->
+<script src="https://unpkg.com/feather-icons/dist/feather.min.js"></script>
+<script>
+  feather.replace()
+</script>
+<script th:inline="javascript">
+makePageBtn();
+searchOption();
+
+function searchOption() {
+	var searchOption = [[${searchOption}]];
+	if(searchOption == "아이디") {
+		$("#search").val([[${searchMemberDto.mem_id}]]);
+		$("#option").prop("selected",false);
+		$("#member_id").prop("selected",true);
+	}
+	
+	var role = [[${searchMemberDto.mem_role}]];
+	if(role != "%") {
+		var num = role;
+		$("#mem_role").children().eq(0).prop("selected",false);
+		$("#mem_role").children().eq(num).prop("selected",true);
+	}
+	
+}
+function makePageBtn(){
+	var currentPage = [[${pageDto.currentPage}]];
+	var startPage = [[${pageDto.startPage}]];
+	//console.log([[${pageDto}]]);
+	var num = currentPage%10;
+	if(num==0) num = 10;
+	if(startPage==1){
+		$(".pageBtn").eq(num-1).removeClass('btn-outline-secondary');
+		$(".pageBtn").eq(num-1).addClass('btn-outline-danger');
+	} else {
+		$(".pageBtn").eq(num+1).removeClass('btn-outline-secondary');
+		$(".pageBtn").eq(num+1).addClass('btn-outline-danger');
+	}
+}
+
+function clickNumberBtn(num){
+	$("#searchFrm").attr("action", '/admin/member/list/' + num);
+	$("#searchFrm").submit();
+}
+
+function clickNextBtn(startPage){
+	var nextPage = startPage + 10;
+	$("#searchFrm").attr("action", '/admin/member/list/' + nextPage);
+	$("#searchFrm").submit();
+}
+		
+function clickLastBtn() {
+	var totalPage = [[${pageDto.totalPage}]];
+	$("#searchFrm").attr("action", '/admin/member/list/' + totalPage);
+	$("#searchFrm").submit();
+}
+
+function clickFirstBtn() {
+	$("#searchFrm").attr("action", '/admin/member/list/1');
+	$("#searchFrm").submit();
+}
+
+function clickPreviousBtn(startPage){
+	var previousPage = startPage - 10;
+	$("#searchFrm").attr("action", '/admin/member/list/' + previousPage);
+	$("#searchFrm").submit();
+}
+
+function searchBtn() {
+	$("#searchFrm").attr("action", '/admin/member/list/1');
+	$("#searchFrm").submit();
+}
+
+function deleteMember(mem_idx){	
+	if(confirm('탈퇴처리 하시겠습니까?')) {		
+		$.ajax({
+			url: "/admin/member/delete",
+			type: "POST",
+			data: {'mem_idx':mem_idx},
+			error:function(request,status,error){
+		        alert("code = "+ request.status + " message = " + request.responseText + " error = " + error); // 실패 시 처리
+		       },
+		    success : function(data) {
+		    	alert('해당 회원을 탈퇴처리 하였습니다.');
+		    	document.location.reload(true);
+		    }
+		});
+	}
+}
+function showDetail(mem_idx) {
+	window.open("/admin/member/detail?mem_idx="+mem_idx,"detail","width=600, height=550");
+}
+</script>
+</body>
+</html>

@@ -125,8 +125,12 @@ public class ManageProductController {
 	
 	@RequestMapping("/admin/product/list/{idx}")
 	public String productList(@PathVariable(value = "idx", required = false) Optional<Integer> idx, 
-			@ModelAttribute SearchDTO searchDto, Model model, String searchOption, String search) {
-
+			@ModelAttribute SearchDTO searchDto, Model model, String searchOption, String search) {		
+		int currentPage = 1;
+		if (idx.isPresent())
+			currentPage = idx.get();	
+		if(currentPage <=0) 
+			return "redirect:/admin/product/list/1";
 		if(searchOption !=null) {
 			if(searchOption.equals("상품명")) {
 				searchDto.setProduct_name("%"+search+"%");
@@ -137,13 +141,10 @@ public class ManageProductController {
 				} else {
 					searchDto.setProduct_idx(search);
 				}
-		}
-		int currentPage = 1;
-		if (idx.isPresent())
-			currentPage = idx.get();
+		}		
 		PageDTO pageDto = productService.calPage(currentPage, searchDto);
-		if(currentPage > pageDto.getTotalPage()) 
-			return "redirect:/admin/product/list/"+pageDto.getTotalPage();
+		if(currentPage > pageDto.getTotalPage() && pageDto.getCountRecord()!=0) 
+			return "redirect:/admin/product/list/"+pageDto.getTotalPage();		
 		model.addAttribute("pageDto", pageDto);
 		List<ProductDTO> productList = productService.selectProduct(currentPage, searchDto);
 		model.addAttribute("productList", productList);

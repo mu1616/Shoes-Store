@@ -19,4 +19,36 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 				#{mem_addr2})
 	</insert>
 	
+	<select id="selectMember" parameterType = "com.example.project_01.model.member.dto.SearchMemberDTO"
+		resultType="com.example.project_01.model.member.dto.MemberDTO">
+		select mem_idx,mem_name,mem_birth,mem_id,mem_pw,mem_phone,mem_addr1,
+			mem_addr2,mem_regdate,mem_total,r.role_name as mem_role from member 
+		join role as r 
+		on mem_role=role_idx 
+		where mem_id like #{searchMemberDto.mem_id} and 
+			mem_role like #{searchMemberDto.mem_role}
+		ORDER BY mem_idx desc
+		LIMIT #{start},#{length} 
+
+	</select>
+	
+	<select id="countMember" parameterType = "com.example.project_01.model.member.dto.SearchMemberDTO" 
+		resultType="int">
+		select count(*)
+		from member
+		where mem_id like #{mem_id} and 
+			mem_role like #{mem_role}
+	</select>
+	<delete id="deleteOne">
+		delete from member
+		where mem_idx = #{mem_idx}
+	</delete>
+	
+	<select id="findByIdx" resultType="com.example.project_01.model.member.dto.MemberDTO">
+		select mem_idx,mem_name,mem_birth,mem_id,mem_pw,mem_phone,mem_addr1,
+			mem_addr2,mem_regdate,r.role_name as mem_role from member 
+		join role as r 
+		on mem_role=role_idx 
+		where mem_idx=#{mem_idx};
+	</select>
 </mapper>
