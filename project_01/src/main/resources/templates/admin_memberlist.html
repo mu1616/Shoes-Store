@@ -26,7 +26,7 @@
         </div>
         <div>
         <font color="gray">[검색옵션]</font>
-        <form id="searchFrm" action="/admin/member/list/1" method="post">
+        <form id="searchFrm" action="/admin/member/list/1" method="get">
         <table class="table table-bordered">
         <tr>
         <th scope="row" style="width:100px" class="table-active">검색분류</th>
@@ -72,7 +72,7 @@
           <td style="vertical-align:middle;" th:text="${memberDto.mem_idx}"></td>
           <td style="vertical-align:middle;" th:text="${memberDto.mem_id}"></td>
           <td style="vertical-align:middle;" th:text="${#numbers.formatInteger(memberDto.mem_total, 0, 'COMMA')}"></td>
-          <td style="vertical-align:middle;" ><a href="#" th:text="${memberDto.mem_role}"></a></td>
+          <td style="vertical-align:middle;" ><button type="button" class="btn btn-link" th:text="${memberDto.mem_role}" th:onclick="'showRole('+${memberDto.mem_idx}+')'"></button></td>
           <td style="vertical-align:middle;">
 	          <button type="button" class="btn" th:onclick="'showDetail('+${memberDto.mem_idx}+')'">상세정보</button>
 	          <button type="button" class="btn" th:onclick="'deleteMember('+${memberDto.mem_idx}+')'">탈퇴</button>
@@ -193,6 +193,9 @@ function deleteMember(mem_idx){
 }
 function showDetail(mem_idx) {
 	window.open("/admin/member/detail?mem_idx="+mem_idx,"detail","width=600, height=550");
+}
+function showRole(mem_idx) {
+	window.open("/admin/member/role?mem_idx="+mem_idx,"detail","width=460, height=300");
 }
 </script>
 </body>

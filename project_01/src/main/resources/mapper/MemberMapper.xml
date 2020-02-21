@@ -51,4 +51,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		on mem_role=role_idx 
 		where mem_idx=#{mem_idx};
 	</select>
+	
+	<select id="selectRole" resultType = "com.example.project_01.model.member.dto.RoleDTO">
+		select * from role
+	</select>
+	
+	<update id="updateRole">
+		UPDATE member 
+		SET mem_role = #{mem_role}
+		WHERE mem_idx = #{mem_idx}
+	</update>
 </mapper>

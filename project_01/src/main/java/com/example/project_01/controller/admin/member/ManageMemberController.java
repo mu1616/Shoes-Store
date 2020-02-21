@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.example.project_01.model.member.dao.MemberDAO;
 import com.example.project_01.model.member.dto.MemberDTO;
+import com.example.project_01.model.member.dto.RoleDTO;
 import com.example.project_01.model.member.dto.SearchMemberDTO;
 import com.example.project_01.model.pagination.dto.PageDTO;
 import com.example.project_01.service.admin.member.ManageMemberService;
@@ -28,14 +29,18 @@ public class ManageMemberController {
 			String searchOption, SearchMemberDTO searchMemberDto, String search) {
 		if(searchOption == null || searchOption.equals("검색분류"))
 			searchMemberDto.setMem_id("%");
-		else if(searchOption.equals("아이디"))
+		else if(searchOption.equals("아이디")) {
 			searchMemberDto.setMem_id(search);
+			if(search.equals(""))
+				searchMemberDto.setMem_id("%");
+		}
 		PageDTO pageDto = memberService.calPage(idx, searchMemberDto);
 		System.out.println(searchOption+"\n"+searchMemberDto);
 		List<MemberDTO> memberList = memberService.selectMember(pageDto.getCurrentPage(), searchMemberDto);
 		model.addAttribute("memberList",memberList);
 		model.addAttribute("pageDto",pageDto);
 		model.addAttribute("searchOption",searchOption);
+		searchMemberDto.setMem_id(search);
 		model.addAttribute("searchMemberDto",searchMemberDto);
 		
 		return "admin_memberlist";
@@ -51,5 +56,20 @@ public class ManageMemberController {
 		MemberDTO memberDto = memberDao.findByIdx(mem_idx);
 		model.addAttribute("memberDto", memberDto);
 		return "popup/memberDetail";
+	}
+	
+	@RequestMapping("/admin/member/role")
+	public String memberRole(int mem_idx, Model model) {
+		MemberDTO memberDto = memberDao.findByIdx(mem_idx);
+		List<RoleDTO> roleList = memberDao.selectRole();
+		model.addAttribute("memberDto", memberDto);
+		model.addAttribute("roleList",roleList);
+		return "popup/memberRole";
+	}
+	
+	@ResponseBody
+	@RequestMapping("/admin/member/role/modify")
+	public void modifyRole(int mem_idx, int mem_role) {
+		memberDao.updateRole(mem_idx, mem_role);
 	}
 }
