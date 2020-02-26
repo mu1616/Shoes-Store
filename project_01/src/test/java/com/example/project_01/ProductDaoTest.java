@@ -57,11 +57,12 @@ public class ProductDaoTest {
 		System.out.println(pageDto);
 		
 	}
-	@Test
+	
 	public void selectProduct() {
 		List<ProductDTO> list = productDao.selectProduct(0, 9, new SearchDTO());
 		for(ProductDTO dto : list) {
 			System.out.println(dto);
 		}
 	}
+	
 }

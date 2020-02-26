@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<!-- 레이아웃 참고한 소스 -->
+<!-- view-source:https://getbootstrap.com/docs/4.1/examples/dashboard/# -->
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Shoes Factory</title>
+<th:block th:include="./bootstrap.html::bootstrap"></th:block>
+</head>
+<body>
+<div class="container">
+<th:block th:include="./home.html::header"></th:block>
+<br><br>
+<div class="row">
+<div class="col-4">
+<h4 th:if="${category} ne null"style="font-weight:bold;" th:text="${category}"></h4>
+<h4 th:if="${category} eq null"style="font-weight:bold;" th:text="${searchWord}+' 검색결과'"></h4>
+</div>
+<div class="col-4"></div>
+<div class="col-4">
+<font style="font-weight:bold;">신상품순</font>&nbsp
+<font color="grey">높은가격순</font>&nbsp
+<font color="grey">낮은가격순</font>&nbsp
+<font color="grey">인기순</font>&nbsp
+</div>
+</div>
+<font color="grey"><p>[총 <font color="red" th:text="${pageDto.countRecord}"></font>개]</p></font>
+<br>
+<div class="row">
+<th:block th:each="productDto:${productList}">
+<div class="col-3">
+		    <div class="card">
+            <a href="#"><img th:src="${productDto.product_image}" alt="" class="card-img-top" width="100" height="150"/></a>
+            <div class="card-body">
+              <b>[ <span th:text="${productDto.product_brand}"></span> ]</b>
+              <p style="font-weight: 300;"th:text="${productDto.product_name}"></p>
+              <b style="font-size:20px;"th:text="${#numbers.formatInteger(productDto.product_price, 0, 'COMMA')}"></b> 원
+            </div>
+          </div>
+          <br><br>
+          </div>
+</th:block>
+</div>
+        <div align="center">
+        <th:block th:if="${pageDto.totalPage}>0">
+	        <th:block th:if="${pageDto.startPage}>10" >				
+				<button class="btn btn-outline-secondary btn-sm pageBtn" style="WIDTH: 20pt; HEIGHT: 23pt" onclick="clickFirstBtn()">&#171</button>
+	        	<button class="btn btn-outline-secondary btn-sm pageBtn" th:onclick="'clickPreviousBtn('+${pageDto.startPage}+')'">&#60</button>
+	        </th:block>
+	        <th:block th:each="num:${#numbers.sequence(pageDto.startPage,pageDto.endPage)}">
+	        	<button class="btn btn-outline-secondary btn-sm pageBtn" th:onclick="'clickNumberBtn('+${num}+')'"><th:block th:text="${num}"></th:block></button>
+	        </th:block>
+	        <th:block th:if="${pageDto.endPage}<${pageDto.totalPage}" >
+				<button class="btn btn-outline-secondary btn-sm pageBtn" th:onclick="'clickNextBtn('+${pageDto.startPage}+')'">></button>
+				<button class="btn btn-outline-secondary btn-sm pageBtn" style="WIDTH: 20pt; HEIGHT: 23pt" onclick="clickLastBtn();">&#187</button>
+	        </th:block>
+        </th:block>
+        </div>
+<th:block th:include="./home.html::footer"></th:block>
+</div>
+<script th:inline="javascript">
+makePageBtn();
+var searchWord = [[${searchWord}]];
+document.getElementById('Search').value = searchWord;
+
+function makePageBtn(){
+	var currentPage = [[${pageDto.currentPage}]];
+	var startPage = [[${pageDto.startPage}]];
+	//console.log([[${pageDto}]]);
+	var num = currentPage%10;
+	if(num==0) num = 10;
+	if(startPage==1){
+		$(".pageBtn").eq(num-1).removeClass('btn-outline-secondary');
+		$(".pageBtn").eq(num-1).addClass('btn-outline-danger');
+	} else {
+		$(".pageBtn").eq(num+1).removeClass('btn-outline-secondary');
+		$(".pageBtn").eq(num+1).addClass('btn-outline-danger');
+	}
+}
+
+function clickNumberBtn(num){
+	if(searchWord == null) {
+	document.getElementById('product_category').value = [[${searchDto.product_category}]];
+	document.getElementById('frm1').action = "/productList/"+num;
+	document.getElementById('frm1').submit();
+	} else {
+		document.getElementById('searchFrm').action = "/productList/"+num;
+		document.getElementById('searchFrm').submit();
+	}
+
+	
+}
+
+function clickNextBtn(startPage){
+	var nextPage = startPage + 10;
+	if(searchWord == null) {
+	document.getElementById('product_category').value = [[${searchDto.product_category}]];
+	document.getElementById('frm1').action = "/productList/"+nextPage;
+	document.getElementById('frm1').submit();
+	} else {
+		document.getElementById('searchFrm').action = "/productList/"+nextPage;
+		document.getElementById('searchFrm').submit();
+	}
+}
+		
+function clickLastBtn() {
+	var totalPage = [[${pageDto.totalPage}]];
+	if(searchWord == null) {
+	document.getElementById('product_category').value = [[${searchDto.product_category}]];
+	document.getElementById('frm1').action = "/productList/"+totalPage;
+	document.getElementById('frm1').submit();
+	} else {
+		document.getElementById('searchFrm').action = "/productList/"+totalPage;
+		document.getElementById('searchFrm').submit();
+	}
+}
+
+function clickFirstBtn() {
+	if(searchWord == null) {
+	document.getElementById('product_category').value = [[${searchDto.product_category}]];
+	document.getElementById('frm1').action = "/productList/1";
+	document.getElementById('frm1').submit();
+	} else {
+		document.getElementById('searchFrm').action = "/productList/1";
+		document.getElementById('searchFrm').submit();
+	}
+}
+
+function clickPreviousBtn(startPage){
+	var previousPage = startPage - 10;
+	if(searchWord == null) {
+	document.getElementById('product_category').value = [[${searchDto.product_category}]];
+	document.getElementById('frm1').action = "/productList/"+previousPage;
+	document.getElementById('frm1').submit();
+	} else {
+		document.getElementById('searchFrm').action = "/productList/"+previousPage;
+		document.getElementById('searchFrm').submit();
+	}
+}
+</script>
+</body>
+</html>

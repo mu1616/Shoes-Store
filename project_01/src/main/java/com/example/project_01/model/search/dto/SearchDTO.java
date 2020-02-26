@@ -6,7 +6,8 @@ public class SearchDTO {
 	private String product_category = "%";
 	private String product_brand = "%";
 	private String product_isDisplay = "%";
-
+	//0: and, 1: or 
+	private int searchOption = 0;
 	
 	public String getProduct_name() {
 		return product_name;
@@ -50,12 +51,22 @@ public class SearchDTO {
 	
 	
 
+	public int getSearchOption() {
+		return searchOption;
+	}
+
+	public void setSearchOption(int searchOption) {
+		this.searchOption = searchOption;
+	}
+
 	@Override
 	public String toString() {
 		return "SearchDTO [product_name=" + product_name + ", product_idx=" + product_idx + ", product_category="
 				+ product_category + ", product_brand=" + product_brand + ", product_isDisplay=" + product_isDisplay
-				+ "]";
+				+ ", searchOption=" + searchOption + "]";
 	}
+
+	
 
 	
 	
