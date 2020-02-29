@@ -30,14 +30,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         		
         http.csrf().disable();
         http.formLogin()
-        		.loginPage("/login")
+        		.loginPage("/member/login")
         		.loginProcessingUrl("/loginProcess")
         		.defaultSuccessUrl("/")
-        		.failureUrl("/login/fail")
+        		.failureUrl("/member/login/fail")
         		.permitAll()
         		.and();
         http .logout()
-        	 .logoutUrl("/logout") 
+        	 .logoutUrl("/member/logout") 
         	 .logoutSuccessUrl("/") 
         	 .invalidateHttpSession(true);
         

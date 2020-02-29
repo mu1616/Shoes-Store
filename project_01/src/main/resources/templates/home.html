@@ -14,8 +14,8 @@
 			<a href="#" sec:authorize="isAuthenticated()"class="text-dark"><i class="fa text-primary" th:text="${#authentication.principal.username}+'님'"></i></a>&nbsp
 			<a href="/admin" sec:authorize="hasRole('ROLE_ADMIN')"class="text-dark"><i class="fa fa-home "></i>Admin</a>&nbsp
 			<a href="cart.html" class="text-dark"><i class="fa fa-shopping-cart"></i> Cart</a>&nbsp&nbsp 
-			<a sec:authorize="!isAuthenticated()" href="/login"class="text-dark"><i class="fa fa-lock"></i> Login</a>
-			<a sec:authorize="isAuthenticated()" href="/logout"class="text-dark"><i class="fa fa-lock"></i> Logout</a>
+			<a sec:authorize="!isAuthenticated()" href="/member/login"class="text-dark"><i class="fa fa-lock"></i> Login</a>
+			<a sec:authorize="isAuthenticated()" href="/member/logout"class="text-dark"><i class="fa fa-lock"></i> Logout</a>
 			
 		</div>
 		<br>
@@ -32,7 +32,7 @@
 						<a class="dropdown-item" href="#">공지사항</a>
 						<a class="dropdown-item" href="#">FAQ</a>
 					</div>
-					<form action="/productList/1" method="get" id="frm1"> 
+					<form action="/product/list/1" method="get" id="frm1"> 
 						<input type="hidden" name="product_category" id="product_category">
 						
 					</form>
@@ -45,7 +45,7 @@
 					<a class="nav-item nav-link" style="cursor:pointer" onclick="slipOn();">슬립온&nbsp </a>
 					<a class="nav-item nav-link" href="#">브랜드&nbsp </a>
 					<pre>                  </pre>
-					 <form class="form-inline my-2 my-lg-0" action="/productList/1" method="get" id='searchFrm'>
+					 <form class="form-inline my-2 my-lg-0" action="/product/list/1" method="get" id='searchFrm'>
 				      <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" name="searchWord" id="Search">
 				      <button class="btn btn-outline-success " type="submit">Search</button>
 				    </form>

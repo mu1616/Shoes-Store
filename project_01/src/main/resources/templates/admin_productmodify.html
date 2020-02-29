@@ -68,7 +68,7 @@
         	<div id="file">
         		<button type="button" class="btn btn-sm btn-dark" onclick="displayFile();">수정하기</button>
         	</div>
-        	<img id="loadImg" th:src = "${productEntity.product_image}">
+        	<img id="loadImg" th:src = "${productEntity.product_image}" style="width:280px;height:200px;">
         </td>        
         </tr>
         <tr>
@@ -195,7 +195,7 @@ function displayImage(value) {
 }
 
 function displayFile(){
-	var html = '<input type="file" name="profile" id="profile" onchange="displayImage(this);"><br><span class="text-primary">Size : 500px*500px</span>'
+	var html = '<input type="file" name="profile" id="profile" onchange="displayImage(this);"><br><span class="text-primary">권장Size : 600px*500px</span>'
 	$("#file").html(html);
 }
 </script>

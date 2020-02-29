@@ -25,12 +25,12 @@ public class MemberController {
 	@Autowired
 	MemberService memberService;
 
-	@RequestMapping(value = "/login", method = RequestMethod.GET)
+	@RequestMapping(value = "/member/login", method = RequestMethod.GET)
 	public String login() {
 		return "login";
 	}
 	
-	@RequestMapping("/login/fail")
+	@RequestMapping("member/login/fail")
 	public String loginFail(Model model) {
 		model.addAttribute("loginFail", "로그인에 실패하였습니다.");
 		return "/login";
@@ -50,18 +50,18 @@ public class MemberController {
 
 	}
 	*/
-	@RequestMapping("/logout")
+	@RequestMapping("/member/logout")
 	public String logout(HttpSession session) {
 		session.invalidate();
 		return "home";
 	}
 
-	@RequestMapping(value = "/join", method = RequestMethod.GET)
+	@RequestMapping(value = "/member/join", method = RequestMethod.GET)
 	public String join() {
 		return "join";
 	}
 
-	@RequestMapping(value = "/join", method = RequestMethod.POST)
+	@RequestMapping(value = "/member/join", method = RequestMethod.POST)
 	public String joinOk(@ModelAttribute MemberDTO memberDto) {
 		memberDto.setMem_pw(encoder.encode(memberDto.getMem_pw()));
 		// System.out.println(memberDto);
@@ -76,7 +76,7 @@ public class MemberController {
 	}
 
 	@ResponseBody
-	@RequestMapping("/join/idcheck")
+	@RequestMapping("/member/join/idcheck")
 	public int idCheck(String mem_id) {
 		if (memberDao.findById(mem_id) == null) {
 			return 0;

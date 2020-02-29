@@ -30,7 +30,7 @@
 <th:block th:each="productDto:${productList}">
 <div class="col-3">
 		    <div class="card">
-            <a href="#"><img th:src="${productDto.product_image}" alt="" class="card-img-top" width="100" height="150"/></a>
+            <a th:href="'/product/detail?product_idx='+${productDto.product_idx}"><img th:src="${productDto.product_image}" alt="" class="card-img-top" width="200" height="220"/></a>
             <div class="card-body">
               <b>[ <span th:text="${productDto.product_brand}"></span> ]</b>
               <p style="font-weight: 300;"th:text="${productDto.product_name}"></p>
@@ -56,6 +56,7 @@
 	        </th:block>
         </th:block>
         </div>
+        <br><br><hr>
 <th:block th:include="./home.html::footer"></th:block>
 </div>
 <script th:inline="javascript">
@@ -81,10 +82,10 @@ function makePageBtn(){
 function clickNumberBtn(num){
 	if(searchWord == null) {
 	document.getElementById('product_category').value = [[${searchDto.product_category}]];
-	document.getElementById('frm1').action = "/productList/"+num;
+	document.getElementById('frm1').action = "/product/list/"+num;
 	document.getElementById('frm1').submit();
 	} else {
-		document.getElementById('searchFrm').action = "/productList/"+num;
+		document.getElementById('searchFrm').action = "/product/list/"+num;
 		document.getElementById('searchFrm').submit();
 	}
 
@@ -95,10 +96,10 @@ function clickNextBtn(startPage){
 	var nextPage = startPage + 10;
 	if(searchWord == null) {
 	document.getElementById('product_category').value = [[${searchDto.product_category}]];
-	document.getElementById('frm1').action = "/productList/"+nextPage;
+	document.getElementById('frm1').action = "/product/list/"+nextPage;
 	document.getElementById('frm1').submit();
 	} else {
-		document.getElementById('searchFrm').action = "/productList/"+nextPage;
+		document.getElementById('searchFrm').action = "/product/list/"+nextPage;
 		document.getElementById('searchFrm').submit();
 	}
 }
@@ -107,10 +108,10 @@ function clickLastBtn() {
 	var totalPage = [[${pageDto.totalPage}]];
 	if(searchWord == null) {
 	document.getElementById('product_category').value = [[${searchDto.product_category}]];
-	document.getElementById('frm1').action = "/productList/"+totalPage;
+	document.getElementById('frm1').action = "/product/list/"+totalPage;
 	document.getElementById('frm1').submit();
 	} else {
-		document.getElementById('searchFrm').action = "/productList/"+totalPage;
+		document.getElementById('searchFrm').action = "/product/list/"+totalPage;
 		document.getElementById('searchFrm').submit();
 	}
 }
@@ -118,10 +119,10 @@ function clickLastBtn() {
 function clickFirstBtn() {
 	if(searchWord == null) {
 	document.getElementById('product_category').value = [[${searchDto.product_category}]];
-	document.getElementById('frm1').action = "/productList/1";
+	document.getElementById('frm1').action = "/product/list/1";
 	document.getElementById('frm1').submit();
 	} else {
-		document.getElementById('searchFrm').action = "/productList/1";
+		document.getElementById('searchFrm').action = "/product/list/1";
 		document.getElementById('searchFrm').submit();
 	}
 }
@@ -130,10 +131,10 @@ function clickPreviousBtn(startPage){
 	var previousPage = startPage - 10;
 	if(searchWord == null) {
 	document.getElementById('product_category').value = [[${searchDto.product_category}]];
-	document.getElementById('frm1').action = "/productList/"+previousPage;
+	document.getElementById('frm1').action = "/product/list/"+previousPage;
 	document.getElementById('frm1').submit();
 	} else {
-		document.getElementById('searchFrm').action = "/productList/"+previousPage;
+		document.getElementById('searchFrm').action = "/product/list/"+previousPage;
 		document.getElementById('searchFrm').submit();
 	}
 }

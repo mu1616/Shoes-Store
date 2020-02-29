@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<!-- 레이아웃 참고한 소스 -->
+<!-- view-source:https://getbootstrap.com/docs/4.1/examples/dashboard/# -->
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Shoes Factory</title>
+<th:block th:include="./bootstrap.html::bootstrap"></th:block>
+<!-- 부모 요소의 크기에 맞기 이미지 크기 조절 -->
+<style>
+img {
+  max-width: 100%;
+  height: auto;
+}
+</style>
+</head>
+<body>
+<div class="container">
+<th:block th:include="./home.html::header"></th:block>
+<br><br><br>
+<div class="row">
+<div class="col-6">
+<img th:src="${productDto.product_image}" style="width:480px;height:380px;">
+</div>
+<div class="col-6">
+<h4 th:text="${productDto.product_name}" style="font-weight:600;"></h4><br>
+<table class="table">
+<tr>
+<th scope="row">판매가</th>
+<td th:text="${#numbers.formatInteger(productDto.product_price, 0, 'COMMA')}"></td>
+</tr>
+<tr>
+<th scope="row">상품요약정보</th>
+<td th:text="${productDto.product_brand}+' '+${productDto.product_category}"></td>
+</tr>
+<tr>
+<th scope="row">배송비</th>
+<td>무료</td>
+</tr>
+<tr>
+<th scope="row">사이즈</th>
+<td>
+	<select style="width:150px">
+		 <option id="option" value="검색분류" selected>Size</option>
+	        <th:block th:each="stockDto:${stockList}">
+       		    <option th:if="${stockDto.count} >0" th:value="${stockDto.size}" th:text="${stockDto.size}">
+	       		<option th:if="${stockDto.count} == 0"th:text="${stockDto.size}+'(품절)'" disabled>
+	        </th:block>
+	</select>
+</td>
+</tr>
+</table><br>&nbsp&nbsp
+<button type="button" class="btn btn-outline-primary" style="width:250px;height:70px;font-size:25px;">장바구니 담기</button>
+<button type="button" class="btn btn-outline-danger" style="width:250px;height:70px;font-size:25px;">구매하기</button>
+</div>
+</div>
+<br><br><br><br><hr>
+<div align="center">
+<br><br><br><br>
+<img src="/static/img/logo.png" style="width:900px;"><br><br><br><br><br><br>
+</div>
+<div align="center">
+	<div id="contents" align="center" style="height: auto; width: 900px;"></div>
+</div><br><br>
+<div align="center">
+	<h5 style="font-weight:500">SIZE INFO</h4><br>
+	<img src="/static/img/size.png" style="width:750px;"><br>
+</div><br><br><hr><br><br><br>
+<div align="center">
+<div style="border: 1px solid #D8D8D8; height:auto; width:900px;min-height:500px" align="left" >
+<br>
+<div class="container">
+<h5 style="font-weight:600">구매후기 (0)</h5><br>
+	<ul>
+		<li>구매후기 작성은 주문내역조회 -> 후기작성을 통해 작성할 수 있습니다.</li>
+	</ul><br><hr>
+<div align="center"><br><img src="/static/img/noExist.png" style="width:700px;height:250px"></div>
+</div>
+</div>
+</div>
+<div align="center">
+<div style="border: 1px solid #D8D8D8; height:auto; width:900px;min-height:500px" align="left" >
+<br>
+<div class="container">
+<div class="row"></div>
+<h5 style="font-weight:600">상품문의 (80)</h5><br>
+	<ul>
+		<li>구매한 상품의 취소/반품은 구매내역에서 신청 가능합니다.</li>
+		<li>상품문의 및 후기게시판을 통해 취소나 환불, 반품 등은 처리되지 않습니다.</li>
+		<span style="float:right"><button type="button" class="btn btn-outline-primary btn-sm">문의하기</button></span>
+		<li>공개 게시판이므로 전화번호, 메일 주소 등 고객님의 소중한 개인정보는 절대 남기지 말아주세요.</li> 
+	</ul>
+	<table class="table table-bordered" style="font-size:11px">
+	<thead class="thead-light">
+	<tr align="center">
+	<th style="width:80px">번호</th>
+	<th style="width:100px">답변상태</th>
+	<th style="width:100px">문의유형</th>
+	<th style="width:300px">문의제목</th>
+	<th style="width:100px">작성자</th>
+	<th style="width:100px">작성일자</th>
+	</tr>
+	</thead>
+	</table>
+</div>
+</div>
+</div>
+<br><br><hr>
+<th:block th:include="./home.html::footer"></th:block>
+</div>
+<script th:inline="javascript">
+var contents = [[${productDto.product_contents}]];
+document.getElementById('contents').innerHTML = contents;
+</script>
+</body>
+</html>

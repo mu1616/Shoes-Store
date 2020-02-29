@@ -19,7 +19,7 @@ table {
 <div class="row">
 	<div class="col-md-9 ml-auto mr-auto">
 	<h3 align="center">회원가입</h3><br><br>
-	<form class="form-inline" method="post" id="frm" action="/join">
+	<form class="form-inline" method="post" id="frm" action="/member/join">
 	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />	
 		<font size=2>	
 		<table class="table">
@@ -214,7 +214,7 @@ var idck = 0;
 function idCheck(){
 	var mem_id = document.getElementById("id").value;
 	$.ajax({
-		url: "/join/idcheck",
+		url: "/member/join/idcheck",
 		type: "POST",
 		data: {"mem_id":mem_id},
 		success: function(data) {
