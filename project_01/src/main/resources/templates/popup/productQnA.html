@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Shoes Factory</title>
+<th:block th:include="./bootstrap.html::bootstrap"></th:block>
+
+</head>
+<body>
+<div class="container"><br>
+<h5 style="font-weight:600">Product Q&A</h5>
+<hr>
+<span style="font-weight:600;font-size:14px">상품명 : </span>
+<span style="font-size:14px"th:text=${productEntity.product_name}></span>
+<br><br>
+<div style="font-size:14px">
+<table class="table table-bordered">
+<tr>
+<th scope="row" class="table-active">문의유형</th>
+<td>
+	<input type="radio" name="qna_type" value="사이즈"> 사이즈&nbsp&nbsp&nbsp
+    <input type="radio" name="qna_type" value="배송"> 배송&nbsp&nbsp&nbsp
+	<input type="radio" name="qna_type" value="재입고"> 재입고&nbsp&nbsp&nbsp
+	<input type="radio" name="qna_type" value="기타"> 기타
+</td>
+</tr>
+<tr>
+<th scope="row" class="table-active">제목</th>
+<td><input type="text"  id="qna_title"style="height:28px;width:370px">
+</td>
+</tr>
+<tr>
+<th scope="row" class="table-active" >내용</th>
+<td><textarea id="qna_question" style="width:370px;height:170px"></textarea>
+</td>
+</tr>
+</table>
+<input type="checkbox" id="qna_secret" value="1"><span style="font-weight:600;font-size:13px"> 비밀글로 문의하기</span>
+<br><hr>
+	<ul>
+		<li>구매한 상품의 취소/반품은 구매내역에서 신청 가능합니다.</li>
+		<li>상품문의 게시판을 통해 취소나 환불, 반품 등은 처리되지 않습니다.</li>
+	</ul>
+<div align="center">
+<input type="button" value="문의하기" class="btn btn-outline-primary btn-sm" onclick="qBtn()">
+<input type="button" value="취소" class="btn btn-sm btn-outline-dark" onclick="window.close()">
+</div>
+<br><br>
+</div>
+</div>
+<script th:inline="javascript">
+function qBtn(){
+	var qna_product = [[${productEntity.product_idx}]]
+	var radio = document.getElementsByName('qna_type');
+	var qna_type;
+	var qna_member = [[${#authentication.principal.username}]];
+	for(var i=0; i<radio.length; i++) {
+		if(radio[i].checked){
+			qna_type = radio[i].value;
+		}
+	}
+	var qna_title = document.getElementById('qna_title').value;
+	var qna_question = document.getElementById('qna_question').value;
+	var qna_secret;
+	if(document.getElementById('qna_secret').checked){
+		qna_secret = 1;
+	} else{
+		qna_secret = 0;
+	}
+	if(qna_type==null) {
+		alert('문의 유형을 선택해주세요');
+		return;
+	}
+	if(qna_title==""){
+		alert('제목을 입력해주세요');
+		return;
+	}
+	if(qna_question=="") {
+		alert('내용을 입력해주세요');
+		return;
+	}
+	
+	if(confirm('작성을 완료하시겠습니까?')){
+		$.ajax({
+			url: "/product/qna",
+			type: "POST",
+			data: {"qna_product":qna_product, "qna_type":qna_type, "qna_title":qna_title, 
+					"qna_question":qna_question, "qna_secret":qna_secret, "qna_member":qna_member},
+			error:function(request,status,error){
+		        alert("code = "+ request.status + " message = " + request.responseText + " error = " + error); // 실패 시 처리
+		       },
+		    success : function(data) {
+		    	alert('작성이 완료되었습니다.');
+		    	window.opener.qna_page(1);
+		    	window.close();
+		    	
+		    }
+		});
+	}
+	
+}
+</script>
+</body>
+</html>

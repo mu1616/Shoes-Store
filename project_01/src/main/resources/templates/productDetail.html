@@ -81,36 +81,97 @@ img {
 <div align="center">
 <div style="border: 1px solid #D8D8D8; height:auto; width:900px;min-height:500px" align="left" >
 <br>
-<div class="container">
-<div class="row"></div>
-<h5 style="font-weight:600">상품문의 (80)</h5><br>
-	<ul>
-		<li>구매한 상품의 취소/반품은 구매내역에서 신청 가능합니다.</li>
-		<li>상품문의 및 후기게시판을 통해 취소나 환불, 반품 등은 처리되지 않습니다.</li>
-		<span style="float:right"><button type="button" class="btn btn-outline-primary btn-sm">문의하기</button></span>
-		<li>공개 게시판이므로 전화번호, 메일 주소 등 고객님의 소중한 개인정보는 절대 남기지 말아주세요.</li> 
-	</ul>
-	<table class="table table-bordered" style="font-size:11px">
-	<thead class="thead-light">
-	<tr align="center">
-	<th style="width:80px">번호</th>
-	<th style="width:100px">답변상태</th>
-	<th style="width:100px">문의유형</th>
-	<th style="width:300px">문의제목</th>
-	<th style="width:100px">작성자</th>
-	<th style="width:100px">작성일자</th>
-	</tr>
-	</thead>
-	</table>
-</div>
+<div class="container" id="qna"></div>
 </div>
 </div>
 <br><br><hr>
 <th:block th:include="./home.html::footer"></th:block>
 </div>
 <script th:inline="javascript">
+qna_page(1);
 var contents = [[${productDto.product_contents}]];
 document.getElementById('contents').innerHTML = contents;
+function qnaBtn(){
+	var product_idx = [[${productDto.product_idx}]];
+	window.open("/product/qna/"+product_idx,"stock","width=550, height=600");
+}
+
+function qna_page(num) {
+	var page=num;
+	var qna_product = [[${productDto.product_idx}]];
+	$.ajax({
+		url: "/product/qnaShow",
+		type: "POST",
+		data: {"currentPage":page, "qna_product":qna_product},
+		dataType:"html",
+		error:function(request,status,error){
+	        alert("code = "+ request.status + " message = " + request.responseText + " error = " + error); // 실패 시 처리
+	       },
+	    success : function(data) {
+	    	document.getElementById('qna').innerHTML = data;
+	    	var btns = document.getElementsByClassName('qna-page');
+	    	for(var i=0; i<btns.length; i++) {
+	    		if(btns[i].innerText == page){
+	    			btns[i].classList.remove('btn-outline-secondary');
+	    			btns[i].classList.add('btn-outline-primary');
+	    		}
+	    	}
+	    }
+	});
+}
+function qnaDetail(num,obj){
+	var parent = obj.parentNode;
+	var tag = parent.nextElementSibling;
+	if(tag.style.display =='none') {
+		tag.style.display = '';
+	} else {
+		tag.style.display = 'none';
+	}
+}
+function qnaDetail_secret(idx,obj,qna_product){
+	$.ajax({
+		url: "/product/showSecret",
+		type: "POST",
+		data: {"idx":idx,"product":qna_product},
+		dataType:"json",
+		error:function(request,status,error){
+	        alert("code = "+ request.status + " message = " + request.responseText + " error = " + error); // 실패 시 처리
+	       },
+	    success : function(data) {
+	    	if(data.qna_idx==0) {
+	    		alert('권한이 없습니다');
+	    		return;
+	    	}
+	    	var parent = obj.parentNode;
+	    	var tag = parent.nextElementSibling;
+	    	var question_div = tag.childNodes[1].childNodes[1];
+	    	
+	    	for(var i=0; i<question_div.childNodes.length; i++) {
+	    		var question = question_div.childNodes[i];
+	    		if(question.nodeName == 'TEXTAREA') {
+	    			question.innerText = data.qna_question;
+	    			break;
+	    		}
+	    	}
+	    	if(data.qna_answer != null) {
+	    		var answer_div = tag.children[0].children[1];
+	    		for(var i=0; i<answer_div.children.length ; i++) {
+	    			var answer = answer_div.children[i];
+	    			if(answer.nodeName == 'TEXTAREA') {
+	    				answer.innerText = data.qna_answer;
+	    				break;
+	    			}
+	    		}
+	    	}
+	    	
+	    	if(tag.style.display =='none') {
+	    		tag.style.display = '';
+	    	} else {
+	    		tag.style.display = 'none';
+	    	}
+	    }
+	});
+}
 </script>
 </body>
 </html>

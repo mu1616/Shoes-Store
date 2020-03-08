@@ -14,12 +14,15 @@
 </head>
 <body>
 <br>
-<div align="center">
-<h3 align="center">재고관리</h3><hr>
+<div class="container" style="font-size:14px">
+<h5 style="font-weight:600">재고관리</h5>
+<hr><br>
+<span style="font-weight:600;font-size:14px">상품명 : </span>
+<span style="font-size:14px"th:text=${productEntity.product_name}></span><br><br>
 사이즈  <input type="text"  id="size"style="width:100px;float:center">
 재고  <input type="text"  id="count" style="width:100px">&nbsp&nbsp
 <button type="button"class="btn btn-sm btn-primary" onclick="addStock()">추가</button>
-<hr>
+<hr><br>
 <div id="place">
 <table class="table table-bordered">
 	<thead class="thead-light">

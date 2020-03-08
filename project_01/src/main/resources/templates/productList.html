@@ -18,9 +18,9 @@
 </div>
 <div class="col-4"></div>
 <div class="col-4">
-<font style="font-weight:bold;">신상품순</font>&nbsp
-<font color="grey">높은가격순</font>&nbsp
-<font color="grey">낮은가격순</font>&nbsp
+<a style="cursor:pointer" onclick="productSort(1);"><font class="sort" color="grey">신상품순</font></a>&nbsp
+<a style="cursor:pointer" onclick="productSort(2);"><font class="sort" color="grey">높은가격순</font></a>&nbsp
+<a style="cursor:pointer" onclick="productSort(3);"><font class="sort" color="grey">낮은가격순</font></a>&nbsp
 <font color="grey">인기순</font>&nbsp
 </div>
 </div>
@@ -44,15 +44,15 @@
         <div align="center">
         <th:block th:if="${pageDto.totalPage}>0">
 	        <th:block th:if="${pageDto.startPage}>10" >				
-				<button class="btn btn-outline-secondary btn-sm pageBtn" style="WIDTH: 20pt; HEIGHT: 23pt" onclick="clickFirstBtn()">&#171</button>
-	        	<button class="btn btn-outline-secondary btn-sm pageBtn" th:onclick="'clickPreviousBtn('+${pageDto.startPage}+')'">&#60</button>
+				<button class="btn btn-outline-secondary btn-sm pageBtn" style="WIDTH: 20pt; HEIGHT: 23pt" onclick="clickPageBtn(1)">&#171</button>
+	        	<button class="btn btn-outline-secondary btn-sm pageBtn" th:onclick="'clickPageBtn('+${pageDto.startPage}+'-10)'">&#60</button>
 	        </th:block>
 	        <th:block th:each="num:${#numbers.sequence(pageDto.startPage,pageDto.endPage)}">
-	        	<button class="btn btn-outline-secondary btn-sm pageBtn" th:onclick="'clickNumberBtn('+${num}+')'"><th:block th:text="${num}"></th:block></button>
+	        	<button class="btn btn-outline-secondary btn-sm pageBtn" th:onclick="'clickPageBtn('+${num}+')'"><th:block th:text="${num}"></th:block></button>
 	        </th:block>
 	        <th:block th:if="${pageDto.endPage}<${pageDto.totalPage}" >
-				<button class="btn btn-outline-secondary btn-sm pageBtn" th:onclick="'clickNextBtn('+${pageDto.startPage}+')'">></button>
-				<button class="btn btn-outline-secondary btn-sm pageBtn" style="WIDTH: 20pt; HEIGHT: 23pt" onclick="clickLastBtn();">&#187</button>
+				<button class="btn btn-outline-secondary btn-sm pageBtn" th:onclick="'clickPageBtn('+${pageDto.startPage}+'+10)'">></button>
+				<button class="btn btn-outline-secondary btn-sm pageBtn" style="WIDTH: 20pt; HEIGHT: 23pt" th:onclick="'clickPageBtn('+${pageDto.totalPage}+')'">&#187</button>
 	        </th:block>
         </th:block>
         </div>
@@ -63,6 +63,11 @@
 makePageBtn();
 var searchWord = [[${searchWord}]];
 document.getElementById('Search').value = searchWord;
+document.getElementById('product_category').value = [[${searchDto.product_category}]];
+document.getElementById('sort').value = [[${searchDto.sort}]];
+var sort = [[${searchDto.sort}]];
+document.getElementsByClassName('sort')[sort-1].style.fontWeight = "bold";
+document.getElementsByClassName('sort')[sort-1].color = "black";
 
 function makePageBtn(){
 	var currentPage = [[${pageDto.currentPage}]];
@@ -79,9 +84,8 @@ function makePageBtn(){
 	}
 }
 
-function clickNumberBtn(num){
+function clickPageBtn(num){
 	if(searchWord == null) {
-	document.getElementById('product_category').value = [[${searchDto.product_category}]];
 	document.getElementById('frm1').action = "/product/list/"+num;
 	document.getElementById('frm1').submit();
 	} else {
@@ -92,51 +96,12 @@ function clickNumberBtn(num){
 	
 }
 
-function clickNextBtn(startPage){
-	var nextPage = startPage + 10;
-	if(searchWord == null) {
-	document.getElementById('product_category').value = [[${searchDto.product_category}]];
-	document.getElementById('frm1').action = "/product/list/"+nextPage;
-	document.getElementById('frm1').submit();
-	} else {
-		document.getElementById('searchFrm').action = "/product/list/"+nextPage;
-		document.getElementById('searchFrm').submit();
-	}
-}
-		
-function clickLastBtn() {
-	var totalPage = [[${pageDto.totalPage}]];
-	if(searchWord == null) {
-	document.getElementById('product_category').value = [[${searchDto.product_category}]];
-	document.getElementById('frm1').action = "/product/list/"+totalPage;
-	document.getElementById('frm1').submit();
-	} else {
-		document.getElementById('searchFrm').action = "/product/list/"+totalPage;
-		document.getElementById('searchFrm').submit();
-	}
-}
 
-function clickFirstBtn() {
-	if(searchWord == null) {
-	document.getElementById('product_category').value = [[${searchDto.product_category}]];
+function productSort(type) {
+	console.log(type);
+	document.getElementById('sort').value = type;
 	document.getElementById('frm1').action = "/product/list/1";
 	document.getElementById('frm1').submit();
-	} else {
-		document.getElementById('searchFrm').action = "/product/list/1";
-		document.getElementById('searchFrm').submit();
-	}
-}
-
-function clickPreviousBtn(startPage){
-	var previousPage = startPage - 10;
-	if(searchWord == null) {
-	document.getElementById('product_category').value = [[${searchDto.product_category}]];
-	document.getElementById('frm1').action = "/product/list/"+previousPage;
-	document.getElementById('frm1').submit();
-	} else {
-		document.getElementById('searchFrm').action = "/product/list/"+previousPage;
-		document.getElementById('searchFrm').submit();
-	}
 }
 </script>
 </body>

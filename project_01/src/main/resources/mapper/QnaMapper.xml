@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.project_01.model.product.qna.dao.QnaDAO">
+	<insert id="insert" 
+		parameterType="com.example.project_01.model.product.qna.dto.QnaDTO">
+		insert into qna
+		(qna_type, qna_title, qna_question, qna_secret, qna_member, qna_product)
+		values 
+			(#{qna_type},#{qna_title},#{qna_question},#{qna_secret},#{qna_member},#{qna_product})			
+	</insert>
+	<select id="selectQna" 
+		resultType="com.example.project_01.model.product.qna.dto.QnaDTO">
+		SELECT @rownum:=@rownum-1 as qna_idx,qna_type,qna_title,qna_question,
+			qna_answer,qna_secret,qna_member,qna_product,qna_date
+		from qna AS q,
+			(SELECT @rownum:=(SELECT COUNT(*) 
+			FROM qna WHERE qna_product = #{qna_product})-#{start}+1) tmp
+		where qna_product = #{qna_product}
+		order by q.qna_idx desc
+		limit #{start}, #{length}
+	</select>
+	<select id="count" resultType="int">
+		select count(*) 
+		from qna
+		where qna_product = #{qna_product}
+	</select>
+	<select id="selectOne" 
+		resultType="com.example.project_01.model.product.qna.dto.QnaDTO">
+		SELECT * from
+		(SELECT @rownum:=@rownum+1 AS idx,q.* FROM qna AS q,(SELECT @rownum:=0) tmp 
+		WHERE qna_product=#{qna_product} ORDER BY qna_date) AS b
+		WHERE idx=#{idx}	
+	</select>
+</mapper>

@@ -159,6 +159,8 @@ public class ManageProductController {
 		List<StockDTO> stockList = stockDao.selectByProduct(product_idx);
 		model.addAttribute("stockList", stockList);
 		model.addAttribute("product_idx",product_idx);
+		ProductEntity productEntity = productDao.selectOne(product_idx);
+		model.addAttribute("productEntity",productEntity);
 		return "popup/stock";
 	}
 	

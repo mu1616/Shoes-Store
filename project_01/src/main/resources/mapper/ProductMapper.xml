@@ -41,6 +41,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		where product_name like '${product_name}' or
 			c.category_name like '${product_category}' or
 			b.brand_name like '${product_brand}'
+			product_isDisplay like '${product_isDisplay}'
 		</if>
 	</select>
 
@@ -64,9 +65,18 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<if test="searchDto.option == 1">
 		where product_name like '${searchDto.product_name}' or
 			c.category_name like '${searchDto.product_category}' or
-			b.brand_name like '${searchDto.product_brand}'
+			b.brand_name like '${searchDto.product_brand}' and
+			product_isDisplay like '${searchDto.product_isDisplay}'
 		</if>
+		<if test="searchDto.sort == 1">
 		ORDER BY product_idx desc
+		</if>
+		<if test="searchDto.sort == 2">
+		ORDER BY product_price desc
+		</if>
+		<if test="searchDto.sort == 3">
+		ORDER BY product_price asc
+		</if>
 		LIMIT #{start},#{length}
 	</select>
 	<insert id="insertStock">

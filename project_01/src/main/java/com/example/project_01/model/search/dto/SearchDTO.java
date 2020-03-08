@@ -8,7 +8,8 @@ public class SearchDTO {
 	private String product_isDisplay = "%";
 	//0: and, 1: or 
 	private int option = 0;
-	
+	//정렬 1: 최신순 2:높은가격순 3:낮은가격순  4:인기순
+	private int sort = 1;
 	public String getProduct_name() {
 		return product_name;
 	}
@@ -56,13 +57,24 @@ public class SearchDTO {
 	public void setOption(int option) {
 		this.option = option;
 	}
+	
+	
+	public int getSort() {
+		return sort;
+	}
+
+	public void setSort(int sort) {
+		this.sort = sort;
+	}
 
 	@Override
 	public String toString() {
 		return "SearchDTO [product_name=" + product_name + ", product_idx=" + product_idx + ", product_category="
 				+ product_category + ", product_brand=" + product_brand + ", product_isDisplay=" + product_isDisplay
-				+ ", option=" + option + "]";
+				+ ", option=" + option + ", sort=" + sort + "]";
 	}
+
+	
 	
 	
 

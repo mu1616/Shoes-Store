@@ -13,8 +13,10 @@
     </style>
 </head>
 <body>
-<div align="center">
-<br><h3>등급 설정</h3><hr>
+<div class="container" style="font-size:14px" align="center">
+<br>
+<h5 style="font-weight:600">등급설정</h5>
+<hr><br>
 <table class="table table-bordered">
 <tr>
 <th scope="row" class="table-active" width="150px">아이디</th>
@@ -31,7 +33,7 @@
 </td>
 </tr>
 </table><br>
-<input type="button" class="btn btn-primary" style="width:100px" value="수정" onclick="modifyBtn();">
+<input type="button" class="btn btn-primary" style="width:100px;" value="수정" onclick="modifyBtn();">
 </div>
 <script th:inline="javascript">
 var mem_role = [[${memberDto.mem_role}]];

@@ -1,0 +1,83 @@
+<div class="container" id="qna">
+<div class="row"></div>
+<h5 style="font-weight:600">상품문의(<span id="qnaCount" th:text="${#numbers.formatInteger(qna_pageDto.countRecord, 0, 'COMMA')}"></span>)</h5><br>
+	<ul>
+		<li>구매한 상품의 취소/반품은 구매내역에서 신청 가능합니다.</li>
+		<li>상품문의 게시판을 통해 취소나 환불, 반품 등은 처리되지 않습니다.</li>
+		<span style="float:right"><button type="button" class="btn btn-outline-primary btn-sm" onclick="qnaBtn()">문의하기</button></span>
+		<li>공개 게시판이므로 전화번호, 메일 주소 등 고객님의 소중한 개인정보는 절대 남기지 말아주세요.</li> 
+	</ul>
+	<div style="font-size:11px">
+<table class="table">
+	<thead class="thead-light">
+	<tr align="center">
+	<th style="width:80px" >번호</th>
+	<th style="width:100px">답변상태</th>
+	<th style="width:100px">문의유형</th>
+	<th style="width:300px">문의제목</th>
+	<th style="width:100px">작성자</th>
+	<th style="width:100px">작성일자</th>
+	</tr>
+	</thead>
+<th:block th:each="qnaDto:${qnaList}">
+	<tr>
+	<td th:text=${qnaDto.qna_idx}></td>
+	<td th:if="${qnaDto.qna_answer} eq null" th:text="답변대기"></td>
+	<td th:if="${qnaDto.qna_answer} ne null" th:text="답변완료" style="color:#088A08"></td>
+	<td th:text=${qnaDto.qna_type}></td>
+	<td th:if="${qnaDto.qna_secret}==0" th:text=${qnaDto.qna_title} style="cursor:pointer;" th:onclick="'qnaDetail('+${qnaDto.qna_idx}+',this)'"></td>
+	<td th:if="${qnaDto.qna_secret}==1" th:text="비밀글입니다." style="color:red;cursor:pointer;" th:onclick="'qnaDetail_secret('+${qnaDto.qna_idx}+',this,'+${qnaDto.qna_product}+')'"></td>
+	<td th:text="${#strings.substring(qnaDto.qna_member,0,#strings.length(qnaDto.qna_member)-3)}+'***'"></td>
+	<td th:text="${#calendars.format(qnaDto.qna_date,'yyyy-MM-dd')}"></td>
+	</tr>
+	<tr th:if="${qnaDto.qna_secret} == 0 "style="display:none">
+		<td colspan="6">
+		<div class="container" >
+		<br>
+			<span style="font-weight:600">문의내용</span><br><br>
+			<textarea style="border:none;width:800px;overflow:hidden" th:text=${qnaDto.qna_question}></textarea>
+			<hr>
+			</div>
+			<div th:if="${qnaDto.qna_answer} ne null"class="container" >
+			<br>
+			<span style="font-weight:600">답변내용</span><br><br>
+			<textarea style="border:none;width:800px;overflow:hidden" th:text=${qnaDto.qna_answer}></textarea>
+			</div>
+		</td>
+	</tr>
+	<tr th:if="${qnaDto.qna_secret} == 1 "style="display:none">
+		<td colspan="6">
+		<div class="container" >
+		<br>
+			<span style="font-weight:600">문의내용</span><br><br>
+			<textarea style="border:none;width:800px;overflow:hidden" ></textarea>
+			<hr>
+			</div>
+			<div th:if="${qnaDto.qna_answer} ne null"class="container" >
+			<br>
+			<span style="font-weight:600">답변내용</span><br><br>
+			<textarea style="border:none;width:800px;overflow:hidden" ></textarea>
+			</div>
+		</td>
+	</tr>
+</th:block>
+</table><br>
+<div align="center">
+		<th:block th:if="${qna_pageDto.totalPage}>0">
+	        <th:block th:if="${qna_pageDto.startPage}>5" >				
+				<button class="btn btn-outline-secondary btn-sm qna-page" onclick="qna_page(1)">&#171</button>
+	        	<button class="btn btn-outline-secondary btn-sm qna-page" th:onclick="'qna_page('+${qna_pageDto.startPage}+'-5)'">&#60</button>
+	        </th:block>
+	        <th:block th:each="num:${#numbers.sequence(qna_pageDto.startPage,qna_pageDto.endPage)}">
+	        	<button class="btn btn-outline-secondary btn-sm qna-page" th:onclick="'qna_page('+${num}+')'"><th:block th:text="${num}"></th:block></button>
+	        </th:block>
+	        <th:block th:if="${qna_pageDto.endPage}<${qna_pageDto.totalPage}" >
+				<button class="btn btn-outline-secondary btn-sm qna-page" th:onclick="'qna_page('+${qna_pageDto.startPage}+'+5)'">></button>
+				<button class="btn btn-outline-secondary btn-sm qna-page" th:onclick="'qna_page('+${qna_pageDto.totalPage}+')'">&#187</button>
+	        </th:block>
+        </th:block>
+</div><br>
+</div>
+</div>
+
+
