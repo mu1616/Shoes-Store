@@ -40,7 +40,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<if test="option == 1">
 		where product_name like '${product_name}' or
 			c.category_name like '${product_category}' or
-			b.brand_name like '${product_brand}'
+			b.brand_name like '${product_brand}' and
 			product_isDisplay like '${product_isDisplay}'
 		</if>
 	</select>
@@ -107,4 +107,15 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     		</if>
 			where product_idx = #{product_idx}
 	</update>
+	<select id="selectProductDTO" resultType="com.example.project_01.model.product.dto.ProductDTO">
+		SELECT product_idx, product_name, product_price, 
+				product_contents, product_image, product_isDisplay, 
+				b.brand_name AS product_brand, c.category_name AS product_category
+			FROM product
+			JOIN brand AS b
+			ON product_brand = brand_idx
+			JOIN category AS c 
+			ON product_category = category_idx
+			where product_idx = #{product_idx}
+	</select>
 </mapper>

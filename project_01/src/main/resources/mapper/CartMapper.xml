@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper
+	namespace="com.example.project_01.model.cart.dao.CartDAO">
+
+<insert id="insertCart" parameterType = "com.example.project_01.model.cart.dto.CartDTO">
+	insert into cart
+	(cart_member, cart_product, cart_size, cart_count)
+	values (#{cart_member},#{cart_product},#{cart_size},#{cart_count})
+</insert>
+
+<select id="selectCart" resultType="com.example.project_01.model.cart.dto.CartDTO">
+	select * from cart
+	where cart_member = #{cart_member}
+</select>
+</mapper>

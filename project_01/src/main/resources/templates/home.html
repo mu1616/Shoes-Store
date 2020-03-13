@@ -13,7 +13,7 @@
 		<div class="shop-menu clearfix pull-right" th:object="${session.memberDto}">
 			<a href="#" sec:authorize="isAuthenticated()"class="text-dark"><i class="fa text-primary" th:text="${#authentication.principal.username}+'님'"></i></a>&nbsp
 			<a href="/admin" sec:authorize="hasRole('ROLE_ADMIN')"class="text-dark"><i class="fa fa-home "></i>Admin</a>&nbsp
-			<a href="cart.html" class="text-dark"><i class="fa fa-shopping-cart"></i> Cart</a>&nbsp&nbsp 
+			<a href="/cart/list" class="text-dark"><i class="fa fa-shopping-cart"></i> Cart</a>&nbsp&nbsp 
 			<a sec:authorize="!isAuthenticated()" href="/member/login"class="text-dark"><i class="fa fa-lock"></i> Login</a>
 			<a sec:authorize="isAuthenticated()" href="/member/logout"class="text-dark"><i class="fa fa-lock"></i> Logout</a>
 			
@@ -37,45 +37,31 @@
 						<input type="hidden" name="sort" id="sort" value="1">
 					</form>
 					</div>
-					<a class="nav-item nav-link" style="cursor:pointer" onclick="runningShoes();">&nbsp&nbsp운동화&nbsp </a> 
-					<a class="nav-item nav-link" style="cursor:pointer" onclick="sneakers();">스니커즈&nbsp </a>
-					<a class="nav-item nav-link" style="cursor:pointer" onclick="slipper();">슬리퍼&nbsp </a> 
-					<a class="nav-item nav-link" style="cursor:pointer" onclick="sandal();">샌들&nbsp </a>
-					<a class="nav-item nav-link" style="cursor:pointer" onclick="sports();">축구/농구&nbsp </a>
-					<a class="nav-item nav-link" style="cursor:pointer" onclick="slipOn();">슬립온&nbsp </a>
+					<a class="nav-item nav-link" style="cursor:pointer" onclick="categoryBtn(1);">&nbsp&nbsp운동화&nbsp </a> 
+					<a class="nav-item nav-link" style="cursor:pointer" onclick="categoryBtn(2);">스니커즈&nbsp </a>
+					<a class="nav-item nav-link" style="cursor:pointer" onclick="categoryBtn(3);">슬리퍼&nbsp </a> 
+					<a class="nav-item nav-link" style="cursor:pointer" onclick="categoryBtn(4);">샌들&nbsp </a>
+					<a class="nav-item nav-link" style="cursor:pointer" onclick="categoryBtn(5);">축구/농구&nbsp </a>
+					<a class="nav-item nav-link" style="cursor:pointer" onclick="categoryBtn(6);">슬립온&nbsp </a>
 					<a class="nav-item nav-link" href="#">브랜드&nbsp </a>
 					<pre>                  </pre>
 					 <form class="form-inline my-2 my-lg-0" action="/product/list/1" method="get" id='searchFrm'>
-				      <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" name="searchWord" id="Search">
-				      <button class="btn btn-outline-success " type="submit">Search</button>
+				      <input type="text"class="form-control mr-sm-2"  placeholder="Search" aria-label="Search" name="searchWord" id="Search" onKeypress="javascript:if(event.keyCode==13){searchBtn();}">
+				      <input type="hidden" name="sort" id="search-sort" value="1">
+				      <button class="btn btn-outline-success " type="button" onclick="searchBtn()">Search</button>
 				    </form>
 			</div>
 			</div>
 		</nav>
 		<script>
-		function runningShoes(){
-			document.getElementById('product_category').value = "1";
+		function categoryBtn(num){
+			document.getElementById('sort').value = '1';
+			document.getElementById('product_category').value = num;
 			document.getElementById('frm1').submit();
-		}
-		function sneakers() {
-			document.getElementById('product_category').value = "2";
-			document.getElementById('frm1').submit();
-		}
-		function slipper(){
-			document.getElementById('product_category').value = "3";
-			document.getElementById('frm1').submit();
-		}
-		function sandal() {
-			document.getElementById('product_category').value = "4";
-			document.getElementById('frm1').submit();
-		}
-		function sports() {
-			document.getElementById('product_category').value = "5";
-			document.getElementById('frm1').submit();
-		}
-		function slipOn() {
-			document.getElementById('product_category').value = "6";
-			document.getElementById('frm1').submit();
+		}		
+		function searchBtn() {
+			document.getElementById('search-sort').value = '1';
+			document.getElementById('searchFrm').submit();
 		}
 		</script>
 		</div>

@@ -17,4 +17,5 @@ public interface ProductDAO {
 	public void deleteProduct(String [] product_idx);
 	public ProductEntity selectOne(int product_idx);
 	public void updateProduct(ProductEntity productEntity, int product_idx);
+	public ProductDTO selectProductDTO(int product_idx);
 }

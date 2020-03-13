@@ -32,9 +32,9 @@
 		    <div class="card">
             <a th:href="'/product/detail?product_idx='+${productDto.product_idx}"><img th:src="${productDto.product_image}" alt="" class="card-img-top" width="200" height="220"/></a>
             <div class="card-body">
-              <b>[ <span th:text="${productDto.product_brand}"></span> ]</b>
-              <p style="font-weight: 300;"th:text="${productDto.product_name}"></p>
-              <b style="font-size:20px;"th:text="${#numbers.formatInteger(productDto.product_price, 0, 'COMMA')}"></b> 원
+              <b>[ <span style="font-size:14px;"th:text="${productDto.product_brand}"></span> ]</b>
+              <p style="font-weight: 300;font-size:14px"th:text="${productDto.product_name}"></p>
+              <b style="font-size:18px;"th:text="${#numbers.formatInteger(productDto.product_price, 0, 'COMMA')}"></b> 원
             </div>
           </div>
           <br><br>
@@ -65,6 +65,7 @@ var searchWord = [[${searchWord}]];
 document.getElementById('Search').value = searchWord;
 document.getElementById('product_category').value = [[${searchDto.product_category}]];
 document.getElementById('sort').value = [[${searchDto.sort}]];
+document.getElementById('search-sort').value = [[${searchDto.sort}]];
 var sort = [[${searchDto.sort}]];
 document.getElementsByClassName('sort')[sort-1].style.fontWeight = "bold";
 document.getElementsByClassName('sort')[sort-1].color = "black";
@@ -88,7 +89,7 @@ function clickPageBtn(num){
 	if(searchWord == null) {
 	document.getElementById('frm1').action = "/product/list/"+num;
 	document.getElementById('frm1').submit();
-	} else {
+	} else {		
 		document.getElementById('searchFrm').action = "/product/list/"+num;
 		document.getElementById('searchFrm').submit();
 	}
@@ -98,10 +99,16 @@ function clickPageBtn(num){
 
 
 function productSort(type) {
-	console.log(type);
 	document.getElementById('sort').value = type;
-	document.getElementById('frm1').action = "/product/list/1";
-	document.getElementById('frm1').submit();
+	document.getElementById('search-sort').value = type;
+	if(searchWord == null) {
+		document.getElementById('frm1').action = "/product/list/1";
+		document.getElementById('frm1').submit();
+	} else {
+		document.getElementById('searchFrm').action = "/product/list/1";
+		document.getElementById('searchFrm').submit();
+	}
+
 }
 </script>
 </body>

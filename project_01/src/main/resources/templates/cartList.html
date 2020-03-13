@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<!-- 레이아웃 참고한 소스 -->
+<!-- view-source:https://getbootstrap.com/docs/4.1/examples/dashboard/# -->
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Shoes Factory</title>
+<th:block th:include="./bootstrap.html::bootstrap"></th:block>
+<style>
+  th,td {
+    text-align: center;
+  }
+  .left{
+  	text-align: left;
+  }
+
+</style>
+</head>
+<body>
+<div class="container">
+<th:block th:include="./home.html::header"></th:block>
+<br><br>
+<h3 style="font-weight:600">장바구니</h3><br>
+<table class="table" style="font-size:14px">
+<thead class="thead-light">
+        <tr>
+        <th scope="col"><input type="checkbox" id="allCheck"></th>
+        <th scope="col">번호</th>
+        <th scope="col" style="width:20px"></th>
+        <th scope="col">상품명</th>
+        <th scope="col">수량</th>
+        <th scope="col">판매가(1개)</th>
+        <th scope="col"></th>
+        </tr>
+        </thead>
+       <th:block th:each="cartDto:${cartList}">
+       <tr>
+        <td style="vertical-align:middle;"><input type="checkbox" class="checkList" onclick="setTotal();setPay();setCount();"></td>
+        <td style="vertical-align:middle;"th:text=${cartDtoStat.count}></td>
+        <td style="vertical-align:middle;"><img th:src="${cartDto.product_image}" style="width:100px;height:80px"></td>
+        <td style="vertical-align:middle;text-align:left">
+        	<span th:text="'['+${cartDto.product_brand}+']'"></span>&nbsp
+        	<span th:text=${cartDto.product_name}></span><br>
+        	<span style="color:gray;font-weight:300" th:text="'사이즈: '+${cartDto.cart_size}"></span>
+        </td>
+        <td style="vertical-align:middle;">
+        	<button type="button" class="btn btn-outline-secondary btn-sm" onclick="minus(this)">-</button>
+        	&nbsp<span th:text=${cartDto.cart_count} class="count"></span>&nbsp
+        	<button type="button" class="btn btn-outline-secondary btn-sm" onclick="plus(this)">+</button>
+        </td>
+        <td style="vertical-align:middle;" class="price" th:value="${cartDto.product_price}" th:text="${#numbers.formatInteger(cartDto.product_price, 0, 'COMMA')}+'원'"></td>
+        <td style="vertical-align:middle;"><button type="button" class="btn btn-outline-dark btn-sm">삭제하기</button>
+        </tr>
+        </th:block>
+</table>
+<hr>
+<div class="row container" style="padding:30px">
+	<div class="col-5">
+	<h1 style="font-weight:700">전체합계</h1>
+	</div>
+	<div class="col-7" style="font-size:20px">
+	<span style="float:left">상품수</span>
+	<span style="float:right" th:text="${#arrays.length(cartList)}+'개'" id="count"></span><br><hr>
+	<span style="float:left">상품금액</span>
+	<span style="float:right" id="total"></span><br><hr>
+	<span style="float:left">할인금액</span>
+	<span style="float:right">0원</span><br><hr>
+	<span style="float:left">배송비</span>
+	<span style="float:right">0원</span><br><hr>
+	<span style="float:left;font-size:24px;font-weight:600">총 주문금액</span>
+	<span style="float:right;font-size:24px;color:red;font-weight:600" id="pay"></span><br>
+	</div>
+</div>
+<hr><br>
+<div align="center">
+<button type="button" class="btn btn-danger btn-lg" style="font-size:24px;width:260px;height:70px">주문하기</button>
+</div>
+<br><br><hr>
+<th:block th:include="./home.html::footer"></th:block>
+<br>
+</div>
+<script th:inline="javascript">
+$(function(){ 
+	//전체선택 체크박스 클릭 
+	$("#allCheck").click(function(){ 
+		//만약 전체 선택 체크박스가 체크된상태일경우 
+		if($("#allCheck").prop("checked")) { 
+			//해당화면에 전체 checkbox들을 체크해준다 
+			$("input[type=checkbox]").prop("checked",true); 
+			// 전체선택 체크박스가 해제된 경우 
+		}else { 
+			//해당화면에 모든 checkbox들의 체크를해제시킨다. 
+			$("input[type=checkbox]").prop("checked",false); 
+		}
+		setTotal();
+		setPay();
+		setCount();
+	}) 
+})
+function setCount() {
+	var count = 0;
+	var checkList = document.getElementsByClassName('checkList');
+	for(var i=0; i<checkList.length; i++) {
+		if(checkList[i].checked == true)
+			count = count + 1;
+	}
+	document.getElementById('count').innerHTML = count+'개';
+}
+function inits(){
+	document.getElementById('allCheck').checked = true;
+	var checkList = document.getElementsByClassName('checkList');
+	for(var i=0; i<checkList.length; i++) {
+		checkList[i].checked = true;
+	}
+}
+inits();
+setTotal();
+setPay();
+function setTotal() {
+	var sum = 0;
+	var checkList = document.getElementsByClassName('checkList');
+	var priceList = document.getElementsByClassName('price');
+	var countList = document.getElementsByClassName('count');
+	for(var i=0; i<priceList.length ; i++){
+		if(checkList[i].checked == true)
+			sum = sum + (Number(priceList[i].getAttribute('value')) * Number(countList[i].innerHTML));
+	}
+	document.getElementById('total').innerHTML = numberFormat(sum)+'원';
+}
+function setPay() {
+	var sum = 0;
+	var checkList = document.getElementsByClassName('checkList');
+	var priceList = document.getElementsByClassName('price');
+	var countList = document.getElementsByClassName('count');
+	for(var i=0; i<priceList.length ; i++){
+		if(checkList[i].checked == true)
+			sum = sum + (Number(priceList[i].getAttribute('value')) * Number(countList[i].innerHTML));
+	}
+	document.getElementById('pay').innerHTML = numberFormat(sum)+'원';
+}
+function plus(obj) {
+	obj.previousElementSibling.innerHTML = Number(obj.previousElementSibling.innerHTML) + 1;
+	setTotal();
+	setPay();
+}
+function minus(obj){
+	if(obj.nextElementSibling.innerHTML=='1') return;
+	obj.nextElementSibling.innerHTML = Number(obj.nextElementSibling.innerHTML) - 1;
+	setTotal();
+	setPay();
+}
+//3자리마다 점찍어주는 함수
+function numberFormat(inputNumber) {
+	   return inputNumber.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+}
+</script>
+</body>
+</html>
