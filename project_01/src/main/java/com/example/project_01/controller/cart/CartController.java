@@ -9,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.example.project_01.model.cart.dao.CartDAO;
@@ -44,6 +45,25 @@ public class CartController {
 		}
 		model.addAttribute("cartList",cartList);
 		return "cartList";
+	}
+	
+	@ResponseBody
+	@RequestMapping("/cart/deleteProduct")
+	public void deleteProduct(@RequestParam("idx") String[] idx, Principal principal) {
+		for(String a : idx) System.out.println(a);
+		CartDTO cartDto = null;
+		if(idx !=null) {
+			cartDto = cartDao.selectOne(Integer.parseInt(idx[0]));
+		}
+		if(cartDto.getCart_member().equals(principal.getName())) {
+			for(String cart_idx : idx)
+				cartDao.deleteOne(Integer.valueOf(cart_idx));
+		}
+		/*
+		CartDTO cartDto = cartDao.selectOne(Integer.parseInt(idx[0]));
+		if(cartDto.getCart_member().equals(principal.getName())) 
+			cartDao.deleteOne(idx);
+		*/
 	}
 	
 }

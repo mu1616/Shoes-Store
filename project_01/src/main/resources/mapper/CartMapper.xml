@@ -16,4 +16,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	select * from cart
 	where cart_member = #{cart_member}
 </select>
+
+<select id="selectOne" resultType="com.example.project_01.model.cart.dto.CartDTO">
+	select * from cart
+	where cart_idx = #{cart_idx};
+</select>
+<delete id="deleteOne">
+	delete from cart
+	where cart_idx = #{cart_idx};
+</delete>
 </mapper>

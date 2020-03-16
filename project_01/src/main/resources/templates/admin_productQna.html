@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+<meta charset="UTF-8">
+<title>Admin Page</title>
+<th:block th:include="./bootstrap.html::bootstrap"></th:block>
+    <style>
+      th,td {
+        text-align: center;
+      }
+      .left{
+      	text-align: left;
+      }
+
+    </style>
+</head>
+<body>
+<th:block th:include="./admin.html::header"></th:block>
+ <div class="container-fluid">
+    <div class="row">
+	<th:block th:include="./admin.html::side"></th:block>
+	<main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
+		<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+        <h1 class="h2">상품문의 관리</h1>
+        </div><br>
+    <table class="table table-bordered" style="font-size:13px">
+	<thead class="thead-light">
+	<tr align="center">
+	<th style="width:80px" >번호</th>
+	<th style="width:100px">답변상태</th>
+	<th style="width:100px">문의유형</th>
+	<th style="width:300px">문의제목</th>
+	<th style="width:100px">작성자</th>
+	<th style="width:100px">작성일자</th>
+	<th style="width:100px"></th>
+	</tr>
+	</thead>
+	</table>
+	</main>
+	</div>	
+</div>
+	
+	
+<!-- Icons -->
+<script src="https://unpkg.com/feather-icons/dist/feather.min.js"></script>
+<script>
+  feather.replace()
+</script>	
+	
+</body>
+</html>

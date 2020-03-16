@@ -19,6 +19,15 @@ img {
 .info-detail {
 	font-weight:300;
 }
+
+th,td {
+  text-align: center;
+}
+.left{
+	text-align: left;
+}
+
+
 </style>
 </head>
 <body>
@@ -284,7 +293,9 @@ function insertCart() {
 		},
 	    success : function(data) {
 	    	if(data =='hi'){
-	    	alert('장바구니에 담겼습니다.');
+	    		if(confirm('장바구니에 담겼습니다. \n장바구니로 지금 이동하시겠습니까?')){
+	    			location.href = "/cart/list";
+	    		}
 	    	} else {
 	    		alert('로그인이 필요합니다.');
 	    	}

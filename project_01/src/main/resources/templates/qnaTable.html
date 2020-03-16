@@ -25,13 +25,13 @@
 	<td th:if="${qnaDto.qna_answer} eq null" th:text="답변대기"></td>
 	<td th:if="${qnaDto.qna_answer} ne null" th:text="답변완료" style="color:#088A08"></td>
 	<td th:text=${qnaDto.qna_type}></td>
-	<td th:if="${qnaDto.qna_secret}==0" th:text=${qnaDto.qna_title} style="cursor:pointer;" th:onclick="'qnaDetail('+${qnaDto.qna_idx}+',this)'"></td>
-	<td th:if="${qnaDto.qna_secret}==1" th:text="비밀글입니다." style="color:red;cursor:pointer;" th:onclick="'qnaDetail_secret('+${qnaDto.qna_idx}+',this,'+${qnaDto.qna_product}+')'"></td>
+	<td th:if="${qnaDto.qna_secret}==0" class="left" th:text=${qnaDto.qna_title} style="cursor:pointer;" th:onclick="'qnaDetail('+${qnaDto.qna_idx}+',this)'"></td>
+	<td th:if="${qnaDto.qna_secret}==1" class="left" th:text="비밀글입니다." style="color:red;cursor:pointer;" th:onclick="'qnaDetail_secret('+${qnaDto.qna_idx}+',this,'+${qnaDto.qna_product}+')'"></td>
 	<td th:text="${#strings.substring(qnaDto.qna_member,0,#strings.length(qnaDto.qna_member)-3)}+'***'"></td>
 	<td th:text="${#calendars.format(qnaDto.qna_date,'yyyy-MM-dd')}"></td>
 	</tr>
 	<tr th:if="${qnaDto.qna_secret} == 0 "style="display:none">
-		<td colspan="6">
+		<td colspan="6" class="left">
 		<div class="container" >
 		<br>
 			<span style="font-weight:600">문의내용</span><br><br>

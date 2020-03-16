@@ -21,6 +21,8 @@
 <th:block th:include="./home.html::header"></th:block>
 <br><br>
 <h3 style="font-weight:600">장바구니</h3><br>
+<div style="min-height:200px">
+<button type="button" class="btn btn-outline-primary btn-sm" onclick="deleteList()">선택삭제</button>
 <table class="table" style="font-size:14px">
 <thead class="thead-light">
         <tr>
@@ -35,7 +37,7 @@
         </thead>
        <th:block th:each="cartDto:${cartList}">
        <tr>
-        <td style="vertical-align:middle;"><input type="checkbox" class="checkList" onclick="setTotal();setPay();setCount();"></td>
+        <td style="vertical-align:middle;"><input type="checkbox" class="checkList" th:value="${cartDto.cart_idx}" onclick="setTotal();setPay();setCount();"></td>
         <td style="vertical-align:middle;"th:text=${cartDtoStat.count}></td>
         <td style="vertical-align:middle;"><img th:src="${cartDto.product_image}" style="width:100px;height:80px"></td>
         <td style="vertical-align:middle;text-align:left">
@@ -49,10 +51,11 @@
         	<button type="button" class="btn btn-outline-secondary btn-sm" onclick="plus(this)">+</button>
         </td>
         <td style="vertical-align:middle;" class="price" th:value="${cartDto.product_price}" th:text="${#numbers.formatInteger(cartDto.product_price, 0, 'COMMA')}+'원'"></td>
-        <td style="vertical-align:middle;"><button type="button" class="btn btn-outline-dark btn-sm">삭제하기</button>
+        <td style="vertical-align:middle;"><button type="button" class="btn btn-outline-dark btn-sm" th:onclick="'deleteProduct('+${cartDto.cart_idx}+')'">삭제하기</button>
         </tr>
         </th:block>
 </table>
+</div>
 <hr>
 <div class="row container" style="padding:30px">
 	<div class="col-5">
@@ -152,6 +155,38 @@ function minus(obj){
 //3자리마다 점찍어주는 함수
 function numberFormat(inputNumber) {
 	   return inputNumber.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+}
+function deleteItem(idx){
+	if(confirm('삭제하시겠습니까?')){
+		location.href = "/cart/deleteProduct?idx="+idx;
+	}
+}
+
+function deleteProduct(idx){	
+	if(confirm('삭제하시겠습니까?')) {		
+		$.ajax({
+			url: "/cart/deleteProduct",
+			type: "POST",
+			traditional: true,
+			data: {'idx':idx},
+			error:function(request,status,error){
+		        alert("code = "+ request.status + " message = " + request.responseText + " error = " + error); // 실패 시 처리
+		       },
+		    success : function(data) {
+		    	alert('해당 상품을 삭제하였습니다.');
+		    	document.location.reload(true);
+		    }
+		});
+	}
+}
+function deleteList() {
+	var idx = new Array();
+	for(var i = 0; i<document.getElementsByClassName('checkList').length; i++){
+		if($(".checkList").eq(i).prop("checked")) {
+			idx.push($(".checkList").eq(i).val())
+		}
+	}
+	deleteProduct(idx);
 }
 </script>
 </body>
