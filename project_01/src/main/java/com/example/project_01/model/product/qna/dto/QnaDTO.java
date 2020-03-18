@@ -5,6 +5,7 @@ import java.util.Date;
 import org.springframework.format.annotation.DateTimeFormat;
 
 public class QnaDTO {
+	private int rownum;
 	private int qna_idx;
 	private String qna_type;
 	private String qna_title;
@@ -14,11 +15,18 @@ public class QnaDTO {
 	private String qna_member;
 	private int qna_product;
 	private Date qna_date;
+	
 	public int getQna_idx() {
 		return qna_idx;
 	}
 	public void setQna_idx(int qna_idx) {
 		this.qna_idx = qna_idx;
+	}
+	public int getRownum() {
+		return rownum;
+	}
+	public void setRownum(int rownum) {
+		this.rownum = rownum;
 	}
 	public String getQna_type() {
 		return qna_type;
@@ -70,10 +78,13 @@ public class QnaDTO {
 	}
 	@Override
 	public String toString() {
-		return "QnaDTO [qna_idx=" + qna_idx + ", qna_type=" + qna_type + ", qna_title=" + qna_title + ", qna_question="
-				+ qna_question + ", qna_answer=" + qna_answer + ", qna_secret=" + qna_secret + ", qna_member="
-				+ qna_member + ", qna_product=" + qna_product + ", qna_date=" + qna_date + "]";
+		return "QnaDTO [rownum=" + rownum + ", qna_idx=" + qna_idx + ", qna_type=" + qna_type + ", qna_title="
+				+ qna_title + ", qna_question=" + qna_question + ", qna_answer=" + qna_answer + ", qna_secret="
+				+ qna_secret + ", qna_member=" + qna_member + ", qna_product=" + qna_product + ", qna_date=" + qna_date
+				+ "]";
 	}
+	
+	
 	
 	
 	

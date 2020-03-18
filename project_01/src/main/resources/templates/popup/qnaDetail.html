@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Shoes Factory</title>
+<th:block th:include="./bootstrap.html::bootstrap"></th:block>
+
+</head>
+<body>
+<div class="container"><br>
+<h5 style="font-weight:600">Product Q&A</h5>
+
+<div class="row">
+<div class="col-4">
+<img th:src="${productDto.product_image}" onclick="openInNewTab();" style="width:170px;height:160px;cursor:pointer;"></a>
+</div>
+<div class="col-8">
+<br>
+<table class="table" style="font-size:13px">
+<tr>
+<th scope="row" class="info">상품명</th>
+<td th:text="${productDto.product_name}"></td>
+</tr>
+<tr>
+<th scope="row" class="info">판매가</th>
+<td th:text="${#numbers.formatInteger(productDto.product_price, 0, 'COMMA')}+'원'"></td>
+</tr>
+<tr>
+<th scope="row"class="info">상품요약정보</th>
+<td th:text="${productDto.product_brand}+' '+${productDto.product_category}"></td>
+</tr>
+</table>
+</div>
+</div><br>
+<div style="font-size:14px">
+<table class="table table-bordered">
+<tr>
+<th scope="row" class="table-active">문의유형</th>
+<td th:text=${qnaDto.qna_type}></td>
+</tr>
+<tr>
+<th scope="row" class="table-active">제목</th>
+<td><input type="text" id="qna_title"style="height:28px;width:370px" th:value="${qnaDto.qna_title}"readonly>
+</td>
+</tr>
+<tr>
+<th scope="row" class="table-active" >질문</th>
+<td><textarea id="qna_question" style="width:370px;height:170px" th:text="${qnaDto.qna_question}"readonly></textarea>
+</td>
+</tr>
+<tr>
+<th scope="row" class="table-active" >답변</th>
+<td><textarea id="qna_answer" style="width:370px;height:170px" th:text="${qnaDto.qna_answer}"></textarea>
+</td>
+</tr>
+</table>
+<div align="center">
+<input type="button" value="답변작성" class="btn btn-outline-primary btn-sm" onclick="answerBtn()">
+<input type="button" value="취소" class="btn btn-sm btn-outline-dark" onclick="window.close()">
+</div>
+<br><br>
+</div>
+</div>
+<script th:inline="javascript">
+function openInNewTab() {
+	product_idx = [[${productDto.product_idx}]];
+	url = "/product/detail?product_idx="+product_idx;
+    var win = window.open(url, '_blank');
+    win.focus();
+}
+function answerBtn(){
+	var qna_answer = document.getElementById('qna_answer').value;
+	var qna_idx = [[${qnaDto.qna_idx}]];
+	if(confirm('작성을 완료하시겠습니까?')){
+		$.ajax({
+			url: "/admin/board/qna/detail",
+			type: "POST",
+			data: {"qna_answer":qna_answer,"qna_idx":qna_idx},
+			error:function(request,status,error){
+		        alert("code = "+ request.status + " message = " + request.responseText + " error = " + error); // 실패 시 처리
+		       },
+		    success : function(data) {
+		    	alert('작성이 완료되었습니다.');
+		    	window.opener.location.reload();
+		    	window.opener.focus();
+		    	window.close();
+		    	
+		    }
+		});
+	}
+}
+</script>
+
+</body>
+</html>

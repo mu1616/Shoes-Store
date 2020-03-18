@@ -21,7 +21,7 @@
 	</thead>
 <th:block th:each="qnaDto:${qnaList}">
 	<tr>
-	<td th:text=${qnaDto.qna_idx}></td>
+	<td th:text=${qnaDto.rownum}></td>
 	<td th:if="${qnaDto.qna_answer} eq null" th:text="답변대기"></td>
 	<td th:if="${qnaDto.qna_answer} ne null" th:text="답변완료" style="color:#088A08"></td>
 	<td th:text=${qnaDto.qna_type}></td>
@@ -34,7 +34,7 @@
 		<td colspan="6" class="left">
 		<div class="container" >
 		<br>
-			<span style="font-weight:600">문의내용</span><br><br>
+			<span style="font-weight:600">문의내용</span>&nbsp&nbsp<button th:if="${qnaDto.qna_member}==${#authentication.principal.username}"type="button" th:onclick="'deleteQna('+${qnaDto.qna_idx}+')'">삭제</button><br><br>
 			<textarea style="border:none;width:800px;overflow:hidden" th:text=${qnaDto.qna_question}></textarea>
 			<hr>
 			</div>
@@ -46,10 +46,10 @@
 		</td>
 	</tr>
 	<tr th:if="${qnaDto.qna_secret} == 1 "style="display:none">
-		<td colspan="6">
+		<td colspan="6" class="left">
 		<div class="container" >
 		<br>
-			<span style="font-weight:600">문의내용</span><br><br>
+			<span style="font-weight:600">문의내용</span>&nbsp&nbsp<button th:if="${qnaDto.qna_member}==${#authentication.principal.username}"type="button" th:onclick="'deleteQna('+${qnaDto.qna_idx}+')'">삭제</button><br><br>
 			<textarea style="border:none;width:800px;overflow:hidden" ></textarea>
 			<hr>
 			</div>

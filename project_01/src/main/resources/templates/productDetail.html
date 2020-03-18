@@ -169,11 +169,11 @@ function qnaDetail(num,obj){
 		tag.style.display = 'none';
 	}
 }
-function qnaDetail_secret(idx,obj,qna_product){
+function qnaDetail_secret(qna_idx,obj,qna_product){
 	$.ajax({
 		url: "/product/showSecret",
 		type: "POST",
-		data: {"idx":idx,"product":qna_product},
+		data: {"qna_idx":qna_idx},
 		dataType:"json",
 		error:function(request,status,error){
 	        alert("code = "+ request.status + " message = " + request.responseText + " error = " + error); // 실패 시 처리
@@ -302,6 +302,23 @@ function insertCart() {
 	    }
 	});
 	
+}
+
+function deleteQna(qna_idx){
+	if(confirm('삭제하시겠습니까?')){
+		$.ajax({
+			url: "/product/qna/delete",
+			type: "POST",
+			data: {"qna_idx":qna_idx},
+			error:function(request,status,error){
+		        alert("code = "+ request.status + " message = " + request.responseText + " error = " + error); // 실패 시 처리
+		       },
+		    success : function(data) {
+		    	alert('삭제하였습니다.');
+		    	qna_page(1);
+		    }
+		});
+	}
 }
 </script>
 </body>

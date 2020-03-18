@@ -18,7 +18,7 @@ public class QnaService {
 		int totalPage;
 		PageDTO pageDto= new PageDTO();
 		pageDto.setCurrentPage(currentPage);
-		countRecord = qnaDao.count(qna_product);
+		countRecord = qnaDao.countByProduct(qna_product);
 		pageDto.setCountRecord(countRecord);
 		totalPage = (int)Math.ceil(countRecord/(double)10);
 		pageDto.setTotalPage(totalPage);

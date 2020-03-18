@@ -4,7 +4,6 @@ import java.security.Principal;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -19,6 +18,7 @@ import com.example.project_01.model.product.dto.ProductDTO;
 import com.example.project_01.model.product.dto.ProductEntity;
 import com.example.project_01.model.product.qna.dao.QnaDAO;
 import com.example.project_01.model.product.qna.dto.QnaDTO;
+import com.example.project_01.model.product.qna.dto.SearchQnaDTO;
 import com.example.project_01.model.search.dto.SearchDTO;
 import com.example.project_01.model.stock.dao.StockDAO;
 import com.example.project_01.model.stock.dto.StockDTO;
@@ -94,19 +94,27 @@ public class ProductController {
 		PageDTO pageDto = qnaService.calPage(currentPage, qna_product);
 		model.addAttribute("qna_pageDto",pageDto);
 		int start = (currentPage-1)*10;
-		List<QnaDTO> qnaList = qnaDao.selectQna(start, 10, qna_product);
+		List<QnaDTO> qnaList = qnaDao.selectQnaByProduct(start, 10, qna_product);
 		model.addAttribute("qnaList",qnaList);
 		return "qnaTable";
 	}
 	
 	@ResponseBody
 	@RequestMapping("/product/showSecret")
-	public QnaDTO showSecret(int idx, int product, Principal principal) {
+	public QnaDTO showSecret(int qna_idx, Principal principal) {
 		if(principal == null) return new QnaDTO();
-		QnaDTO qnaDto = qnaDao.selectOne(idx, product);
+		QnaDTO qnaDto = qnaDao.selectOne(qna_idx, new SearchQnaDTO());
 		if(!principal.getName().equals(qnaDto.getQna_member())) return new QnaDTO();
 		System.out.println(qnaDto);
 		System.out.println(principal.getName());
 		return qnaDto;
+	}
+	@ResponseBody
+	@RequestMapping("/product/qna/delete")
+	public void deleteOne(Principal principal, int qna_idx) {
+		QnaDTO qnaDto = qnaDao.selectOne(qna_idx, new SearchQnaDTO());
+		if(principal.getName().equals(qnaDto.getQna_member())) {
+			qnaDao.deleteOne(qna_idx);
+		}
 	}
 }

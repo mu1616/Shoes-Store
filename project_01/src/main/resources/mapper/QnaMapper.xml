@@ -11,10 +11,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		values 
 			(#{qna_type},#{qna_title},#{qna_question},#{qna_secret},#{qna_member},#{qna_product})			
 	</insert>
-	<select id="selectQna" 
+	<select id="selectQnaByProduct" 
 		resultType="com.example.project_01.model.product.qna.dto.QnaDTO">
-		SELECT @rownum:=@rownum-1 as qna_idx,qna_type,qna_title,qna_question,
-			qna_answer,qna_secret,qna_member,qna_product,qna_date
+		SELECT @rownum:=@rownum-1 as rownum,q.*
 		from qna AS q,
 			(SELECT @rownum:=(SELECT COUNT(*) 
 			FROM qna WHERE qna_product = #{qna_product})-#{start}+1) tmp
@@ -22,16 +21,39 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		order by q.qna_idx desc
 		limit #{start}, #{length}
 	</select>
-	<select id="count" resultType="int">
+	<select id="countByProduct" resultType="int">
 		select count(*) 
 		from qna
 		where qna_product = #{qna_product}
 	</select>
-	<select id="selectOne" 
-		resultType="com.example.project_01.model.product.qna.dto.QnaDTO">
-		SELECT * from
-		(SELECT @rownum:=@rownum+1 AS idx,q.* FROM qna AS q,(SELECT @rownum:=0) tmp 
-		WHERE qna_product=#{qna_product} ORDER BY qna_date) AS b
-		WHERE idx=#{idx}	
+	<select id="selectQna" resultType="com.example.project_01.model.product.qna.dto.QnaDTO"
+		parameterType = "com.example.project_01.model.product.qna.dto.SearchQnaDTO">
+		SELECT @rownum:=@rownum-1 as rownum, q.*
+		from qna AS q,
+			(SELECT @rownum:=(SELECT COUNT(*) 
+			FROM qna )-#{start}+1) tmp
+		order by q.qna_idx desc
+		limit #{start}, #{length}
 	</select>
+	<select id="countQna" resultType="int" 
+		parameterType="com.example.project_01.model.product.qna.dto.SearchQnaDTO">
+		select count(*) 
+		from qna
+	</select>
+	<select id="selectOne" parameterType="com.example.project_01.model.product.qna.dto.SearchQnaDTO"
+		resultType="com.example.project_01.model.product.qna.dto.QnaDTO">
+		SELECT * 
+		from qna
+		where qna_idx = #{qna_idx}
+	</select>
+	<update id="updateAnswer">
+		update qna
+		set qna_answer = #{qna_answer}
+		where qna_idx = #{qna_idx}
+	</update>
+	<delete id="deleteOne">
+		delete 
+		from qna
+		where qna_idx = #{qna_idx}
+	</delete>
 </mapper>

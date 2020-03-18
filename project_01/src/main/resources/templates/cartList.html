@@ -39,7 +39,7 @@
        <tr>
         <td style="vertical-align:middle;"><input type="checkbox" class="checkList" th:value="${cartDto.cart_idx}" onclick="setTotal();setPay();setCount();"></td>
         <td style="vertical-align:middle;"th:text=${cartDtoStat.count}></td>
-        <td style="vertical-align:middle;"><img th:src="${cartDto.product_image}" style="width:100px;height:80px"></td>
+        <td style="vertical-align:middle;"><a th:href="'/product/detail?product_idx='+${cartDto.cart_product}"><img th:src="${cartDto.product_image}" style="width:100px;height:80px"></a></td>
         <td style="vertical-align:middle;text-align:left">
         	<span th:text="'['+${cartDto.product_brand}+']'"></span>&nbsp
         	<span th:text=${cartDto.product_name}></span><br>
