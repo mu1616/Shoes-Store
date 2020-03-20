@@ -25,13 +25,29 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		select count(*) 
 		from qna
 		where qna_product = #{qna_product}
+		
 	</select>
 	<select id="selectQna" resultType="com.example.project_01.model.product.qna.dto.QnaDTO"
 		parameterType = "com.example.project_01.model.product.qna.dto.SearchQnaDTO">
 		SELECT @rownum:=@rownum-1 as rownum, q.*
 		from qna AS q,
 			(SELECT @rownum:=(SELECT COUNT(*) 
-			FROM qna )-#{start}+1) tmp
+			FROM qna 
+			where qna_member like #{searchQnaDto.qna_member}
+			<if test="searchQnaDto.is_answer == 2">
+			and qna_answer is null
+			</if>
+			<if test="searchQnaDto.is_answer == 3">
+			and qna_answer is not null
+			</if>
+			)-#{start}+1) tmp
+		where q.qna_member like #{searchQnaDto.qna_member}
+		<if test="searchQnaDto.is_answer == 2">
+			and q.qna_answer is null
+		</if>
+		<if test="searchQnaDto.is_answer == 3">
+			and q.qna_answer is not null
+		</if>
 		order by q.qna_idx desc
 		limit #{start}, #{length}
 	</select>
@@ -39,6 +55,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		parameterType="com.example.project_01.model.product.qna.dto.SearchQnaDTO">
 		select count(*) 
 		from qna
+		where qna_member like #{qna_member}
+		<if test="is_answer == 2">
+			and qna_answer is null
+		</if>
+		<if test="is_answer == 3">
+			and qna_answer is not null
+		</if>
 	</select>
 	<select id="selectOne" parameterType="com.example.project_01.model.product.qna.dto.SearchQnaDTO"
 		resultType="com.example.project_01.model.product.qna.dto.QnaDTO">

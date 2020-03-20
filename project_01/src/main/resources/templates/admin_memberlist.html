@@ -143,6 +143,7 @@ function makePageBtn(){
 }
 
 function clickPageBtn(num){
+	searchOption();
 	$("#searchFrm").attr("action", '/admin/member/list/' + num);
 	$("#searchFrm").submit();
 }

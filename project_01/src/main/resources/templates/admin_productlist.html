@@ -216,6 +216,7 @@ function makePageBtn(){
 }
 
 function clickPageBtn(num){
+	searchOption();
 	$("#searchFrm").attr("action", '/admin/product/list/' + num);
 	$("#searchFrm").submit();
 }

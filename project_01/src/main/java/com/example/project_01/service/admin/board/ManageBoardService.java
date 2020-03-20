@@ -35,7 +35,7 @@ public class ManageBoardService {
 		return pageDto;
 	}
 	//페이지당 상품개수 = 20
-	public List<QnaDTO> selectMember(int currentPage, SearchQnaDTO searchQnaDto) {
+	public List<QnaDTO> selectQna(int currentPage, SearchQnaDTO searchQnaDto) {
 		int start = (currentPage-1) * 20;
 		int length = 20;
 		List<QnaDTO> qnaList = qnaDao.selectQna(start, length, searchQnaDto);

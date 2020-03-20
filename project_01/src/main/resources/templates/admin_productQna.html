@@ -24,6 +24,32 @@
 		<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
         <h1 class="h2">상품문의 관리</h1>
         </div><br>
+     <div>
+        <font color="gray">[검색옵션]</font>
+        <form id="searchFrm" action="/admin/board/qna/1" method="get">
+        <table class="table table-bordered">
+        <tr>
+        <th scope="row" style="width:100px" class="table-active">작성자</th>
+        <td class="left" style="width:200px">        		             
+	     	<input type="text" id="qna_member" name="qna_member" class="form-control" style="width:250px;">
+        </td>
+        </tr>     
+        <tr>
+        <th scope="row"class="table-active">답변상태</th>
+        <td colspan="2" class="left" id="is_answer">
+        	<input type="radio" name="is_answer" value="1" checked>전체&nbsp&nbsp&nbsp
+        	<input type="radio" name="is_answer" value="2">답변대기&nbsp&nbsp&nbsp
+			<input type="radio" name="is_answer" value="3">답변완료
+        </td>
+        </tr>
+        </table>
+        <div align="center">
+        <input type="submit" class="btn btn-primary" style="width:100px"value="검색"  > 
+        </div>
+        </form>
+        </div><br>
+        <hr>
+    <font color="grey"><p>[총 <font color="red" th:text="${pageDto.countRecord}"></font>개]</p></font>
     <table class="table table-bordered" style="font-size:13px">
 	<thead class="thead-light">
 	<tr align="center">
@@ -38,7 +64,7 @@
 	</thead>
 	<th:block th:each="qnaDto:${qnaList}">
 	<tr>
-	<td th:text=${qnaDto.qna_idx}></td>
+	<td th:text=${qnaDto.rownum}></td>
 	<td th:if="${qnaDto.qna_answer} eq null" th:text="답변대기"></td>
 	<td th:if="${qnaDto.qna_answer} ne null" th:text="답변완료" style="color:#088A08"></td>
 	<td th:text=${qnaDto.qna_type}></td>
@@ -79,6 +105,21 @@
 <script th:inline="javascript">
 var currentPage = [[${pageDto.currentPage}]];
 makePageBtn(currentPage);
+searchOption();
+
+function searchOption(){	
+	var qna_member = [[${searchQnaDto.qna_member}]];
+	document.getElementById('qna_member').value = qna_member;
+	var is_answer = [[${searchQnaDto.is_answer}]];
+	if(is_answer != "1") {
+		var num = is_answer;
+		$("#is_answer").children().eq(0).prop("checked",false);
+		if(is_answer == 2)
+			$("#is_answer").children().eq(1).prop("checked",true);
+		if(is_answer == 3)
+			$("#is_answer").children().eq(2).prop("checked",true);
+	}
+}
 
 function makePageBtn(){
 	var btns = document.getElementsByClassName('pageBtn');
@@ -91,7 +132,10 @@ function makePageBtn(){
 }
 
 function clickPageBtn(num){
-	location.href = "/admin/board/qna/"+num;
+	searchOption();
+	var frm = document.getElementById('searchFrm');
+	frm.action = "/admin/board/qna/"+num;
+	frm.submit();
 }
 
 function qnaDetail(qna_idx,qna_product){

@@ -61,14 +61,17 @@
 </div>
 <script th:inline="javascript">
 makePageBtn();
-var searchWord = [[${searchWord}]];
-document.getElementById('Search').value = searchWord;
-document.getElementById('product_category').value = [[${searchDto.product_category}]];
-document.getElementById('sort').value = [[${searchDto.sort}]];
-document.getElementById('search-sort').value = [[${searchDto.sort}]];
-var sort = [[${searchDto.sort}]];
-document.getElementsByClassName('sort')[sort-1].style.fontWeight = "bold";
-document.getElementsByClassName('sort')[sort-1].color = "black";
+searchOption();
+function searchOption(){
+	var searchWord = [[${searchWord}]];
+	document.getElementById('Search').value = searchWord;
+	document.getElementById('product_category').value = [[${searchDto.product_category}]];
+	document.getElementById('sort').value = [[${searchDto.sort}]];
+	document.getElementById('search-sort').value = [[${searchDto.sort}]];
+	var sort = [[${searchDto.sort}]];
+	document.getElementsByClassName('sort')[sort-1].style.fontWeight = "bold";
+	document.getElementsByClassName('sort')[sort-1].color = "black";
+}
 
 function makePageBtn(){
 	var currentPage = [[${pageDto.currentPage}]];
@@ -86,7 +89,8 @@ function makePageBtn(){
 }
 
 function clickPageBtn(num){
-	if(searchWord == null) {
+	searchOption();
+	if([[${searchWord}]] == null) {
 	document.getElementById('frm1').action = "/product/list/"+num;
 	document.getElementById('frm1').submit();
 	} else {		
@@ -101,7 +105,7 @@ function clickPageBtn(num){
 function productSort(type) {
 	document.getElementById('sort').value = type;
 	document.getElementById('search-sort').value = type;
-	if(searchWord == null) {
+	if([[${searchWord}]] == null) {
 		document.getElementById('frm1').action = "/product/list/1";
 		document.getElementById('frm1').submit();
 	} else {

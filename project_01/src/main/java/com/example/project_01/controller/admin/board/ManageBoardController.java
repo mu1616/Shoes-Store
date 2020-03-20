@@ -28,11 +28,16 @@ public class ManageBoardController {
 	ProductDAO productDao;
 	
 	@RequestMapping("/admin/board/qna/{idx}")
-	public String qnaList(@PathVariable("idx")int idx, Model model) {
-		PageDTO pageDto = boardService.calPage(idx, new SearchQnaDTO());
-		List<QnaDTO> qnaList = boardService.selectMember(idx, new SearchQnaDTO());
+	public String qnaList(@PathVariable("idx")int idx, Model model, SearchQnaDTO searchQnaDto) {
+		if(searchQnaDto.getQna_member().equals(""))
+			searchQnaDto.setQna_member("%");
+		PageDTO pageDto = boardService.calPage(idx, searchQnaDto);
+		List<QnaDTO> qnaList = boardService.selectQna(idx, searchQnaDto);
 		model.addAttribute("pageDto",pageDto);
 		model.addAttribute("qnaList",qnaList);
+		if(searchQnaDto.getQna_member().equals("%"))
+			searchQnaDto.setQna_member("");
+		model.addAttribute("searchQnaDto",searchQnaDto);
 		return "admin_productQna";
 	}
 	@RequestMapping(value= "/admin/board/qna/detail", method=RequestMethod.GET)
