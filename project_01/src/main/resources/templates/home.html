@@ -6,7 +6,21 @@
 <meta charset="UTF-8">
 <title>Shoes Factory</title>
 <th:block th:include="./bootstrap.html::bootstrap"></th:block>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Swiper/4.5.1/css/swiper.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Swiper/4.5.1/js/swiper.min.js"></script>
+<style>
+.swiper-container {
+	height:400px;
+}
+.swiper-slide {
+}
+.swiper-slide img {
+	max-width:100%; /* 이미지 최대너비를 제한, 슬라이드에 이미지가 여러개가 보여질때 필요 */
+	/* 이 예제에서 필요해서 설정했습니다. 상황에따라 다를 수 있습니다. */
+}
+</style>
 </head>
+
 <body>
 	<div class="container">
 	<div th:fragment="header">
@@ -66,123 +80,79 @@
 		</script>
 		</div>
 		<br><br>
-		<h3 style="font-family: 'Frijole', cursive;">Best Award</h3><br>
-		<div class="row">
-		<div class="col-3">
-		    <div class="card">
-            <a href="#"><img src="/static/img/shoes2.png" alt="" class="card-img-top" /></a>
-            <div class="card-body">
-              <p>호웰 모크 슈즈</p>
-              <b>15,900원</b>
-            </div>
-          </div>
-          </div>
-          <div class="col-3">
-		    <div class="card">
-            <a href="#"><img src="/static/img/shoes1.png" alt="" class="card-img-top" /></a>
-            <div class="card-body">
-              <p>호웰 모크 슈즈</p>
-              <b>15,900원</b>
-            </div>
-          </div>
-          </div>
-          <div class="col-3">
-		    <div class="card">
-            <a href="#"><img src="/static/img/shoes2.png" alt="" class="card-img-top" /></a>
-            <div class="card-body">
-              <p>호웰 모크 슈즈</p>
-              <b>15,900원</b>
-            </div>
-          </div>
-          </div>
-          <div class="col-3">
-		    <div class="card">
-            <a href="#"><img src="/static/img/shoes3.png" alt="" class="card-img-top" /></a>
-            <div class="card-body">
-              <p>호웰 모크 슈즈</p>
-              <b>15,900원</b>
-            </div>
-          </div>
-          </div>
-        </div><br><br><hr><br>
-        <h3 style="font-family: 'Frijole', cursive;">Sale</h3><br>
-        <div class="row">
-		<div class="col-3">
-		    <div class="card">
-            <a href="#"><img src="/static/img/shoes1.png" alt="" class="card-img-top" /></a>
-            <div class="card-body">
-              <p>호웰 모크 슈즈</p>
-              <b>15,900원</b>
-            </div>
-          </div>
-          </div>
-          <div class="col-3">
-		    <div class="card">
-            <a href="#"><img src="/static/img/shoes1.png" alt="" class="card-img-top" /></a>
-            <div class="card-body">
-              <p>호웰 모크 슈즈</p>
-              <b>15,900원</b>
-            </div>
-          </div>
-          </div>
-          <div class="col-3">
-		    <div class="card">
-            <a href="#"><img src="/static/img/shoes1.png" alt="" class="card-img-top" /></a>
-            <div class="card-body">
-              <p>호웰 모크 슈즈</p>
-              <b>15,900원</b>
-            </div>
-          </div>
-          </div>
-          <div class="col-3">
-		    <div class="card">
-            <a href="#"><img src="/static/img/shoes1.png" alt="" class="card-img-top" /></a>
-            <div class="card-body">
-              <p>호웰 모크 슈즈</p>
-              <b>15,900원</b>
-            </div>
-          </div>
-          </div>
-        </div><br><br><hr><br>
-        <h3 style="font-family: 'Frijole', cursive;">New</h3><br>
-        <div class="row">
-		<div class="col-3">
-		    <div class="card">
-            <a href="#"><img src="/static/img/shoes3.png" alt="" class="card-img-top" /></a>
-            <div class="card-body">
-              <p>호웰 모크 슈즈</p>
-              <b>15,900원</b>
-            </div>
-          </div>
-          </div>
-          <div class="col-3">
-		    <div class="card">
-            <a href="#"><img src="/static/img/shoes3.png" alt="" class="card-img-top" /></a>
-            <div class="card-body">
-              <p>호웰 모크 슈즈</p>
-              <b>15,900원</b>
-            </div>
-          </div>
-          </div>
-          <div class="col-3">
-		    <div class="card">
-            <a href="#"><img src="/static/img/shoes3.png" alt="" class="card-img-top" /></a>
-            <div class="card-body">
-              <p>호웰 모크 슈즈</p>
-              <b>15,900원</b>
-            </div>
-          </div>
-          </div>
-          <div class="col-3">
-		    <div class="card">
-            <a href="#"><img src="/static/img/shoes3.png" alt="" class="card-img-top" /></a>
-            <div class="card-body">
-              <p>호웰 모크 슈즈</p>
-              <b>15,900원</b>
-            </div>
-          </div>
-          </div>
-        </div><br><br><hr><br>
+		<h3 style="font-family: 'Frijole', cursive;">Best Award</h3>
+		<br>
+		<div class="container">
+		<div class="swiper-container">
+			<div class="swiper-wrapper">
+				<th:block th:each="productDto:${bestProducts}">
+				<div class="swiper-slide">
+					<div class="card">
+			            <a th:href="'/product/detail?product_idx='+${productDto.product_idx}"><img th:src="${productDto.product_image}" alt="" class="card-img-top" width="200" height="220"/></a>
+			            <div class="card-body">
+			              <b>[ <span style="font-size:14px;"th:text="${productDto.product_brand}"></span> ]</b>
+			              <p style="font-weight: 300;font-size:14px"th:text="${productDto.product_name}"></p>
+			              <b style="font-size:18px;"th:text="${#numbers.formatInteger(productDto.product_price, 0, 'COMMA')}"></b> 원
+			            </div>
+		            </div>
+				</div>
+				</th:block>
+				
+			</div>
+
+			<!-- 페이징 -->
+			<div class="swiper-pagination"></div>
+		</div>
+		</div>
+		
+		<br>
+		<h3 style="font-family: 'Frijole', cursive;">Sale</h3>
+		<br>
+		<div class="container">
+		<div class="swiper-container">
+			<div class="swiper-wrapper">
+				<th:block th:each="productDto:${saleProducts}">
+				<div class="swiper-slide">
+					<div class="card">
+			            <a th:href="'/product/detail?product_idx='+${productDto.product_idx}"><img th:src="${productDto.product_image}" alt="" class="card-img-top" width="200" height="220"/></a>
+			            <div class="card-body">
+			              <b>[ <span style="font-size:14px;"th:text="${productDto.product_brand}"></span> ]</b>
+			              <p style="font-weight: 300;font-size:14px"th:text="${productDto.product_name}"></p>
+			              <b style="font-size:18px;"th:text="${#numbers.formatInteger(productDto.product_price, 0, 'COMMA')}"></b> 원
+			            </div>
+		            </div>
+				</div>
+				</th:block>
+			</div>
+
+			<!-- 페이징 -->
+			<div class="swiper-pagination"></div>
+		</div>
+		<br>
+       <h3 style="font-family: 'Frijole', cursive;">New</h3>
+		<br>
+		<div class="container">
+		<div class="swiper-container">
+			<div class="swiper-wrapper">
+				<th:block th:each="productDto:${newProducts}">
+				<div class="swiper-slide">
+					<div class="card">
+			            <a th:href="'/product/detail?product_idx='+${productDto.product_idx}"><img th:src="${productDto.product_image}" alt="" class="card-img-top" width="200" height="220"/></a>
+			            <div class="card-body">
+			              <b>[ <span style="font-size:14px;"th:text="${productDto.product_brand}"></span> ]</b>
+			              <p style="font-weight: 300;font-size:14px"th:text="${productDto.product_name}"></p>
+			              <b style="font-size:18px;"th:text="${#numbers.formatInteger(productDto.product_price, 0, 'COMMA')}"></b> 원
+			            </div>
+		            </div>
+				</div>
+				</th:block>
+			</div>
+			
+			<!-- 페이징 -->
+			<div class="swiper-pagination"></div>
+		</div>
+        
+		<hr>
         <div th:fragment="footer">
 	<footer class="page-footer font-small blue-grey lighten-5">
 	
@@ -227,7 +197,31 @@
 	
 	</footer>
 	</div>
+	</div>
 	</div><br>
 	
 </body>
+<script>
+new Swiper('.swiper-container', {
+
+	slidesPerView : 4, // 동시에 보여줄 슬라이드 갯수
+	spaceBetween : 30, // 슬라이드간 간격
+	slidesPerGroup : 4, // 그룹으로 묶을 수, slidesPerView 와 같은 값을 지정하는게 좋음
+
+	// 그룹수가 맞지 않을 경우 빈칸으로 메우기
+	// 3개가 나와야 되는데 1개만 있다면 2개는 빈칸으로 채워서 3개를 만듬
+	loopFillGroupWithBlank : true,
+
+	loop : true, // 무한 반복
+
+	pagination : { // 페이징
+		el : '.swiper-pagination',
+		clickable : true, // 페이징을 클릭하면 해당 영역으로 이동, 필요시 지정해 줘야 기능 작동
+	},
+	navigation : { // 네비게이션
+		nextEl : '.swiper-button-next', // 다음 버튼 클래스명
+		prevEl : '.swiper-button-prev', // 이번 버튼 클래스명
+	}
+});
+</script>
 </html>

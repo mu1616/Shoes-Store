@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Shoes Factory</title>
+<th:block th:include="./bootstrap.html::bootstrap"></th:block>
+<style>
+ul{
+	list-style:none;
+	overflow : auto;
+	
+}
+li {
+	float: left;
+}
+</style>
+</head>
+<body>
+
+<div class="row" style="font-size:14px">
+	<div class="col-6" style="border: 1px solid #D8D8D8; height:auto; min-height:500px;padding:20px">
+
+			<table class="table table-bordered">
+        <tr>
+        <th scope="row" style="width:100px" class="table-active">상품검색</th>
+        <td class="left" style="width:200px">        	
+	        <select id="searchOption"style="width:100px;float:left;">
+	        <option id="option" value="검색분류" selected>검색분류</option>
+	        <option id="pName" value="상품명">상품명</option>
+	        <option id="pNumber" value="상품번호">상품번호</option>
+	     	</select> 	   
+	     	<input type="text" id="search" name="search" class="form-control" onKeypress="javascript:if(event.keyCode==13){searchBtn();}"style="width:250px;">
+        </td>
+        </tr>
+        </table>
+        <div align="center"><input type="button" class="btn btn-outline-primary"value="검색" onclick="searchBtn();"></div>
+
+		<h5>검색목록</h5>
+		<font size="2px" color="grey">최대 20개까지 표시하므로 검색범위를 좁혀주세요.</font>
+		<hr>
+		<div id="searchList"></div>
+	</div>
+	<div class="col-6" style="border: 1px solid #D8D8D8; height:auto; min-height:500px;padding:20px;">
+	<h5>추가할 상품</h5>
+	<font size="2px" color="grey">저장을 눌러야 진열상품에 추가됩니다.</font>
+	<hr>
+	<ul id="addList"></ul>
+	</div>
+</div>
+<br>
+<div align="center">
+		<button type="button" class="btn btn-outline-primary" onclick="saveBtn();">저장</button>
+		<button type="button" class="btn btn-outline-dark" onclick="window.close();">취소</button>
+</div>
+
+<script th:inline="javascript">
+var display_md = [[${display_md}]];
+function searchBtn(){
+	if(document.getElementById('search').value=="") {
+		alert('검색어를 입력해주세요');
+		return;
+	}
+	if(document.getElementById('option').selected == true){
+		alert('검색분류를 선택해주세요');
+		return;
+	}
+	var selectTag = document.getElementById('searchOption');
+	var searchOption = selectTag.options[selectTag.selectedIndex].value;
+	var searchWord = document.getElementById('search').value;
+	
+	$.ajax({
+		url: "/admin/product/mainDisplay/add/search",
+		type: "POST",
+		data: {'searchOption':searchOption, "searchWord":searchWord},
+		dataType: "html",
+		error:function(request,status,error){
+	        alert("code = "+ request.status + " message = " + request.responseText + " error = " + error); // 실패 시 처리
+	       },
+	    success : function(data) {
+	    	document.getElementById('searchList').innerHTML = data;
+	    	
+	    }
+	});
+	
+}
+function clickCard(product_idx,obj){
+	if(confirm('추가하시겠습니까?')) {
+		var addList = document.getElementById('addList');
+		addList.innerHTML += obj.parentNode.parentNode.parentNode.innerHTML;
+		for(var i=0; i<document.getElementById('addList').children.length; i++) {
+			document.getElementById('addList').children[i].children[0].children[0].onclick = function(){deleteCard(this);};		
+		}
+	}
+}
+
+function deleteCard(obj){
+	if(confirm('삭제하시겠습니까?'))
+		document.getElementById('addList').removeChild(obj.parentNode.parentNode);
+	
+}
+
+function saveBtn(){
+	if(document.getElementById('addList').children.length == 0 ) {
+		alert('저장할 상품이 없습니다.');
+		return;
+	}
+	if(confirm('저장하시겠습니까?')){
+		var product_idx = new Array();
+		for(var i=0; i<document.getElementById('addList').children.length; i++)
+			product_idx.push(document.getElementById('addList').children[i].value);		
+		$.ajax({
+			url: "/admin/product/mainDisplay/add/save",
+			type: "POST",
+			traditional: true,
+			data: {'product_idx':product_idx, "display_md":display_md},
+			error:function(request,status,error){
+		        alert("code = "+ request.status + " message = " + request.responseText + " error = " + error); // 실패 시 처리
+		       },
+		    success : function(data) {
+		    	alert('저장하였습니다.');
+		    	window.opener.location.reload();
+		    	window.close();
+		    }
+		});
+	}
+}
+</script>
+</body>
+</html>

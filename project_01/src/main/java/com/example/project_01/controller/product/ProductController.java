@@ -61,6 +61,7 @@ public class ProductController {
 				Integer.parseInt(searchDto.getProduct_category())));
 		else  //검색어를 통해 요청한 경우
 			model.addAttribute("searchWord",searchWord);
+		System.out.println(searchDto);
 		return "productList";
 	}
 	

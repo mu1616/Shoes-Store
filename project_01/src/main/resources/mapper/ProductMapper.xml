@@ -38,9 +38,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			product_isDisplay like '${product_isDisplay}'
 		</if>
 		<if test="option == 1">
-		where product_name like '${product_name}' or
+		where (product_name like '${product_name}' or
 			c.category_name like '${product_category}' or
-			b.brand_name like '${product_brand}' and
+			b.brand_name like '${product_brand}' )and
 			product_isDisplay like '${product_isDisplay}'
 		</if>
 	</select>
@@ -63,9 +63,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			product_isDisplay like '${searchDto.product_isDisplay}'
 		</if>
 		<if test="searchDto.option == 1">
-		where product_name like '${searchDto.product_name}' or
+		where (product_name like '${searchDto.product_name}' or
 			c.category_name like '${searchDto.product_category}' or
-			b.brand_name like '${searchDto.product_brand}' and
+			b.brand_name like '${searchDto.product_brand}' )and
 			product_isDisplay like '${searchDto.product_isDisplay}'
 		</if>
 		<if test="searchDto.sort == 1">
@@ -118,4 +118,24 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			ON product_category = category_idx
 			where product_idx = #{product_idx}
 	</select>
+	<select id="selectProductByDisplay" resultType="com.example.project_01.model.product.dto.ProductDTO">
+		SELECT product_idx, product_name, product_price, 
+				product_contents, product_image, product_isDisplay, display_order,
+				b.brand_name AS product_brand, c.category_name AS product_category
+		from display as d, product as p
+		JOIN brand AS b
+		ON product_brand = brand_idx
+		JOIN category AS c 
+		ON product_category = category_idx
+		where display_md = #{display_md} and p.product_idx = d.display_product
+		order by display_order asc
+	</select>
+	<insert id="addProductMainDisplay">
+		INSERT INTO display (display_product,display_md,display_order) VALUES (#{product_idx},#{display_md},
+			(SELECT ifnull(MAX(display_order),"0") FROM display AS d WHERE display_md = #{display_md})+1)
+	</insert>
+	<delete id="delProductMainDisplay">
+		DELETE FROM display 
+		WHERE display_md = #{display_md}
+	</delete>
 </mapper>

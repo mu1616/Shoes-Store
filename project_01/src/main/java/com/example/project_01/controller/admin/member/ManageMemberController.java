@@ -73,8 +73,4 @@ public class ManageMemberController {
 		memberDao.updateRole(mem_idx, mem_role);
 	}
 	
-	@RequestMapping("/test")
-	public String test() {
-		return "test";
-	}
 }

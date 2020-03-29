@@ -107,4 +107,12 @@ public class ManageProductService {
 		}
 		productEntity.setProduct_image(filePath + filename);
 	}
+	
+	@Transactional
+	public void saveDisplay(int display_md, int []product_idx) {
+		productDao.delProductMainDisplay(display_md);
+		for(int idx : product_idx) {
+			productDao.addProductMainDisplay(idx, display_md);
+		}
+	}
 }

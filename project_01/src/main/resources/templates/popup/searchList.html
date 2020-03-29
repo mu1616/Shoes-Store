@@ -1,0 +1,18 @@
+<ul>
+	<th:block th:each = "productDto:${productList}">
+	<div>
+		<li th:value = "${productDto.product_idx}">
+		<div class="card" style="width:180px;">
+			<img th:src="${productDto.product_image}" alt=""
+				class="card-img-top"style="height:150px;width:160px;cursor:pointer;" 
+				th:onclick="'clickCard('+${productDto.product_idx}+',this)'"/>
+			<div class="card-body">
+				<b>[ <span style="font-size:14px;"th:text="${productDto.product_brand}"></span> ]</b>
+				<p th:text="${productDto.product_name}"></p>
+				<b th:text="${#numbers.formatInteger(productDto.product_price, 0, 'COMMA')}+'원'"></b>
+			</div>
+		</div>
+		</li>
+	</div>
+	</th:block>
+</ul>

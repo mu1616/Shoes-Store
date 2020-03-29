@@ -9,6 +9,8 @@ public class ProductDTO {
 	private String product_contents;
 	private String product_image;
 	private int product_isDisplay;
+	//메인진열시 진열순서
+	private int display_order;
 
 	
 	public int getProduct_idx() {
@@ -59,13 +61,23 @@ public class ProductDTO {
 	public void setProduct_isDisplay(int product_isDisplay) {
 		this.product_isDisplay = product_isDisplay;
 	}
+	
+	public int getDisplay_order() {
+		return display_order;
+	}
+	public void setDisplay_order(int display_order) {
+		this.display_order = display_order;
+	}
+	
+
 	@Override
 	public String toString() {
 		return "ProductDTO [product_idx=" + product_idx + ", product_name=" + product_name + ", product_price="
 				+ product_price + ", product_brand=" + product_brand + ", product_category=" + product_category
 				+ ", product_contents=" + product_contents + ", product_image=" + product_image + ", product_isDisplay="
-				+ product_isDisplay + "]";
+				+ product_isDisplay + ", display_order=" + display_order + "]";
 	}
+	
 
 	
 }

@@ -34,7 +34,7 @@
 		<td colspan="6" class="left">
 		<div class="container" >
 		<br>
-			<span style="font-weight:600">문의내용</span>&nbsp&nbsp<button th:if="${qnaDto.qna_member}==${#authentication.principal.username}"type="button" th:onclick="'deleteQna('+${qnaDto.qna_idx}+')'">삭제</button><br><br>
+			<span style="font-weight:600">문의내용</span>&nbsp&nbsp<span sec:authorize="isAuthenticated()"><button th:if="${qnaDto.qna_member}==${#authentication.principal.username}"type="button" th:onclick="'deleteQna('+${qnaDto.qna_idx}+')'">삭제</button></span><br><br>
 			<textarea style="border:none;width:800px;overflow:hidden" th:text=${qnaDto.qna_question}></textarea>
 			<hr>
 			</div>
@@ -49,7 +49,7 @@
 		<td colspan="6" class="left">
 		<div class="container" >
 		<br>
-			<span style="font-weight:600">문의내용</span>&nbsp&nbsp<button th:if="${qnaDto.qna_member}==${#authentication.principal.username}"type="button" th:onclick="'deleteQna('+${qnaDto.qna_idx}+')'">삭제</button><br><br>
+			<span style="font-weight:600">문의내용</span>&nbsp&nbsp<span sec:authorize="isAuthenticated()"><button th:if="${qnaDto.qna_member}==${#authentication.principal.username}"type="button" th:onclick="'deleteQna('+${qnaDto.qna_idx}+')'">삭제</button></span><br><br>
 			<textarea style="border:none;width:800px;overflow:hidden" ></textarea>
 			<hr>
 			</div>
