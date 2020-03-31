@@ -42,12 +42,13 @@
         <td style="vertical-align:middle;"><a th:href="'/product/detail?product_idx='+${cartDto.cart_product}"><img th:src="${cartDto.product_image}" style="width:100px;height:80px"></a></td>
         <td style="vertical-align:middle;text-align:left">
         	<span th:text="'['+${cartDto.product_brand}+']'"></span>&nbsp
-        	<span th:text=${cartDto.product_name}></span><br>
-        	<span style="color:gray;font-weight:300" th:text="'사이즈: '+${cartDto.cart_size}"></span>
+        	<span th:text=${cartDto.product_name} th:value=${cartDto.cart_product} class="productList"></span><br>
+        	<span style="color:gray;font-weight:300">사이즈: </span>
+        	<span style="color:gray;font-weight:300" th:text="${cartDto.cart_size}" class="sizeList"></span>
         </td>
         <td style="vertical-align:middle;">
         	<button type="button" class="btn btn-outline-secondary btn-sm" onclick="minus(this)">-</button>
-        	&nbsp<span th:text=${cartDto.cart_count} class="count"></span>&nbsp
+        	&nbsp<span th:text=${cartDto.cart_count} class="countList"></span>&nbsp
         	<button type="button" class="btn btn-outline-secondary btn-sm" onclick="plus(this)">+</button>
         </td>
         <td style="vertical-align:middle;" class="price" th:value="${cartDto.product_price}" th:text="${#numbers.formatInteger(cartDto.product_price, 0, 'COMMA')}+'원'"></td>
@@ -76,7 +77,7 @@
 </div>
 <hr><br>
 <div align="center">
-<button type="button" class="btn btn-danger btn-lg" style="font-size:24px;width:260px;height:70px">주문하기</button>
+<button type="button" class="btn btn-danger btn-lg" style="font-size:24px;width:260px;height:70px" onclick="order()">주문하기</button>
 </div>
 <br><br><hr>
 <th:block th:include="./home.html::footer"></th:block>
@@ -123,7 +124,7 @@ function setTotal() {
 	var sum = 0;
 	var checkList = document.getElementsByClassName('checkList');
 	var priceList = document.getElementsByClassName('price');
-	var countList = document.getElementsByClassName('count');
+	var countList = document.getElementsByClassName('countList');
 	for(var i=0; i<priceList.length ; i++){
 		if(checkList[i].checked == true)
 			sum = sum + (Number(priceList[i].getAttribute('value')) * Number(countList[i].innerHTML));
@@ -134,7 +135,7 @@ function setPay() {
 	var sum = 0;
 	var checkList = document.getElementsByClassName('checkList');
 	var priceList = document.getElementsByClassName('price');
-	var countList = document.getElementsByClassName('count');
+	var countList = document.getElementsByClassName('countList');
 	for(var i=0; i<priceList.length ; i++){
 		if(checkList[i].checked == true)
 			sum = sum + (Number(priceList[i].getAttribute('value')) * Number(countList[i].innerHTML));
@@ -187,6 +188,46 @@ function deleteList() {
 		}
 	}
 	deleteProduct(idx);
+}
+
+function order(){
+	if(document.getElementById('count').innerHTML=="0개") {
+		alert('구매할 상품이 없습니다.');
+		return;
+	}
+	var form = document.createElement("form");
+	form.setAttribute("charset","UTF-8");
+	form.setAttribute("method","Post");
+	form.setAttribute("action","/order/orderForm");
+	var checkList = document.getElementsByClassName('checkList');
+	var productList = document.getElementsByClassName('productList');
+	var sizeList = document.getElementsByClassName('sizeList');
+	var countList = document.getElementsByClassName('countList');
+	for(var i=0; i<checkList.length; i++) {
+		if(checkList[i].checked == true){
+			var product = productList[i].getAttribute('value');
+			var size = sizeList[i].innerHTML;
+			var count = countList[i].innerHTML;
+			var hiddenField = document.createElement("input");
+            hiddenField.setAttribute("type", "hidden");
+            hiddenField.setAttribute("name", "size");
+            hiddenField.setAttribute("value", size);
+            form.appendChild(hiddenField);
+            hiddenField = document.createElement("input");
+            hiddenField.setAttribute("type", "hidden");
+            hiddenField.setAttribute("name", "count");
+            hiddenField.setAttribute("value", count);
+            form.appendChild(hiddenField);
+            hiddenField = document.createElement("input");
+            hiddenField.setAttribute("type", "hidden");
+            hiddenField.setAttribute("name", "product");
+            hiddenField.setAttribute("value", product);
+            form.appendChild(hiddenField);
+			
+		}
+	}
+	document.body.appendChild(form);
+	form.submit();
 }
 </script>
 </body>

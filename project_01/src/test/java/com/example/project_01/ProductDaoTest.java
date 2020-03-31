@@ -48,7 +48,7 @@ public class ProductDaoTest {
 	}
 
 	public void displayRegister() {
-		productDao.displayRegister(1, 1);
+		productDao.addProductMainDisplay(1, 1);
 
 	}
 	

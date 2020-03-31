@@ -45,7 +45,7 @@ public class ManageProductService {
 		if(mainDisplay !=null) {
 			for(int i=0; i<mainDisplay.length ; i++) {
 				System.out.println("maindisplay테이블에 저장 "+ productEntity.getProduct_idx()+" "+mainDisplay[i]);
-				productDao.displayRegister(productEntity.getProduct_idx(), mainDisplay[i]);
+				productDao.addProductMainDisplay(productEntity.getProduct_idx(), mainDisplay[i]);
 			}
 		}
 		

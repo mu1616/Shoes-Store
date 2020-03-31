@@ -70,7 +70,7 @@ th,td {
 <th:block th:each="stockDto:${stockList}">
 <div class="row" style="background-color:#EDECEC;margin-top:1%;padding:15px;width:500px;display:none"th:id="list+${stockDto.size}">
 	<div class="col-4" align="left" >
-	<span th:text="${productDto.product_name}"></span><br>사이즈 <font color="red" th:text=${stockDto.size}></font>
+	<span th:text="${productDto.product_name}"></span><br>사이즈 <font color="red" th:text=${stockDto.size} class="sizeInfo"></font>
 	</div>
 	<div class="col-4" align="center" style="line-height:50px">
 	<button type="button" class="btn btn-outline-secondary btn-sm" style="width:30px" onclick="minus(this)">-</button>
@@ -91,7 +91,7 @@ th,td {
 </div>
 <hr>&nbsp&nbsp
 <button type="button" class="btn btn-outline-primary" style="width:250px;height:70px;font-size:25px;" onclick="insertCart();">장바구니 담기</button>
-<button type="button" class="btn btn-outline-danger" style="width:250px;height:70px;font-size:25px;">구매하기</button>
+<button type="button" class="btn btn-outline-danger" style="width:250px;height:70px;font-size:25px;" onclick="order()">구매하기</button>
 </div>
 </div>
 <br><br><br><br><hr>
@@ -250,8 +250,9 @@ function numberFormat(inputNumber) {
 function applyPayment() {
 	var payment=0;
 	var countList = document.getElementsByClassName('count');
+	var list = document.getElementById('list');
 	for(var i=0; i<countList.length; i++) {
-		if(countList[i].parentNode.parentNode.style.display != 'none') {
+		if(list.children[i].style.display !='none') {
 			payment = payment + (Number(countList[i].innerHTML) * [[${productDto.product_price}]]);
 		}
 	}
@@ -269,18 +270,18 @@ function insertCart() {
 	var list = document.getElementById('list');
 	for(var i=0; i<list.children.length; i++){
 		if(list.children[i].style.display !='none') {
-			var size = (list.children[i].children[0].children[2].innerText);
-			var count = (list.children[i].children[1].children[1].innerText);
+			var size = document.getElementsByClassName("sizeInfo")[i].innerText;
+			var count = document.getElementsByClassName("count")[i].innerText;
 			var cart = new Cart(size,count);
 			cartList.push(cart);
 		}
 	}
+	
 	if(cartList.length ==0) {
 		alert('선택된 상품이 없습니다.');
 		return;
 	}
 
-	console.log(cartList);
 	$.ajax({
 		url: "/cart/insert",
 		type: "POST",
@@ -302,6 +303,7 @@ function insertCart() {
 	    }
 	});
 	
+	
 }
 
 function deleteQna(qna_idx){
@@ -319,6 +321,45 @@ function deleteQna(qna_idx){
 		    }
 		});
 	}
+}
+
+function order(){
+	var form = document.createElement("form");
+	form.setAttribute("charset","UTF-8");
+	form.setAttribute("method","Post");
+	form.setAttribute("action","/order/orderForm");
+	
+	var cartList = new Array();	
+	var list = document.getElementById('list');
+	for(var i=0; i<list.children.length; i++){
+		if(list.children[i].style.display !='none') {
+			var size = document.getElementsByClassName("sizeInfo")[i].innerText;
+			var count = document.getElementsByClassName("count")[i].innerText;
+			var cart = new Cart(size,count);
+			cartList.push(cart);
+			var hiddenField = document.createElement("input");
+            hiddenField.setAttribute("type", "hidden");
+            hiddenField.setAttribute("name", "size");
+            hiddenField.setAttribute("value", size);
+            form.appendChild(hiddenField);
+            hiddenField = document.createElement("input");
+            hiddenField.setAttribute("type", "hidden");
+            hiddenField.setAttribute("name", "count");
+            hiddenField.setAttribute("value", count);
+            form.appendChild(hiddenField);
+            hiddenField = document.createElement("input");
+            hiddenField.setAttribute("type", "hidden");
+            hiddenField.setAttribute("name", "product");
+            hiddenField.setAttribute("value", [[${productDto.product_idx}]]);
+            form.appendChild(hiddenField);
+		}
+	}
+	if(cartList.length ==0) {
+		alert('선택된 상품이 없습니다.');
+		return;
+	}
+	document.body.appendChild(form);
+	form.submit();
 }
 </script>
 </body>

@@ -11,7 +11,6 @@ import com.example.project_01.model.search.dto.SearchDTO;
 @Mapper
 public interface ProductDAO {
 	public void productRegister(ProductEntity ProductDto);
-	public void displayRegister(int product_idx, int md_idx);
 	public int countProduct(SearchDTO searchDto);
 	public List<ProductDTO> selectProduct(int start, int length, SearchDTO searchDto);
 	public void deleteProduct(String [] product_idx);
