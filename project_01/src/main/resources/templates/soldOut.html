@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<!-- 레이아웃 참고한 소스 -->
+<!-- view-source:https://getbootstrap.com/docs/4.1/examples/dashboard/# -->
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Shoes Factory</title>
+<th:block th:include="./bootstrap.html::bootstrap"></th:block>
+</head>
+<body>
+<script th:inline="javascript">
+var list = [[${soldOutList}]];
+var message = "품절입니다. 구매수량이 현재 남아있는 재고보다 많은지 확인해주세요.";
+for(var i=0; i<list.length; i++){
+	message += "\n";
+	message += list[i].product_name+" ";
+	message += list[i].cart_size;
+	message += " (남은수량: "+list[i].cart_count+"개)";
+}
+alert(message);
+history.go(-1);
+</script>
+</body>
+</html>

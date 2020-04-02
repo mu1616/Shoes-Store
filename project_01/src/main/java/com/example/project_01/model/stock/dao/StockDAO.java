@@ -12,4 +12,5 @@ public interface StockDAO {
 	public List<StockDTO> selectByProduct(int product_idx);
 	public void updateStock(int product_idx, int size, int count);
 	public void deleteStock(int product_idx, int size);
+	public int getStock(int product_idx, int size);
 }

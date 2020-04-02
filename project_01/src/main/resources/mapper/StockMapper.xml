@@ -28,4 +28,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		delete from stock
 		where product_idx=#{product_idx} and size=#{size}
 	</delete>
+	<select id="getStock" resultType="int">
+		select count from stock
+		where product_idx=#{product_idx} and size=#{size}
+	</select>
 </mapper>
