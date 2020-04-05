@@ -280,7 +280,7 @@ function idCheck2(obj){
 	if(!re.test(obj.value)){
 		document.getElementById('idText').style.color='red';
 	} else{
-		document.getElementById('idText').style.color='black';
+		document.getElementById('idText').style.color='green';
 	}
 }
 function pwCheck(obj){
@@ -289,7 +289,7 @@ function pwCheck(obj){
     	document.getElementById('pwText1').style.color='red';
     	return false;
     } else {
-    	document.getElementById('pwText1').style.color='black';
+    	document.getElementById('pwText1').style.color='green';
     	return true;
     }
 }
@@ -301,7 +301,7 @@ function isMatch(obj){
 		document.getElementById('pwText2').innerHTML='비밀번호를 확인해주세요';
 		return false;
 	}else {
-		document.getElementById('pwText2').style.color='blue';
+		document.getElementById('pwText2').style.color='green';
 		document.getElementById('pwText2').innerHTML='비밀번호가 일치합니다';
 		return true;
 	}
@@ -312,7 +312,7 @@ function birthCheck(obj){
 		document.getElementById('birthText').style.color='red';
 		return false;
 	}else {
-		document.getElementById('birthText').style.color='black';
+		document.getElementById('birthText').style.color='green';
 		return true;
 	}
 }
@@ -322,7 +322,7 @@ function phoneCheck(obj){
 		document.getElementById('phoneText').style.color='red';
 		return false;
 	}else {
-		document.getElementById('phoneText').style.color='black';
+		document.getElementById('phoneText').style.color='green';
 		return true;
 	}
 }

@@ -2,9 +2,12 @@ package com.example.project_01.model.cart.dto;
 
 
 public class CartDTO {
+	//카트 인덱스번호
 	private int cart_idx;
 	private String cart_member;
+	//카트에 담길 상품번호
 	private int cart_product;
+	//신발의 사이즈
 	private int cart_size;
 	private int cart_count;
 	private String product_image;

@@ -94,7 +94,9 @@ th,td {
 <button type="button" class="btn btn-outline-danger" style="width:250px;height:70px;font-size:25px;" onclick="order()">구매하기</button>
 </div>
 </div>
-<br><br><br><br><hr>
+<br><br><br><br><br><br><br>
+<h1 style="font-weight:600;">상품정보</h1>
+<hr>
 <div align="center">
 <br><br><br><br>
 <img src="/static/img/logo.png" style="width:900px;"><br><br><br><br><br><br>
@@ -358,8 +360,12 @@ function order(){
 		alert('선택된 상품이 없습니다.');
 		return;
 	}
-	document.body.appendChild(form);
-	form.submit();
+	if(confirm('주문을 진행하시겠습니까?')) {
+		document.body.appendChild(form);
+		form.submit();
+	}else {
+		document.body.removeChild(form);
+	}
 }
 </script>
 </body>

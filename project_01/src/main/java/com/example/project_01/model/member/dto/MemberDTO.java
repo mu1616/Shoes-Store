@@ -17,6 +17,14 @@ public class MemberDTO {
 	private Date mem_regdate;
 	private String mem_role;
 	private int mem_total;
+	private String mem_postcode;
+	
+	public String getMem_postcode() {
+		return mem_postcode;
+	}
+	public void setMem_postcode(String mem_postcode) {
+		this.mem_postcode = mem_postcode;
+	}
 	public int getMem_idx() {
 		return mem_idx;
 	}

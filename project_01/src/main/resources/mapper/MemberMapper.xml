@@ -6,17 +6,17 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 <mapper namespace="com.example.project_01.model.member.dao.MemberDAO">
 	<select id="findById" resultType="com.example.project_01.model.member.dto.MemberDTO">
 		select mem_idx,mem_name,mem_birth,mem_id,mem_pw,mem_phone,mem_addr1,
-			mem_addr2,mem_regdate,r.role_name as mem_role from member 
+			mem_addr2,mem_regdate, mem_postcode, r.role_name as mem_role from member 
 		join role as r 
 		on mem_role=role_idx 
 		where mem_id=#{mem_id};
 	</select>
 	<insert id="join" parameterType="com.example.project_01.model.member.dto.MemberDTO">
 		insert into member
-		(mem_name, mem_birth, mem_id, mem_pw, mem_phone, mem_addr1, mem_addr2) 
+		(mem_name, mem_birth, mem_id, mem_pw, mem_phone, mem_addr1, mem_addr2, mem_postcode) 
 		values (#{mem_name}, #{mem_birth}, #{mem_id},
 				#{mem_pw}, #{mem_phone}, #{mem_addr1}, 
-				#{mem_addr2})
+				#{mem_addr2}, #{mem_postcode})
 	</insert>
 	
 	<select id="selectMember" parameterType = "com.example.project_01.model.member.dto.SearchMemberDTO"
@@ -46,7 +46,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	
 	<select id="findByIdx" resultType="com.example.project_01.model.member.dto.MemberDTO">
 		select mem_idx,mem_name,mem_birth,mem_id,mem_pw,mem_phone,mem_addr1,
-			mem_addr2,mem_regdate,r.role_name as mem_role from member 
+			mem_addr2,mem_regdate,mem_postcode,r.role_name as mem_role from member 
 		join role as r 
 		on mem_role=role_idx 
 		where mem_idx=#{mem_idx};

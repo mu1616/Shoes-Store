@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.example.project_01.model.cart.dto.CartDTO;
 import com.example.project_01.model.product.dao.ProductDAO;
+import com.example.project_01.model.product.dto.ProductDTO;
 import com.example.project_01.model.stock.dao.StockDAO;
 
 @Service
@@ -31,5 +32,22 @@ public class OrderService {
 			}
 		}
 		return soldOutList;
+	}
+	
+	public List<CartDTO> getOrderList(int [] product, int [] size, int [] count){
+		List<CartDTO> orderList = new ArrayList<>();
+		for(int i=0; i<product.length; i++) {
+			ProductDTO productDto = productDao.selectProductDTO(product[i]);
+			CartDTO cartDto = new CartDTO();
+			cartDto.setCart_product(productDto.getProduct_idx());
+			cartDto.setProduct_name(productDto.getProduct_name());
+			cartDto.setCart_size(size[i]);
+			cartDto.setCart_count(count[i]);
+			cartDto.setProduct_brand(productDto.getProduct_brand());
+			cartDto.setProduct_image(productDto.getProduct_image());
+			cartDto.setProduct_price(productDto.getProduct_price());
+			orderList.add(cartDto);
+		}
+		return orderList;
 	}
 }

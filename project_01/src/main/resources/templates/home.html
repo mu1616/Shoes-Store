@@ -16,7 +16,6 @@
 }
 .swiper-slide img {
 	max-width:100%; /* 이미지 최대너비를 제한, 슬라이드에 이미지가 여러개가 보여질때 필요 */
-	/* 이 예제에서 필요해서 설정했습니다. 상황에따라 다를 수 있습니다. */
 }
 </style>
 </head>
@@ -34,8 +33,8 @@
 		</div>
 		<br>
 		<h2 class="text-danger text-center"><a href="/" style="text-decoration:none"><span class="text-danger" style="font-family: 'Frijole', cursive;">Shoes Factory</span></a></h2><br>
-		<nav class="navbar navbar-expand-sm navbar-light bg-light">
-			<div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+		<nav class="navbar navbar-expand-sm navbar-light bg-light navbar-inverse">
+			<div class="container-fluid" id="navbarNavAltMarkup">
 
 				<div class="navbar-nav"><pre></pre>
 					<div class="dropdown">
@@ -58,14 +57,18 @@
 					<a class="nav-item nav-link" style="cursor:pointer" onclick="categoryBtn(5);">축구/농구&nbsp </a>
 					<a class="nav-item nav-link" style="cursor:pointer" onclick="categoryBtn(6);">슬립온&nbsp </a>
 					<a class="nav-item nav-link" href="#">브랜드&nbsp </a>
-					<pre>                  </pre>
+					
+					
+				</div>
 					 <form class="form-inline my-2 my-lg-0" action="/product/list/1" method="get" id='searchFrm'>
-				      <input type="text"class="form-control mr-sm-2"  placeholder="Search" aria-label="Search" name="searchWord" id="Search" onKeypress="javascript:if(event.keyCode==13){searchBtn();}">
-				      <input type="hidden" name="sort" id="search-sort" value="1">
-				      <button class="btn btn-outline-success " type="button" onclick="searchBtn()">Search</button>
+					 <ul class="nav navbar-nav navbar-right">
+				      <li><input type="text"class="form-control mr-sm-2"  placeholder="Search" aria-label="Search" name="searchWord" id="Search" onKeypress="javascript:if(event.keyCode==13){searchBtn();}">
+				      <input type="hidden" name="sort" id="search-sort" value="1"></li>
+				      <li><button class="btn btn-outline-success " type="button" onclick="searchBtn()">Search</button></li>
+				      </ul>
 				    </form>
 			</div>
-			</div>
+			
 		</nav>
 		<script>
 		function categoryBtn(num){

@@ -2,7 +2,7 @@
 	<th:block th:each = "productDto:${productList}">
 	<div>
 		<li th:value = "${productDto.product_idx}">
-		<div class="card" style="width:180px;">
+		<div class="card" style="width:180px; height:300px;">
 			<img th:src="${productDto.product_image}" alt=""
 				class="card-img-top"style="height:150px;width:160px;cursor:pointer;" 
 				th:onclick="'clickCard('+${productDto.product_idx}+',this)'"/>
