@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Shoes Factory</title>
+<th:block th:include="./bootstrap.html::bootstrap"></th:block>
+</head>
+<body>
+<div class="container">
+<th:block th:include="./home.html::header"></th:block><br><br><br>
+<div align="center">
+<h2 >주문완료</h2><br><br>
+<span class="text-danger">Shoes Factory</span>주문이 완료되었습니다.<br><br>
+이용해 주셔서 감사합니다. 즐거운 쇼핑 되세요!<br><br><br>
+<button class="btn btn-outline-primary btn-lg" style="width:300;" onclick="location.href='/order/list';">주문조회</button>
+<br><br><hr>
+</div>
+<th:block th:include="./home.html::footer"></th:block>
+</div>
+</body>
+</html>

@@ -38,7 +38,7 @@ public class ManageBoardController {
 		if(searchQnaDto.getQna_member().equals("%"))
 			searchQnaDto.setQna_member("");
 		model.addAttribute("searchQnaDto",searchQnaDto);
-		return "admin_productQna";
+		return "admin/admin_productQna";
 	}
 	@RequestMapping(value= "/admin/board/qna/detail", method=RequestMethod.GET)
 	public String qnaDetail(int qna_idx,int qna_product, Model model) {

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper
+	namespace="com.example.project_01.model.order.dao.OrderDAO">
+	<insert id="insertOrder">
+		insert into order_
+		(mem_id, mem_name, order_postcode, order_addr1, order_addr2, order_phone,
+			product_idx, size, count, pay)
+		values (#{mem_id}, #{mem_name}, #{order_postcode}, #{order_addr1}, #{order_addr2}, #{order_phone},
+				#{product_idx}, #{size}, #{count}, #{pay})
+	</insert>
+
+</mapper>

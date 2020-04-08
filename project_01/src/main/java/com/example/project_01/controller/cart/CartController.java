@@ -44,7 +44,7 @@ public class CartController {
 			cartList.get(i).setProduct_price(productDto.getProduct_price());
 		}
 		model.addAttribute("cartList",cartList);
-		return "cartList";
+		return "cart/cartList";
 	}
 	
 	@ResponseBody

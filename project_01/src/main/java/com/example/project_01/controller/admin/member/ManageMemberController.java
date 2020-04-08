@@ -43,7 +43,7 @@ public class ManageMemberController {
 		searchMemberDto.setMem_id(search);
 		model.addAttribute("searchMemberDto",searchMemberDto);
 		
-		return "admin_memberlist";
+		return "admin/admin_memberlist";
 	}
 	@ResponseBody
 	@RequestMapping("/admin/member/delete")

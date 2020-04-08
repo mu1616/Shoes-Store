@@ -62,7 +62,7 @@ public class ProductController {
 		else  //검색어를 통해 요청한 경우
 			model.addAttribute("searchWord",searchWord);
 		System.out.println(searchDto);
-		return "productList";
+		return "product/productList";
 	}
 	
 	@RequestMapping("/product/detail")
@@ -73,7 +73,7 @@ public class ProductController {
 		List<StockDTO> stockList = stockDao.selectByProduct(productDto.getProduct_idx());
 		model.addAttribute("productDto",productDto);
 		model.addAttribute("stockList", stockList);
-		return "productDetail";
+		return "product/productDetail";
 	}
 	
 	@RequestMapping(value="/product/qna/{product_idx}" , method = RequestMethod.GET)
@@ -97,7 +97,7 @@ public class ProductController {
 		int start = (currentPage-1)*10;
 		List<QnaDTO> qnaList = qnaDao.selectQnaByProduct(start, 10, qna_product);
 		model.addAttribute("qnaList",qnaList);
-		return "qnaTable";
+		return "product/qnaTable";
 	}
 	
 	@ResponseBody

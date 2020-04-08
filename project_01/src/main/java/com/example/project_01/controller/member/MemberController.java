@@ -27,13 +27,13 @@ public class MemberController {
 
 	@RequestMapping(value = "/member/login", method = RequestMethod.GET)
 	public String login() {
-		return "login";
+		return "member/login";
 	}
 	
 	@RequestMapping("member/login/fail")
 	public String loginFail(Model model) {
 		model.addAttribute("loginFail", "로그인에 실패하였습니다.");
-		return "/login";
+		return "member/login";
 	}
 
 	/*
@@ -58,7 +58,7 @@ public class MemberController {
 
 	@RequestMapping(value = "/member/join", method = RequestMethod.GET)
 	public String join() {
-		return "join";
+		return "member/join";
 	}
 
 	@RequestMapping(value = "/member/join", method = RequestMethod.POST)
@@ -72,7 +72,7 @@ public class MemberController {
 			return "error/joinError";
 		}
 
-		return "welcome";
+		return "member/welcome";
 	}
 
 	@ResponseBody

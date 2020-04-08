@@ -47,7 +47,7 @@ public class ManageProductController {
 	ProductDAO productDao;
 	@RequestMapping(value = "/admin/product/register", method = RequestMethod.GET)
 	public String registerPage() {
-		return "admin";
+		return "admin/admin";
 	}
 
 	@RequestMapping(value = "/admin/product/register", method = RequestMethod.POST)
@@ -152,7 +152,7 @@ public class ManageProductController {
 		searchDto.setProduct_idx(search);
 		model.addAttribute("searchDto",searchDto);
 		model.addAttribute("searchOption",searchOption);
-		return "admin_productlist";
+		return "/admin/admin_productlist";
 	}
 	@RequestMapping("/admin/product/stock")
 	public String showStock(Model model, int product_idx) {
@@ -198,7 +198,7 @@ public class ManageProductController {
 	public String modifyPage(int product_idx, Model model) {
 		ProductEntity productEntity = productDao.selectOne(product_idx);
 		model.addAttribute("productEntity",productEntity);
-		return "admin_productmodify";
+		return "admin/admin_productmodify";
 	}
 	
 	@RequestMapping(value = "/admin/product/modify", method = RequestMethod.POST)
@@ -220,7 +220,7 @@ public class ManageProductController {
 		List<ProductDTO> productList = productDao.selectProductByDisplay(display_md);
 		model.addAttribute("productList",productList);
 		model.addAttribute("category",display_md);
-		return "admin_mainDisplay";
+		return "admin/admin_mainDisplay";
 	}
 	
 	@RequestMapping(value="/admin/product/mainDisplay/add", method=RequestMethod.GET)
