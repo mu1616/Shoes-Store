@@ -60,7 +60,6 @@ public class OrderService {
 	@Transactional
 	public void insertOrder(int[] size, int[] count, int[] product, MemberDTO memberDto) {
 		OrderDTO[] orderList = new OrderDTO[product.length];
-		System.out.println(memberDto);
 		for (int i = 0; i < orderList.length; i++) {
 			orderList[i] = new OrderDTO();
 			orderList[i].setProduct_idx(product[i]);

@@ -4,7 +4,8 @@
 	<ul>
 		<li>구매한 상품의 취소/반품은 구매내역에서 신청 가능합니다.</li>
 		<li>상품문의 게시판을 통해 취소나 환불, 반품 등은 처리되지 않습니다.</li>
-		<span style="float:right"><button type="button" class="btn btn-outline-primary btn-sm" onclick="qnaBtn()">문의하기</button></span>
+		<span style="float:right" sec:authorize="isAuthenticated()"><button type="button" class="btn btn-outline-primary btn-sm" onclick="qnaBtn()">문의하기</button></span>
+		<span style="float:right" sec:authorize="!isAuthenticated()"><button type="button" class="btn btn-outline-primary btn-sm" onclick="alert('로그인이 필요한 서비스입니다.')">문의하기</button></span>
 		<li>공개 게시판이므로 전화번호, 메일 주소 등 고객님의 소중한 개인정보는 절대 남기지 말아주세요.</li> 
 	</ul>
 	<div style="font-size:11px">

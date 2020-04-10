@@ -7,6 +7,8 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.thymeleaf.extras.springsecurity4.dialect.SpringSecurityDialect;
 
+import com.example.project_01.security.LoginSuccessHandler;
+
 @Configuration
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
@@ -35,6 +37,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         		.loginProcessingUrl("/loginProcess")
         		.defaultSuccessUrl("/")
         		.failureUrl("/member/login/fail")
+        		.successHandler(new LoginSuccessHandler("/"))
         		.permitAll()
         		.and();
         http .logout()
@@ -42,7 +45,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         	 .logoutSuccessUrl("/") 
         	 .invalidateHttpSession(true);
         
-        http.exceptionHandling().accessDeniedPage("/access-denied");
+        //로그인중이긴 한데(role은 있는데) 인가되지 않는 role 일때
+        http.exceptionHandling().accessDeniedPage("/access-denied"); 
         http
         .headers()
            .frameOptions()

@@ -1,10 +1,10 @@
 package com.example.project_01.controller.cart;
 
 import java.security.Principal;
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -23,9 +23,11 @@ public class CartController {
 	CartDAO cartDao;
 	@Autowired
 	ProductDAO productDao;
+	
 	@ResponseBody
 	@RequestMapping("/cart/insert")
 	public String insertCart(@RequestBody CartDTO [] cartList, Principal principal) {
+		System.out.println("gg");
 		for(CartDTO cartDto : cartList) {
 			cartDto.setCart_member(principal.getName());
 			cartDao.insertCart(cartDto);

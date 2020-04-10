@@ -299,8 +299,8 @@ function insertCart() {
 	    		if(confirm('장바구니에 담겼습니다. \n장바구니로 지금 이동하시겠습니까?')){
 	    			location.href = "/cart/list";
 	    		}
-	    	} else {
-	    		alert('로그인이 필요합니다.');
+	    	}else {
+	    		location.href = "/member/login";
 	    	}
 	    }
 	});

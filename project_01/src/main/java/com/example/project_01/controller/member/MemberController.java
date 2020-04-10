@@ -1,5 +1,6 @@
 package com.example.project_01.controller.member;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +27,11 @@ public class MemberController {
 	MemberService memberService;
 
 	@RequestMapping(value = "/member/login", method = RequestMethod.GET)
-	public String login() {
+	public String login(HttpServletRequest request) {
+		//url에 주소를 쳐서 요청하는 경우 referer가 안생기고 
+		//페이지 내에서 클릭을 통해서(혹은 js를 통해) 이동하는 경우 referer가 생긴다
+		String referer = request.getHeader("Referer");
+		request.getSession().setAttribute("prevPage", referer);
 		return "member/login";
 	}
 	
