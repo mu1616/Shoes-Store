@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.example.project_01.exception.UnauthorizedException;
 import com.example.project_01.model.category.dao.CategoryDAO;
 import com.example.project_01.model.pagination.dto.PageDTO;
 import com.example.project_01.model.product.dao.ProductDAO;
@@ -106,16 +107,19 @@ public class ProductController {
 		if(principal == null) return new QnaDTO();
 		QnaDTO qnaDto = qnaDao.selectOne(qna_idx, new SearchQnaDTO());
 		if(!principal.getName().equals(qnaDto.getQna_member())) return new QnaDTO();
-		System.out.println(qnaDto);
-		System.out.println(principal.getName());
 		return qnaDto;
 	}
 	@ResponseBody
 	@RequestMapping("/product/qna/delete")
-	public void deleteOne(Principal principal, int qna_idx) {
+	public String deleteOne(Principal principal, int qna_idx)  {
+		String msg = null;
 		QnaDTO qnaDto = qnaDao.selectOne(qna_idx, new SearchQnaDTO());
 		if(principal.getName().equals(qnaDto.getQna_member())) {
 			qnaDao.deleteOne(qna_idx);
+			msg = "삭제하였습니다.";
+		}else {
+			msg = "권한없음";
 		}
+		return msg;
 	}
 }

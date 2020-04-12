@@ -1,6 +1,9 @@
 package com.example.project_01.service.order;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.example.project_01.model.cart.dto.CartDTO;
+import com.example.project_01.model.member.dao.MemberDAO;
 import com.example.project_01.model.member.dto.MemberDTO;
 import com.example.project_01.model.order.dao.OrderDAO;
 import com.example.project_01.model.order.dto.OrderDTO;
@@ -23,7 +27,8 @@ public class OrderService {
 	ProductDAO productDao;
 	@Autowired
 	OrderDAO orderDao;
-
+	@Autowired
+	MemberDAO memberDao;
 	// 품절 체크
 	public List<CartDTO> checkSoldOut(int[] size, int[] product, int[] count) {
 		List<CartDTO> soldOutList = new ArrayList<>();
@@ -39,7 +44,7 @@ public class OrderService {
 		}
 		return soldOutList;
 	}
-
+	//구매하려는 상품정보를 받아서 orderList로 반환
 	public List<CartDTO> getOrderList(int[] product, int[] size, int[] count) {
 		List<CartDTO> orderList = new ArrayList<>();
 		for (int i = 0; i < product.length; i++) {
@@ -59,6 +64,10 @@ public class OrderService {
 
 	@Transactional
 	public void insertOrder(int[] size, int[] count, int[] product, MemberDTO memberDto) {
+		Calendar calendar = Calendar.getInstance();
+		Date date = calendar.getTime();
+		String time = (new SimpleDateFormat("yyyyMMddHHmmss").format(date));	
+		String member_idx = Integer.toString(memberDao.findById(memberDto.getMem_id()).getMem_idx());
 		OrderDTO[] orderList = new OrderDTO[product.length];
 		for (int i = 0; i < orderList.length; i++) {
 			orderList[i] = new OrderDTO();
@@ -72,6 +81,8 @@ public class OrderService {
 			orderList[i].setOrder_phone(memberDto.getMem_phone());
 			orderList[i].setOrder_postcode(memberDto.getMem_postcode());
 			orderList[i].setPay(productDao.selectOne(product[i]).getProduct_price() * count[i]);
+			String orderCode = time+member_idx+product[i]+i;
+			orderList[i].setOrder_code(orderCode);
 		}
 
 		for (OrderDTO orderDto : orderList) {

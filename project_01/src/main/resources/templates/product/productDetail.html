@@ -114,7 +114,7 @@ th,td {
 <div class="container">
 <h5 style="font-weight:600">구매후기 (0)</h5><br>
 	<ul>
-		<li>구매후기 작성은 주문내역조회 -> 후기작성을 통해 작성할 수 있습니다.</li>
+		<li>구매후기 작성은 주문/배송 조회 -> 후기작성을 통해 작성할 수 있습니다.</li>
 	</ul><br><hr>
 <div align="center"><br><img src="/static/img/noExist.png" style="width:700px;height:250px"></div>
 </div>
@@ -318,7 +318,7 @@ function deleteQna(qna_idx){
 		        alert("code = "+ request.status + " message = " + request.responseText + " error = " + error); // 실패 시 처리
 		       },
 		    success : function(data) {
-		    	alert('삭제하였습니다.');
+		    	alert(data);
 		    	qna_page(1);
 		    }
 		});

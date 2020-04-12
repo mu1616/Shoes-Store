@@ -24,11 +24,11 @@
 	<div class="container">
 	<div th:fragment="header">
 		<div class="shop-menu clearfix pull-right" th:object="${session.memberDto}">
-			<a href="#" sec:authorize="isAuthenticated()"class="text-dark"><i class="fa text-primary" th:text="${#authentication.principal.username}+'님'"></i></a>&nbsp
-			<a href="/admin" sec:authorize="hasRole('ROLE_ADMIN')"class="text-dark"><i class="fa fa-home "></i>Admin</a>&nbsp
-			<a href="/cart/list" class="text-dark"><i class="fa fa-shopping-cart"></i> Cart</a>&nbsp&nbsp 
-			<a sec:authorize="!isAuthenticated()" href="/member/login"class="text-dark"><i class="fa fa-lock"></i> Login</a>
-			<a sec:authorize="isAuthenticated()" href="/member/logout"class="text-dark"><i class="fa fa-lock"></i> Logout</a>
+			<a href="/order/list" sec:authorize="isAuthenticated()"class="text-dark"><i class="fa text-primary" th:text="${#authentication.principal.username}+'님'"></i></a>&nbsp
+			<a href="/admin" sec:authorize="hasRole('ROLE_ADMIN')"class="text-dark"><i class="fa fa-home "></i>ADMIN</a>&nbsp
+			<a sec:authorize="isAuthenticated()" href="/cart/list" class="text-dark"><i class="fa fa-shopping-cart"></i> 장바구니</a>&nbsp&nbsp  
+			<a sec:authorize="!isAuthenticated()" href="/member/login"class="text-dark"><i class="fa fa-lock"></i> 로그인</a>
+			<a sec:authorize="isAuthenticated()" href="/member/logout"class="text-dark"><i class="fa fa-lock"></i> 로그아웃</a>
 			
 		</div>
 		<br>

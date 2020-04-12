@@ -12,10 +12,14 @@ public class OrderDTO {
 	private String order_phone;
 	private Date order_date;
 	private String order_state;
+	private String order_code;
 	private int product_idx;
 	private int size;
 	private int count;
 	private int pay;
+	private String product_image;
+	private String product_brand;
+	private String product_name;
 	public int getOrder_idx() {
 		return order_idx;
 	}
@@ -95,13 +99,44 @@ public class OrderDTO {
 	public void setOrder_state(String order_state) {
 		this.order_state = order_state;
 	}
+	public String getOrder_code() {
+		return order_code;
+	}
+	public void setOrder_code(String order_code) {
+		this.order_code = order_code;
+	}
+	
+	public String getProduct_image() {
+		return product_image;
+	}
+	public void setProduct_image(String product_image) {
+		this.product_image = product_image;
+	}
+	
+	public String getProduct_brand() {
+		return product_brand;
+	}
+	public void setProduct_brand(String product_brand) {
+		this.product_brand = product_brand;
+	}
+	
+	public String getProduct_name() {
+		return product_name;
+	}
+	public void setProduct_name(String product_name) {
+		this.product_name = product_name;
+	}
 	@Override
 	public String toString() {
 		return "OrderDTO [order_idx=" + order_idx + ", mem_id=" + mem_id + ", mem_name=" + mem_name
 				+ ", order_postcode=" + order_postcode + ", order_addr1=" + order_addr1 + ", order_addr2=" + order_addr2
 				+ ", order_phone=" + order_phone + ", order_date=" + order_date + ", order_state=" + order_state
-				+ ", product_idx=" + product_idx + ", size=" + size + ", count=" + count + ", pay=" + pay + "]";
+				+ ", order_code=" + order_code + ", product_idx=" + product_idx + ", size=" + size + ", count=" + count
+				+ ", pay=" + pay + "]";
 	}
+	
+	
+	
 	
 	
 	

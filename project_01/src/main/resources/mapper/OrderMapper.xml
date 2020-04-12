@@ -8,9 +8,26 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<insert id="insertOrder">
 		insert into order_
 		(mem_id, mem_name, order_postcode, order_addr1, order_addr2, order_phone,
-			product_idx, size, count, pay)
+			product_idx, size, count, pay, order_code)
 		values (#{mem_id}, #{mem_name}, #{order_postcode}, #{order_addr1}, #{order_addr2}, #{order_phone},
-				#{product_idx}, #{size}, #{count}, #{pay})
+				#{product_idx}, #{size}, #{count}, #{pay}, #{order_code})
 	</insert>
-
+	<select id="selectById" resultType ="com.example.project_01.model.order.dto.OrderDTO">
+		SELECT o.*,p.product_image AS product_image, p.product_name, 
+			b.brand_name AS product_brand FROM order_ AS o
+		JOIN product AS p
+		ON o.product_idx = p.product_idx
+		JOIN brand b
+		ON p.product_brand = b.brand_idx
+		where mem_id = #{mem_id} and (order_date >= #{startDate} AND order_date &lt; #{endDate})
+		order by order_date desc
+	</select>
+	<select id="selectByCode" resultType ="com.example.project_01.model.order.dto.OrderDTO">
+		select * from order_
+		where order_code = #{order_code}
+	</select>
+	<delete id="deleteByCode">
+		delete from order_
+		where order_code = #{order_code}
+	</delete>
 </mapper>

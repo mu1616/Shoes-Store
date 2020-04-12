@@ -18,4 +18,6 @@ public class GlobalExceptionHandler {
 	public String handleIntegrityException() {
 		return "/error/IntegrityError";
 	}
+	
+
 }

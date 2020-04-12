@@ -19,12 +19,18 @@
 <body>
 <div class="container">
 <th:block th:include="./home.html::header"></th:block>
-<br><br>
-<h3 style="font-weight:600">장바구니</h3><br>
-<div style="min-height:200px">
-<button type="button" class="btn btn-outline-primary btn-sm" onclick="deleteList()">선택삭제</button>
-<table class="table" style="font-size:14px">
-<thead class="thead-light">
+<br>
+<div class="container-fluid">
+<div class="row">
+<th:block th:include="order/orderList.html::side"></th:block>
+<main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
+   	 <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+     	 <h3 style="font-weight:600">장바구니</h3>
+ 	 </div>
+ 	 <div style="min-height:200px">
+		<button type="button" class="btn btn-outline-primary btn-sm" onclick="deleteList()">선택삭제</button>
+		<table class="table" style="font-size:14px">
+		<thead class="thead-light">
         <tr>
         <th scope="col"><input type="checkbox" id="allCheck"></th>
         <th scope="col">번호</th>
@@ -75,11 +81,16 @@
 	<span style="float:right;font-size:24px;color:red;font-weight:600" id="pay"></span><br>
 	</div>
 </div>
-<hr><br>
+<hr color="black"><br>
 <div align="center">
 <button type="button" class="btn btn-danger btn-lg" style="font-size:24px;width:260px;height:70px" onclick="order()">주문하기</button>
 </div>
-<br><br><hr>
+<br><br>
+</main>
+</div>
+</div>
+<hr>
+
 <th:block th:include="./home.html::footer"></th:block>
 <br>
 </div>
@@ -174,7 +185,7 @@ function deleteProduct(idx){
 		        alert("code = "+ request.status + " message = " + request.responseText + " error = " + error); // 실패 시 처리
 		       },
 		    success : function(data) {
-		    	alert('해당 상품을 삭제하였습니다.');
+		    	alert('구매를 취소하였습니다.');
 		    	document.location.reload(true);
 		    }
 		});
