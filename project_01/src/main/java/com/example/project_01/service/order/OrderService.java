@@ -83,6 +83,7 @@ public class OrderService {
 			orderList[i].setPay(productDao.selectOne(product[i]).getProduct_price() * count[i]);
 			String orderCode = time+member_idx+product[i]+i;
 			orderList[i].setOrder_code(orderCode);
+			memberDao.updateTotal(memberDto.getMem_id(), orderList[i].getPay());
 		}
 
 		for (OrderDTO orderDto : orderList) {
@@ -90,5 +91,14 @@ public class OrderService {
 			int stock = stockDao.getStock(orderDto.getProduct_idx(), orderDto.getSize());
 			stockDao.updateStock(orderDto.getProduct_idx(), orderDto.getSize(), stock - orderDto.getCount());
 		}
+	}
+	
+	@Transactional
+	public void deleteOne(String order_code, String mem_id) {
+		OrderDTO orderDto = orderDao.selectByCode(order_code);
+		orderDao.deleteByCode(order_code);
+		memberDao.updateTotal(mem_id, -orderDto.getPay());
+		int stock = stockDao.getStock(orderDto.getProduct_idx(), orderDto.getSize());
+		stockDao.updateStock(orderDto.getProduct_idx(), orderDto.getSize(), stock + orderDto.getCount());
 	}
 }

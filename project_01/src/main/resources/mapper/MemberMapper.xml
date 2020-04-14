@@ -61,4 +61,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		SET mem_role = #{mem_role}
 		WHERE mem_idx = #{mem_idx}
 	</update>
+	
+	<update id="updateTotal">
+		UPDATE member 
+		SET mem_total = mem_total + (#{pay}) 
+		WHERE mem_id= #{mem_id}
+	</update>
 </mapper>

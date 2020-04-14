@@ -20,7 +20,7 @@
       <th:block th:fragment="side">
         <nav class="col-md-2 d-none d-md-block sidebar" style="background-color:#e6e6e6;">
           <div class="sidebar-sticky">
-            <ul class="nav flex-column">
+            <ul class="nav flex-column"><br>
               <li class="nav-item">
                 <span class="nav-link " href="#">
                   <font color="black"><span data-feather="file"></span>
@@ -49,13 +49,8 @@
                 </span>
               </li>
               <li class="nav-item">
-                <a class="nav-link " href="#">
-                  <font color="gray">주문목록</font><span class="sr-only">(current)</span>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link " href="#">
-                  <font color="gray">취소/교환/반품/환불</font><span class="sr-only">(current)</span>
+                <a class="nav-link " href="/admin/order/list">
+                  <font color="gray">주문목록/관리</font><span class="sr-only">(current)</span>
                 </a>
               </li>
               
@@ -67,7 +62,7 @@
               </li>
               <li class="nav-item">
                 <a class="nav-link " href="/admin/member/list/1">
-                  <font color="gray">회원목록</font><span class="sr-only">(current)</span>
+                  <font color="gray">회원목록/관리</font><span class="sr-only">(current)</span>
                 </a>
               </li>
             
@@ -80,11 +75,6 @@
               <li class="nav-item">
                 <a class="nav-link " href="#">
                   <font color="gray">공지사항 </font><span class="sr-only">(current)</span>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link " href="#">
-                  <font color="gray">문의게시판 </font><span class="sr-only">(current)</span>
                 </a>
               </li>
               <li class="nav-item">
@@ -107,7 +97,7 @@
         <h1 class="h2">상품등록</h1>
         
         </div><br>
-        <form class="form-inline" method="post" id="frm" action="/admin/product/register" enctype="multipart/form-data">
+        <form class="form-inline" method="post" id="frm" action="/admin/product/register" enctype="multipart/form-data" style="font-size:14px;">
         <table class="table">
         <tr>
         <th scope="row" >상품명</th>

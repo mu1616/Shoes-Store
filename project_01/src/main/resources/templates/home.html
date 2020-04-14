@@ -23,12 +23,12 @@
 <body>
 	<div class="container">
 	<div th:fragment="header">
-		<div class="shop-menu clearfix pull-right" th:object="${session.memberDto}">
-			<a href="/order/list" sec:authorize="isAuthenticated()"class="text-dark"><i class="fa text-primary" th:text="${#authentication.principal.username}+'님'"></i></a>&nbsp
-			<a href="/admin" sec:authorize="hasRole('ROLE_ADMIN')"class="text-dark"><i class="fa fa-home "></i>ADMIN</a>&nbsp
-			<a sec:authorize="isAuthenticated()" href="/cart/list" class="text-dark"><i class="fa fa-shopping-cart"></i> 장바구니</a>&nbsp&nbsp  
-			<a sec:authorize="!isAuthenticated()" href="/member/login"class="text-dark"><i class="fa fa-lock"></i> 로그인</a>
-			<a sec:authorize="isAuthenticated()" href="/member/logout"class="text-dark"><i class="fa fa-lock"></i> 로그아웃</a>
+		<div class="shop-menu clearfix pull-right" th:object="${session.memberDto}" style="font-size:14px;">
+			<span sec:authorize="isAuthenticated()"><a href="/order/list" class="text-dark"><i class="fa text-primary" th:text="${#authentication.principal.username}+'님'"></i></a>&nbsp; <font color="grey">|</font></span>
+			<span sec:authorize="hasRole('ROLE_ADMIN')"><a href="/admin" class="text-dark">ADMIN</a>&nbsp; <font color="grey">|</font></span>
+			<span sec:authorize="isAuthenticated()"><a  href="/cart/list" class="text-dark">장바구니</a>&nbsp; <font color="grey">|</font></span> 
+			<a sec:authorize="!isAuthenticated()" href="/member/login"class="text-dark">로그인</a>
+			<a sec:authorize="isAuthenticated()" href="/member/logout"class="text-dark">로그아웃</a>
 			
 		</div>
 		<br>
@@ -41,7 +41,6 @@
 					<a class="nav-link dropdown-toggle text-dark" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" 
 					aria-haspopup="true" aria-expanded="false">고객센터</a>
 					<div class="dropdown-menu" aria-labelledby="navbarDropdown">
-						<a class="dropdown-item" href="#">문의게시판</a>
 						<a class="dropdown-item" href="#">공지사항</a>
 						<a class="dropdown-item" href="#">FAQ</a>
 					</div>

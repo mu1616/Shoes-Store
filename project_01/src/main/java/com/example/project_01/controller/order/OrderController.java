@@ -90,7 +90,7 @@ public class OrderController {
 	public String orderCancel(Principal principal, String order_code) {
 		String msg = null;
 		if (orderDao.selectByCode(order_code).getMem_id().equals(principal.getName())) {
-			orderDao.deleteByCode(order_code);
+			orderService.deleteOne(order_code, principal.getName());
 			msg = "구매를 취소하였습니다.";
 		} else {
 			msg = "권한없음";

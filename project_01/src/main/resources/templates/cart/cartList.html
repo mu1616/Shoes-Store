@@ -34,8 +34,7 @@
         <tr>
         <th scope="col"><input type="checkbox" id="allCheck"></th>
         <th scope="col">번호</th>
-        <th scope="col" style="width:250px"></th>
-        <th scope="col">상품정보</th>
+        <th scope="col" colspan="2">상품정보</th>
         <th scope="col">수량</th>
         <th scope="col">판매가(1개)</th>
         <th scope="col"></th>
@@ -185,7 +184,7 @@ function deleteProduct(idx){
 		        alert("code = "+ request.status + " message = " + request.responseText + " error = " + error); // 실패 시 처리
 		       },
 		    success : function(data) {
-		    	alert('구매를 취소하였습니다.');
+		    	alert('해당 상품을 삭제하였습니다.');
 		    	document.location.reload(true);
 		    }
 		});
