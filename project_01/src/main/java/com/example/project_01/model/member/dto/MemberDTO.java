@@ -19,7 +19,22 @@ public class MemberDTO {
 	private String mem_role;
 	private int mem_total;
 	private String mem_postcode;
+	private String birth;
+	private String regdate;
 	
+	
+	public String getBirth() {
+		return birth;
+	}
+	public void setBirth(String birth) {
+		this.birth = birth;
+	}
+	public String getRegdate() {
+		return regdate;
+	}
+	public void setRegdate(String regdate) {
+		this.regdate = regdate;
+	}
 	public String getMem_postcode() {
 		return mem_postcode;
 	}

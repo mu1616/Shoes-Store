@@ -5,15 +5,49 @@
 <meta charset="UTF-8">
 <title>Admin Page</title>
 <th:block th:include="./bootstrap.html::bootstrap"></th:block>
-    <style>
-      th,td {
-        text-align: center;
-      }
-      .left{
-      	text-align: left;
-      }
+<style>
+th,td {
+  text-align: center;
+}
+.left{
+	text-align: left;
+}
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+    font-size:14px;
+}
 
-    </style>
+/* Modal Content/Box */
+.modal-content {
+    background-color: #fefefe;
+    margin: 15% auto; /* 15% from the top and centered */
+    padding: 20px;
+    border: 1px solid #888;
+    width: 50%; /* Could be more or less, depending on screen size */                          
+}
+/* The Close Button */
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+.close:hover,
+.close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+</style>
 </head>
 <body>
 <th:block th:include="admin/admin.html::header"></th:block>
@@ -71,7 +105,7 @@
         <tr>
           <td style="vertical-align:middle;" th:text="${memberDto.mem_idx}"></td>
           <td style="vertical-align:middle;" th:text="${memberDto.mem_id}"></td>
-          <td style="vertical-align:middle;" th:text="${#numbers.formatInteger(memberDto.mem_total, 0, 'COMMA')}"></td>
+          <td style="vertical-align:middle;" th:text="${#numbers.formatInteger(memberDto.mem_total, 0, 'COMMA')}+'원'"></td>
           <td style="vertical-align:middle;" ><button type="button" class="btn btn-link" th:text="${memberDto.mem_role}" th:onclick="'showRole('+${memberDto.mem_idx}+')'"></button></td>
           <td style="vertical-align:middle;">
 	          <button type="button" class="btn" th:onclick="'showDetail('+${memberDto.mem_idx}+')'">상세정보</button>
@@ -98,9 +132,55 @@
         </div>
         <br><br>
         </main>
-        </div>
-        </div>
-
+   </div>
+</div>
+<div id="myModal" class="modal">
+ 
+      <!-- Modal content -->
+      <div class="modal-content">
+        <span class="close" onclick="closeModal()">&times;</span> 
+        <div align="center">                                                           
+        <table class="table table-bordered">
+        	<tr>
+        		<th scope="row">아이디</th>
+        		<td id="detail_id"></td>
+        	</tr>
+        	<tr>
+        		<th scope="row">이름</th>
+        		<td id="detail_name"></td>
+        	</tr>
+        	<tr>
+        		<th scope="row">등급</th>
+        		<td id="detail_role"></td>
+        	</tr>
+        	<tr>
+        		<th scope="row">생년월일</th>
+        		<td id="detail_birth"></td>
+        	</tr>
+        	<tr>
+        		<th scope="row">가입날짜</th>
+        		<td id="detail_joinDate"></td>
+        	</tr>
+        	<tr>
+        		<th scope="row">연락처</th>
+        		<td id="detail_phone"></td>
+        	</tr>
+        	<tr>
+        		<th scope="row">주소</th>
+        		<td id="detail_addr1"></td>
+        	</tr>
+        	<tr>
+        		<th scope="row">상세주소</th>
+        		<td id="detail_addr2"></td>
+        	</tr>
+        	<tr>
+        		<th scope="row">총 주문금액</th>
+        		<td id="detail_pay"></td>
+        	</tr>
+        </table>
+        </div>   
+      </div>
+</div>
 
 <!-- Icons -->
 <script src="https://unpkg.com/feather-icons/dist/feather.min.js"></script>
@@ -167,10 +247,37 @@ function deleteMember(mem_idx){
 	}
 }
 function showDetail(mem_idx) {
-	window.open("/admin/member/detail?mem_idx="+mem_idx,"detail","width=600, height=550");
+	$.ajax({
+		url: "/admin/member/detail",
+		type: "POST",
+		dataType: "json",
+		data: {"mem_idx":mem_idx},
+		error:function(request,status,error){
+	        alert("code = "+ request.status + " message = " + request.responseText + " error = " + error); // 실패 시 처리
+	       },
+	    success : function(data) {
+	    	document.getElementById('detail_id').innerHTML = data.mem_id;
+	    	document.getElementById('detail_name').innerHTML = data.mem_name;
+	    	document.getElementById('detail_role').innerHTML = data.mem_role;
+	    	document.getElementById('detail_birth').innerHTML = data.birth;
+	    	document.getElementById('detail_joinDate').innerHTML = data.regdate;
+	    	document.getElementById('detail_phone').innerHTML = data.mem_phone;
+	    	document.getElementById('detail_addr1').innerHTML = data.mem_addr1;
+	    	document.getElementById('detail_addr2').innerHTML = data.mem_addr2;
+	    	document.getElementById('detail_pay').innerHTML = numberFormat(data.mem_total)+"원";
+	    	document.getElementById('myModal').style.display = "block";
+	    }
+	});
 }
 function showRole(mem_idx) {
 	window.open("/admin/member/role?mem_idx="+mem_idx,"detail","width=460, height=300");
+}
+function closeModal(){
+	document.getElementById('myModal').style.display = "none";
+}
+//3자리마다 점찍어주는 함수
+function numberFormat(inputNumber) {
+	   return inputNumber.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 }
 </script>
 </body>

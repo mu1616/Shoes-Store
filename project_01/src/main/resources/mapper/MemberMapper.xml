@@ -45,7 +45,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</delete>
 	
 	<select id="findByIdx" resultType="com.example.project_01.model.member.dto.MemberDTO">
-		select mem_idx,mem_name,mem_birth,mem_id,mem_pw,mem_phone,mem_addr1,
+		select mem_idx,mem_name,mem_birth,mem_id,mem_pw,mem_phone,mem_addr1,mem_total,
 			mem_addr2,mem_regdate,mem_postcode,r.role_name as mem_role from member 
 		join role as r 
 		on mem_role=role_idx 

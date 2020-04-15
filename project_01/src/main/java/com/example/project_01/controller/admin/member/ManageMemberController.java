@@ -1,5 +1,6 @@
 package com.example.project_01.controller.admin.member;
 
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +14,7 @@ import com.example.project_01.model.member.dao.MemberDAO;
 import com.example.project_01.model.member.dto.MemberDTO;
 import com.example.project_01.model.member.dto.RoleDTO;
 import com.example.project_01.model.member.dto.SearchMemberDTO;
+import com.example.project_01.model.order.dto.OrderDTO;
 import com.example.project_01.model.pagination.dto.PageDTO;
 import com.example.project_01.service.admin.member.ManageMemberService;
 
@@ -51,11 +53,13 @@ public class ManageMemberController {
 		memberDao.deleteOne(mem_idx);
 	}
 	
+	@ResponseBody
 	@RequestMapping("/admin/member/detail")
-	public String memberDetail(int mem_idx, Model model) {
+	public MemberDTO memberDetail(int mem_idx) {
 		MemberDTO memberDto = memberDao.findByIdx(mem_idx);
-		model.addAttribute("memberDto", memberDto);
-		return "popup/memberDetail";
+		memberDto.setRegdate((new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(memberDto.getMem_regdate())));
+		memberDto.setBirth((new SimpleDateFormat("yyyy-MM-dd").format(memberDto.getMem_birth())));
+		return memberDto;
 	}
 	
 	@RequestMapping("/admin/member/role")
