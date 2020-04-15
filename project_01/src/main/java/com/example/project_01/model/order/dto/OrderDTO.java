@@ -2,6 +2,8 @@ package com.example.project_01.model.order.dto;
 
 import java.util.Date;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 public class OrderDTO {
 	private int order_idx;
 	private String mem_id;
@@ -20,6 +22,15 @@ public class OrderDTO {
 	private String product_image;
 	private String product_brand;
 	private String product_name;
+	private String date;
+	
+	
+	public String getDate() {
+		return date;
+	}
+	public void setDate(String date) {
+		this.date = date;
+	}
 	public int getOrder_idx() {
 		return order_idx;
 	}

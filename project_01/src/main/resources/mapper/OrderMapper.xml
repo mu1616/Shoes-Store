@@ -12,9 +12,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		values (#{mem_id}, #{mem_name}, #{order_postcode}, #{order_addr1}, #{order_addr2}, #{order_phone},
 				#{product_idx}, #{size}, #{count}, #{pay}, #{order_code})
 	</insert>
+	
 	<select id="selectById" resultType ="com.example.project_01.model.order.dto.OrderDTO">
 		SELECT o.*,p.product_image AS product_image, p.product_name, 
-			b.brand_name AS product_brand FROM order_ AS o
+			b.brand_name AS product_brand 
+		FROM order_ AS o
 		JOIN product AS p
 		ON o.product_idx = p.product_idx
 		JOIN brand b
@@ -22,12 +24,57 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		where mem_id = #{mem_id} and (order_date >= #{startDate} AND order_date &lt; #{endDate})
 		order by order_date desc
 	</select>
+	
 	<select id="selectByCode" resultType ="com.example.project_01.model.order.dto.OrderDTO">
-		select * from order_
+		select o.*, p.product_name 
+		from order_ as o
+		JOIN product AS p
+		ON o.product_idx = p.product_idx
 		where order_code = #{order_code}
 	</select>
+	
 	<delete id="deleteByCode">
 		delete from order_
 		where order_code = #{order_code}
 	</delete>
+	
+	<select id="countOrder" resultType="int">
+		select count(*) 
+		from order_
+		where order_date >= #{fromDate} and order_date &lt;= CONCAT(#{toDate},"23-59-59")
+		<if test="searchType.equals('주문번호')">
+			and order_code like #{searchWord}
+		</if>
+		<if test="searchType.equals('아이디')">
+			and mem_id like #{searchWord}
+		</if>
+			and order_state like #{order_state}
+	</select>
+	
+	<select id="selectOrder" resultType="com.example.project_01.model.order.dto.OrderDTO">
+		select o.*, p.product_image AS product_image, p.product_name, 
+			b.brand_name AS product_brand
+		from order_ as o
+		JOIN product AS p
+		ON o.product_idx = p.product_idx
+		JOIN brand b
+		ON p.product_brand = b.brand_idx
+		where order_date >= #{searchOrderDto.fromDate} and 
+			order_date &lt;= CONCAT(#{searchOrderDto.toDate},"23-59-59")
+		<if test="searchOrderDto.searchType.equals('주문번호')">
+			and order_code like #{searchOrderDto.searchWord}
+		</if>
+		<if test="searchOrderDto.searchType.equals('아이디')">
+			and mem_id like #{searchOrderDto.searchWord}
+		</if>
+			and order_state like #{searchOrderDto.order_state}
+		order by order_date desc
+		limit #{start}, #{size}
+	</select>
+	
+	<update id="updateState">
+		update order_
+		set order_state = #{order_state}
+		where order_code = #{order_code}
+	</update>
 </mapper>

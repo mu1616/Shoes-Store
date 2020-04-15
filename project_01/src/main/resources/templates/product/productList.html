@@ -74,17 +74,13 @@ function searchOption(){
 }
 
 function makePageBtn(){
-	var currentPage = [[${pageDto.currentPage}]];
-	var startPage = [[${pageDto.startPage}]];
-	//console.log([[${pageDto}]]);
-	var num = currentPage%10;
-	if(num==0) num = 10;
-	if(startPage==1){
-		$(".pageBtn").eq(num-1).removeClass('btn-outline-secondary');
-		$(".pageBtn").eq(num-1).addClass('btn-outline-primary');
-	} else {
-		$(".pageBtn").eq(num+1).removeClass('btn-outline-secondary');
-		$(".pageBtn").eq(num+1).addClass('btn-outline-primary');
+	currentPage = [[${pageDto.currentPage}]];
+	var btns = document.getElementsByClassName('pageBtn');
+	for(var i=0; i<btns.length; i++) {
+		if(btns[i].innerText == currentPage){
+			btns[i].classList.remove('btn-outline-secondary');
+			btns[i].classList.add('btn-outline-primary');
+		}
 	}
 }
 

@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+<meta charset="UTF-8">
+<title>Admin Page</title>
+<th:block th:include="./bootstrap.html::bootstrap"></th:block>
+<style>
+.dateBtn {
+	width:50px;
+}
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+    font-size:14px;
+}
+
+/* Modal Content/Box */
+.modal-content {
+    background-color: #fefefe;
+    margin: 15% auto; /* 15% from the top and centered */
+    padding: 20px;
+    border: 1px solid #888;
+    width: 50%; /* Could be more or less, depending on screen size */                          
+}
+/* The Close Button */
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+.close:hover,
+.close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+</style>
+</head>
+<body>
+<th:block th:include="admin/admin.html::header"></th:block>
+<div class="container-fluid">
+	<div class="row">
+		<th:block th:include="admin/admin.html::side"></th:block>
+		<main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
+			<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+				<h1 class="h2">주문관리</h1>
+			</div>
+			<div class="filter">
+				<font color="gray">[검색옵션]</font>
+				<form action="/admin/order/list/1" method="get" id="searchForm">
+				<table class="table table-bordered" style="font-size:14px;vertical-align:middle;">
+					<tr>
+						<th scope="row" class="table-active mid" style="vertical-align:middle;">검색분류</th>
+						<td>
+							<select class="custom-select mr-sm-2" id="searchType" name="searchType"style="width:200px;float:left;">
+								<option value="검색분류" selected>검색분류</option>
+								<option value="주문번호">주문번호</option>
+								<option value="아이디">아이디</option>
+							</select>
+							<input type="text" class="form-control" id="searchWord" name="searchWord" style="float:left;width:230px;">
+						</td>
+					</tr>
+					<tr>
+						<th scope="row" class="table-active" style="vertical-align:middle;">기간</th>
+						<td>
+							<input id="fromDate" type="date" name="fromDate" class="form-control" style="width:200px;float:left;">
+							<span style="float:left;">&nbsp;~&nbsp;</span>
+							<input id="toDate" type="date" name="toDate" class="form-control" style="width:200px;float:left;">
+						</td>
+					</tr>
+					<tr>
+						<th class="table-active" style="vertical-align:middle;">상태</th>
+						<td>
+							<input type="radio" name="order_state" value="%" id="all" checked> 전체&nbsp;&nbsp;
+							<input type="radio" name="order_state" value="배송준비중" id="배송준비중"> 배송준비중&nbsp;&nbsp;
+							<input type="radio" name="order_state" value="배송중" id="배송중"> 배송중&nbsp;&nbsp;
+							<input type="radio" name="order_state" value="배송완료" id="배송완료"> 배송완료&nbsp;&nbsp;
+							<input type="radio" name="order_state" value="구매확정" id="구매확정"> 구매확정
+						</td>
+					</tr>
+				</table>
+				</form>
+				<div align="center">
+					<input type="button" class="btn btn-primary" style="width:100px"value="검색" onclick="searchBtn()" > 
+				</div>
+			</div>
+			<hr>
+			<div style="min-height:350px;">
+			<font color="grey"><p>[총 <font color="red" th:text="${pageDto.countRecord}"></font>개]</p></font>
+			<table class="table" style="font-size:14px;text-align:center;">
+				<thead class="thead-light">
+			        <tr>       
+				        <th scope="col" colspan="2">상품정보</th>
+				        <th scope="col">아이디</th>
+				        <th scope="col">주문번호</th>
+				        <th scope="col">주문일자</th>
+				        <th scope="col">수량</th>
+				        <th scope="col">주문금액</th>
+				        <th scope="col">주문상태</th>
+			        </tr>
+		        </thead>
+		        
+		        <tbody>
+		        	<th:block th:each="orderDto:${orderList}">
+						<tr>
+						<td style="vertical-align:middle;"><a th:href="'/product/detail?product_idx='+${orderDto.product_idx}"><img th:src="${orderDto.product_image}" style="width:100px;height:80px"></a></td>
+						<td style="vertical-align:middle;text-align:left;width:200px;">
+				        	<span th:text="'['+${orderDto.product_brand}+']'"></span>&nbsp
+				        	<span th:text=${orderDto.product_name} ></span><br>
+				        	<span style="color:gray;font-weight:300">사이즈: </span>
+				        	<span style="color:gray;font-weight:300" th:text="${orderDto.size}" ></span>
+				        </td>
+				        <td style="vertical-align:middle;" th:text="${orderDto.mem_id}"></td>
+				        <td style="vertical-align:middle;"><span th:text="${orderDto.order_code}" th:id="'code'+${orderDtoStat.count}"style="cursor:pointer;" onclick="orderDetail(this.innerHTML)"></span></td>
+				        <td style="vertical-align:middle;" th:text="${#calendars.format(orderDto.order_date,'yyyy-MM-dd')}"></td>
+						<td style="vertical-align:middle;" th:text="${orderDto.count}"></td>
+						<td style="vertical-align:middle;" th:text="${#numbers.formatInteger(orderDto.pay, 0, 'COMMA')}+'원'"></td>
+						<td th:if="${orderDto.order_state} == '배송준비중'"style="vertical-align:middle;"><button th:onclick="'updateState('+${orderDtoStat.count}+',this)'">배송준비중</button></td>
+						<td th:if="${orderDto.order_state} == '배송중'"style="vertical-align:middle;"><button th:onclick="'updateState('+${orderDtoStat.count}+',this)'">배송중</button></td>
+						<td th:if="${orderDto.order_state} == '배송완료'"style="vertical-align:middle;">배송완료</td>
+						<td th:if="${orderDto.order_state} == '구매확정'"style="vertical-align:middle;">구매확정</td>
+						</tr>
+					</th:block>        	
+		        </tbody>				
+			</table><hr>
+			</div>			
+			<div align="center">
+	        <th:block th:if="${pageDto.totalPage}>0">
+		        <th:block th:if="${pageDto.startPage}>10" >				
+					<button class="btn btn-outline-secondary btn-sm pageBtn" style="WIDTH: 20pt; HEIGHT: 23pt" onclick="clickPageBtn(1)">&#171</button>
+		        	<button class="btn btn-outline-secondary btn-sm pageBtn" th:onclick="'clickPageBtn('+${pageDto.startPage}+'-10)'">&#60</button>
+		        </th:block>
+		        <th:block th:each="num:${#numbers.sequence(pageDto.startPage,pageDto.endPage)}">
+		        	<button class="btn btn-outline-secondary btn-sm pageBtn" th:onclick="'clickPageBtn('+${num}+')'"><th:block th:text="${num}"></th:block></button>
+		        </th:block>
+		        <th:block th:if="${pageDto.endPage}<${pageDto.totalPage}" >
+					<button class="btn btn-outline-secondary btn-sm pageBtn" th:onclick="'clickPageBtn('+${pageDto.startPage}+'+10)'">></button>
+					<button class="btn btn-outline-secondary btn-sm pageBtn" style="WIDTH: 20pt; HEIGHT: 23pt" th:onclick="'clickPageBtn('+${pageDto.totalPage}+')'">&#187</button>
+		        </th:block>
+	        </th:block>
+        	</div><br><br>
+		</main>
+	</div>
+</div>
+<div id="myModal" class="modal">
+ 
+      <!-- Modal content -->
+      <div class="modal-content">
+        <span class="close" onclick="closeModal()">&times;</span> 
+        <div align="center">                                                           
+        <table class="table table-bordered">
+        	<tr>
+        		<th scope="row">주문번호</th>
+        		<td id="detail_orderCode"></td>
+        	</tr>
+        	<tr>
+        		<th scope="row">상품명</th>
+        		<td id="detail_productName"></td>
+        	</tr>
+        	<tr>
+        		<th scope="row">이름</th>
+        		<td id="detail_userName"></td>
+        	</tr>
+        	<tr>
+        		<th scope="row">우편번호</th>
+        		<td id="detail_postCode"></td>
+        	</tr>
+        	<tr>
+        		<th scope="row">주소</th>
+        		<td id="detail_addr1"></td>
+        	</tr>
+        	<tr>
+        		<th scope="row">상세주소</th>
+        		<td id="detail_addr2"></td>
+        	</tr>
+        	<tr>
+        		<th scope="row">연락처</th>
+        		<td id="detail_phone"></td>
+        	</tr>
+        	<tr>
+        		<th scope="row">주문일자</th>
+        		<td id="detail_date"></td>
+        	</tr>
+        	<tr>
+        		<th scope="row">주문금액</th>
+        		<td id="detail_pay"></td>
+        	</tr>
+        </table>
+        </div>   
+      </div>
+</div>
+<!-- Icons -->
+<script src="https://unpkg.com/feather-icons/dist/feather.min.js"></script>
+<script>
+  feather.replace()
+</script>
+<script th:inline="javascript">
+initDate();
+makePageBtn();
+searchOption();
+function initDate(){
+	document.getElementById('fromDate').valueAsDate = new Date();
+	document.getElementById('toDate').valueAsDate = new Date();
+}
+function searchBtn(){
+	document.getElementById('searchForm').submit();
+}
+function searchOption(){
+	var optionList = document.getElementById('searchType').children;
+	if([[${searchOrderDto.searchType=="주문번호"}]]){
+		optionList[1].selected = true;
+	}
+	if([[${searchOrderDto.searchType=="아이디"}]]){
+		optionList[2].selected = true;
+	}
+	if([[${searchOrderDto.searchWord}]] != null){
+		document.getElementById('searchWord').value = [[${searchOrderDto.searchWord}]];
+	}
+	document.getElementById('fromDate').value = [[${searchOrderDto.fromDate}]];
+	document.getElementById('toDate').value = [[${searchOrderDto.toDate}]];
+	if([[${searchOrderDto.order_state}]]=="%"){
+		document.getElementById('all').checked = true;
+	}else {
+		document.getElementById([[${searchOrderDto.order_state}]]).checked = true;
+	}
+}
+function makePageBtn(){
+	currentPage = [[${pageDto.currentPage}]];
+	var btns = document.getElementsByClassName('pageBtn');
+	for(var i=0; i<btns.length; i++) {
+		if(btns[i].innerText == currentPage){
+			btns[i].classList.remove('btn-outline-secondary');
+			btns[i].classList.add('btn-outline-primary');
+		}
+	}
+}
+
+function clickPageBtn(num){
+	searchOption();
+	var frm = document.getElementById('searchForm');
+	frm.action = "/admin/order/list/"+num;
+	frm.submit();
+}
+function updateState(num, obj){
+	var order_state = obj.innerHTML;
+	var order_code = document.getElementById('code'+num).innerHTML;
+	console.log(order_code+" "+order_state);
+	
+	if(confirm('변경하시겠습니까?')){
+		$.ajax({
+			url: "/admin/order/updateState",
+			type: "POST",
+			data: {"order_state":order_state,"order_code":order_code},
+			error:function(request,status,error){
+		        alert("code = "+ request.status + " message = " + request.responseText + " error = " + error); // 실패 시 처리
+		       },
+		    success : function(data) {
+		    	alert('변경되었습니다.');
+		    	if(order_state=="배송중") {
+		    		var parent = obj.parentNode;
+		    		parent.removeChild(obj);
+		    		parent.innerHTML = "배송완료";
+		    	}
+		    	else if(order_state=="배송준비중")
+		    		obj.innerHTML = "배송중";
+		    }
+		});
+	}
+	
+}
+function orderDetail(order_code){
+	document.getElementById('myModal').style.display = "block";
+	$.ajax({
+		url: "/admin/order/detail",
+		type: "POST",
+		dataType: "json",
+		data: {"order_code":order_code},
+		error:function(request,status,error){
+	        alert("code = "+ request.status + " message = " + request.responseText + " error = " + error); // 실패 시 처리
+	       },
+	    success : function(data) {
+	    	document.getElementById('detail_orderCode').innerHTML = data.order_code;
+	    	document.getElementById('detail_productName').innerHTML = data.product_name;
+	    	document.getElementById('detail_userName').innerHTML = data.mem_name;
+	    	document.getElementById('detail_postCode').innerHTML = data.order_postcode;
+	    	document.getElementById('detail_addr1').innerHTML = data.order_addr1;
+	    	document.getElementById('detail_addr2').innerHTML = data.order_addr2;
+	    	document.getElementById('detail_phone').innerHTML = data.order_phone;
+	    	document.getElementById('detail_date').innerHTML = data.date;
+	    	document.getElementById('detail_pay').innerHTML = numberFormat(data.pay)+"원";
+	    }
+	});
+}
+function closeModal(){
+	document.getElementById('myModal').style.display="none";
+}
+//3자리마다 점찍어주는 함수
+function numberFormat(inputNumber) {
+	   return inputNumber.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+}
+</script>
+</body>
+</html>

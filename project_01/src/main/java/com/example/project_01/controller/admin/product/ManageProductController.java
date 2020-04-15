@@ -123,12 +123,9 @@ public class ManageProductController {
 	}
 	
 	
-	@RequestMapping("/admin/product/list/{idx}")
-	public String productList(@PathVariable(value = "idx", required = false) Optional<Integer> idx, 
-			@ModelAttribute SearchDTO searchDto, Model model, String searchOption, String search) {		
-		int currentPage = 1;
-		if (idx.isPresent())
-			currentPage = idx.get();	
+	@RequestMapping("/admin/product/list/{currentPage}")
+	public String productList(@PathVariable(value = "currentPage", required = false) int currentPage, 
+			@ModelAttribute SearchDTO searchDto, Model model, String searchOption, String search) {			
 		if(currentPage <=0) 
 			return "redirect:/admin/product/list/1";
 		if(searchOption !=null) {
@@ -142,11 +139,11 @@ public class ManageProductController {
 					searchDto.setProduct_idx(search);
 				}
 		}		
-		PageDTO pageDto = productService.calPage(currentPage, searchDto);
+		PageDTO pageDto = productService.calPage(currentPage, 10, searchDto);
 		if(currentPage > pageDto.getTotalPage() && pageDto.getCountRecord()!=0) 
 			return "redirect:/admin/product/list/"+pageDto.getTotalPage();		
 		model.addAttribute("pageDto", pageDto);
-		List<ProductDTO> productList = productService.selectProduct(currentPage, searchDto);
+		List<ProductDTO> productList = productService.selectProduct(currentPage, 10, searchDto);
 		model.addAttribute("productList", productList);
 		searchDto.setProduct_name(search);
 		searchDto.setProduct_idx(search);

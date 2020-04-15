@@ -7,6 +7,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 public class MemberDTO {
 	private int mem_idx;
 	private String mem_name;
+	//yyyyMMdd 형식으로 데이터가 입력되어야함
 	@DateTimeFormat(pattern = "yyyyMMdd")
 	private Date mem_birth;
 	private String mem_id;

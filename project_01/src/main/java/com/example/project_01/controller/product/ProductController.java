@@ -51,8 +51,8 @@ public class ProductController {
 			searchDto.setProduct_category("%"+searchWord+"%");
 			searchDto.setProduct_name("%"+searchWord+"%");
 		}			
-		PageDTO pageDto = productService.calPage(idx, searchDto);
-		List<ProductDTO> productList = productService.selectProduct(idx, searchDto);	
+		PageDTO pageDto = productService.calPage(idx, 20, searchDto);
+		List<ProductDTO> productList = productService.selectProduct(idx, 20, searchDto);	
 		model.addAttribute("productList",productList);
 		model.addAttribute("pageDto", pageDto);
 		model.addAttribute("searchDto",searchDto);
@@ -93,7 +93,9 @@ public class ProductController {
 	
 	@RequestMapping("/product/qnaShow")
 	public String qnaShow(int currentPage, int qna_product, Model model) {
-		PageDTO pageDto = qnaService.calPage(currentPage, qna_product);
+		SearchQnaDTO searchQnaDto = new SearchQnaDTO();
+		searchQnaDto.setQna_product(qna_product);
+		PageDTO pageDto = qnaService.calPage(currentPage, 10, 5, searchQnaDto);
 		model.addAttribute("qna_pageDto",pageDto);
 		int start = (currentPage-1)*10;
 		List<QnaDTO> qnaList = qnaDao.selectQnaByProduct(start, 10, qna_product);

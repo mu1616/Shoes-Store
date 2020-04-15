@@ -62,6 +62,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<if test="is_answer == 3">
 			and qna_answer is not null
 		</if>
+		<if test="qna_product != 0">
+			and qna_product = #{qna_product}
+		</if>
 	</select>
 	<select id="selectOne" parameterType="com.example.project_01.model.product.qna.dto.SearchQnaDTO"
 		resultType="com.example.project_01.model.product.qna.dto.QnaDTO">

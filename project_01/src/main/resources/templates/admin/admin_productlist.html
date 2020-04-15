@@ -5,15 +5,17 @@
 <meta charset="UTF-8">
 <title>Admin Page</title>
 <th:block th:include="./bootstrap.html::bootstrap"></th:block>
-    <style>
-      th,td {
-        text-align: center;
-      }
-      .left{
-      	text-align: left;
-      }
-
-    </style>
+<style>
+th,td {
+  text-align: center;
+}
+.left{
+	text-align: left;
+}
+.middle {
+	vertical-align:middle;
+}
+</style>
 </head>
 <body>
 <th:block th:include="admin/admin.html::header"></th:block>
@@ -29,7 +31,7 @@
         <form id="searchFrm" action="/admin/product/list/1" method="get" style="font-size:14px;">
         <table class="table table-bordered">
         <tr>
-        <th scope="row" style="width:100px" class="table-active">검색분류</th>
+        <th scope="row" style="width:100px;vertical-align:middle;" class="table-active">검색분류</th>
         <td class="left" style="width:200px">        	
 	        <select class="custom-select mr-sm-2" name="searchOption"style="width:200px;float:left;">
 	        <option id="option" value="검색분류" selected>검색분류</option>
@@ -40,7 +42,7 @@
         </td>
         </tr>
         <tr>
-        <th scope="row"class="table-active">상품분류</th>
+        <th scope="row"class="table-active" style="vertical-align:middle;">상품분류</th>
         <td colspan="2" class="left">
         	<select class="custom-select mr-sm-2" name="product_category"id="product_category" style="width:200px;">
 		        <option value="%" selected>상품 분류</option>
@@ -79,12 +81,12 @@
         <hr>
         <font color="grey"><p>[총 <font color="red" th:text="${pageDto.countRecord}"></font>개]</p></font>
         <input type="button" value="선택삭제" class="btn btn-outline-primary btn-sm" onclick="deleteList();">
-        <table class="table table-bordered" style="font-size:14px">
+        <table class="table" style="font-size:14px">
         <thead class="thead-light">
         <tr>
         <th scope="col"><input type="checkbox" id="allCheck"></th>
         <th scop="col">상품번호</th>
-        <th scope="col">상품명</th>
+        <th scope="col" colspan="2">상품명</th>
         <th scope="col">판매가</th>
         <th scope="col">브랜드</th>
         <th scope="col">상품분류</th>
@@ -95,23 +97,24 @@
         </thead>
         <th:block th:each="productDto:${productList}">
         <tr>
-        <td style="vertical-align:middle;"><input type="checkbox" class="checkList" th:value="${productDto.product_idx}"></td>
-        <td style="vertical-align:middle;" th:text="${productDto.product_idx}"></td>
-        <td style="text-align:left;"><a th:href="'/product/detail?product_idx='+${productDto.product_idx}"><img th:src="${productDto.product_image}" width="100" height="75"></a><br><a th:href="'/product/detail?product_idx='+${productDto.product_idx}" ><font color="black" th:text=${productDto.product_name}></font></a></td>
-        <td style="vertical-align:middle;" th:text="${#numbers.formatInteger(productDto.product_price, 0, 'COMMA')}"></td>
-        <td style="vertical-align:middle;" th:text="${productDto.product_brand}"></td>
-        <td style="vertical-align:middle;" th:text="${productDto.product_category}"></td>
-        <td style="vertical-align:middle;" >
-	        <th:block th:if="${productDto.product_isDisplay}==1">
-	        	<span th:text="O"></span>
-	        </th:block>
-	        <th:block th:if="${productDto.product_isDisplay}==0">
-	        	<span th:text="X"></span>
-	        </th:block>
-        </td>
-        <td style="vertical-align:middle;"><input type="button" value="재고관리" class="btn btn-link" th:onclick="'showStock('+${productDto.product_idx}+')'"></td>
-        <td style="vertical-align:middle;"><input type="button" value="수정" class="btn btn-sm" th:onclick="'modify('+${productDto.product_idx}+')'" >
-       		 <input type="button" value="삭제" class="btn btn-sm" th:onclick="'deleteOne('+${productDto.product_idx}+')'"></td>
+	        <td style="vertical-align:middle;"><input type="checkbox" class="checkList" th:value="${productDto.product_idx}"></td>
+	        <td style="vertical-align:middle;" th:text="${productDto.product_idx}"></td>
+	        <td style="vertical-align:middle;"><a th:href="'/product/detail?product_idx='+${productDto.product_idx}"><img th:src="${productDto.product_image}" style="width:100px;height:80px"></a></td>
+	        <td style="vertical-align:middle;"><a th:href="'/product/detail?product_idx='+${productDto.product_idx}" ><font color="black" th:text=${productDto.product_name}></font></a></td>
+	        <td style="vertical-align:middle;" th:text="${#numbers.formatInteger(productDto.product_price, 0, 'COMMA')}"></td>
+	        <td style="vertical-align:middle;" th:text="${productDto.product_brand}"></td>
+	        <td style="vertical-align:middle;" th:text="${productDto.product_category}"></td>
+	        <td style="vertical-align:middle;" >
+		        <th:block th:if="${productDto.product_isDisplay}==1">
+		        	<span th:text="O"></span>
+		        </th:block>
+		        <th:block th:if="${productDto.product_isDisplay}==0">
+		        	<span th:text="X"></span>
+		        </th:block>
+	        </td>
+	        <td style="vertical-align:middle;"><input type="button" value="재고관리" class="btn btn-link" th:onclick="'showStock('+${productDto.product_idx}+')'"></td>
+	        <td style="vertical-align:middle;"><input type="button" value="수정" class="btn btn-sm" th:onclick="'modify('+${productDto.product_idx}+')'" >
+	       		 <input type="button" value="삭제" class="btn btn-sm" th:onclick="'deleteOne('+${productDto.product_idx}+')'"></td>
         </tr>
         </th:block>
         </table><br>
@@ -202,16 +205,13 @@ function searchOption(){
 }
 
 function makePageBtn(){
-	var currentPage = [[${pageDto.currentPage}]];
-	var startPage = [[${pageDto.startPage}]];
-	var num = currentPage%10;
-	if(num==0) num = 10;
-	if(startPage==1){
-		$(".pageBtn").eq(num-1).removeClass('btn-outline-secondary');
-		$(".pageBtn").eq(num-1).addClass('btn-outline-danger');
-	} else {
-		$(".pageBtn").eq(num+1).removeClass('btn-outline-secondary');
-		$(".pageBtn").eq(num+1).addClass('btn-outline-danger');
+	currentPage = [[${pageDto.currentPage}]];
+	var btns = document.getElementsByClassName('pageBtn');
+	for(var i=0; i<btns.length; i++) {
+		if(btns[i].innerText == currentPage){
+			btns[i].classList.remove('btn-outline-secondary');
+			btns[i].classList.add('btn-outline-primary');
+		}
 	}
 }
 

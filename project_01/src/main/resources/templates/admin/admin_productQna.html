@@ -122,11 +122,12 @@ function searchOption(){
 }
 
 function makePageBtn(){
+	currentPage = [[${pageDto.currentPage}]];
 	var btns = document.getElementsByClassName('pageBtn');
 	for(var i=0; i<btns.length; i++) {
 		if(btns[i].innerText == currentPage){
 			btns[i].classList.remove('btn-outline-secondary');
-			btns[i].classList.add('btn-outline-danger');
+			btns[i].classList.add('btn-outline-primary');
 		}
 	}
 }

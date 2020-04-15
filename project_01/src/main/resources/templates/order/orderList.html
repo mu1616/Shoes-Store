@@ -108,7 +108,7 @@
 		<td style="vertical-align:middle;" th:text="${#numbers.formatInteger(orderDto.pay, 0, 'COMMA')}+'원'"></td>
 		<td th:if="${orderDto.order_state} == '배송준비중'"style="vertical-align:middle;">배송준비중<br><button th:onclick="'orderCancel('+${orderDtoStat.count}+')'">구매취소</button></td>
 		<td th:if="${orderDto.order_state} == '배송중'"style="vertical-align:middle;">배송중<br><button>배송조회</button></td>
-		<td th:if="${orderDto.order_state} == '배송완료'"style="vertical-align:middle;">배송완료<br><button>구매확정</button></td>
+		<td th:if="${orderDto.order_state} == '배송완료'"style="vertical-align:middle;">배송완료<br><button th:onclick="'updateState('+${orderDtoStat.count}+',this)'">구매확정</button></td>
 		<td th:if="${orderDto.order_state} == '구매확정'"style="vertical-align:middle;">구매확정<br><button>후기작성</button></td>
 		</tr>
 		</th:block>
@@ -163,6 +163,26 @@ function orderCancel(num){
 		    }
 		});
 	}
+}
+function updateState(num, obj){
+	var order_state = obj.innerHTML;
+	var order_code = document.getElementById('code'+num).innerHTML;
+	
+	if(confirm('구매를 확정하시겠습니까? 구매확정 이후에는 교환/환불이 불가능합니다.')){
+		$.ajax({
+			url: "/admin/order/updateState",
+			type: "POST",
+			data: {"order_state":order_state,"order_code":order_code},
+			error:function(request,status,error){
+		        alert("code = "+ request.status + " message = " + request.responseText + " error = " + error); // 실패 시 처리
+		       },
+		    success : function(data) {
+		    	//alert('변경하였습니다.');
+		    	location.reload();
+		    }
+		});
+	}
+	
 }
 </script>    
 

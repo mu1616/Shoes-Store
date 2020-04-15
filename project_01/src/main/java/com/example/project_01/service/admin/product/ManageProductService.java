@@ -17,8 +17,9 @@ import com.example.project_01.model.product.dto.ProductDTO;
 import com.example.project_01.model.product.dto.ProductEntity;
 import com.example.project_01.model.search.dto.SearchDTO;
 import com.example.project_01.model.stock.dao.StockDAO;
+import com.example.project_01.service.product.ProductService;
 @Service
-public class ManageProductService {
+public class ManageProductService extends ProductService{
 	@Value("${file.upload.directory}")
 	String filePath;
 	@Autowired
@@ -56,31 +57,6 @@ public class ManageProductService {
 				stockDao.insertStock(productEntity.getProduct_idx(), size[i], count[i]);
 			}
 		}
-	}
-	//페이지당 상품개수 = 10
-	public PageDTO calPage(int currentPage, SearchDTO searchDto) {
-		int countRecord;
-		int startPage;
-		int endPage;
-		int totalPage;
-		PageDTO pageDto = new PageDTO();
-		pageDto.setCurrentPage(currentPage);
-		countRecord = productDao.countProduct(searchDto);
-		pageDto.setCountRecord(countRecord);
-		totalPage = (int)Math.ceil(countRecord/(double)10);
-		pageDto.setTotalPage(totalPage);
-		startPage = (currentPage-1)/10*10+1;
-		pageDto.setStartPage(startPage);
-		endPage = (startPage+9>totalPage)?totalPage:startPage+9;
-		pageDto.setEndPage(endPage);
-		return pageDto;
-	}
-	
-	public List<ProductDTO> selectProduct(int currentPage, SearchDTO searchDto) {
-		int start = (currentPage-1) * 10;
-		int length = 10;
-		List<ProductDTO> productList = productDao.selectProduct(start, length, searchDto);
-		return productList;
 	}
 	
 	public void fileUpload(ProductEntity productEntity, MultipartFile files) {

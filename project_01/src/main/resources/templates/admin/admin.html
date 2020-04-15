@@ -2,272 +2,287 @@
 <html xmlns:th="http://www.thymeleaf.org">
 
 <head>
-<meta charset="UTF-8">
-<title>Admin Page</title>
-<th:block th:include="./bootstrap.html::bootstrap"></th:block>
+    <meta charset="UTF-8">
+    <title>Admin Page</title>
+    <th:block th:include="./bootstrap.html::bootstrap"></th:block>
 
 </head>
 
 
 <body>
-<div th:fragment="header">
-<nav class="navbar navbar-dark fixed-top bg-dark flex-md-nowrap p-0 shadow">
-      <a href="/"><span class="navbar-brand col-sm-3 col-md-2 mr-0" >Shoes Factory</span></a>
-</nav><br><br>
-</div>
- <div class="container-fluid">
-      <div class="row">
-      <th:block th:fragment="side">
-        <nav class="col-md-2 d-none d-md-block sidebar" style="background-color:#e6e6e6;">
-          <div class="sidebar-sticky">
-            <ul class="nav flex-column"><br>
-              <li class="nav-item">
-                <span class="nav-link " href="#">
-                  <font color="black"><span data-feather="file"></span>
-                	  상품관리</font><span class="sr-only">(current)</span>
-                </span>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link " href="/admin/product/register">
-                  <font color="gray">상품등록</font><span class="sr-only">(current)</span>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link " href="/admin/product/list/1">
-                  <font color="gray">상품목록</font><span class="sr-only">(current)</span>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link " href="/admin/product/mainDisplay">
-                  <font color="gray">메인상품 진열</font><span class="sr-only">(current)</span>
-                </a>
-              </li>
-              <li class="nav-item">
-                <span class="nav-link " href="#">
-                  <font color="black"><span data-feather="file"></span>
-                	  주문관리</font><span class="sr-only">(current)</span>
-                </span>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link " href="/admin/order/list">
-                  <font color="gray">주문목록/관리</font><span class="sr-only">(current)</span>
-                </a>
-              </li>
-              
-              <li class="nav-item">
-                <span class="nav-link " href="#">
-                  <font color="black"><span data-feather="file"></span>
-                	  회원관리</font><span class="sr-only">(current)</span>
-                </span>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link " href="/admin/member/list/1">
-                  <font color="gray">회원목록/관리</font><span class="sr-only">(current)</span>
-                </a>
-              </li>
-            
-              <li class="nav-item">
-                <span class="nav-link " href="#">
-                  <font color="black"><span data-feather="file"></span>
-                	  게시판관리</font><span class="sr-only">(current)</span>
-                </span>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link " href="#">
-                  <font color="gray">공지사항 </font><span class="sr-only">(current)</span>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link " href="#">
-                  <font color="gray">FAQ </font><span class="sr-only">(current)</span>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link " href="/admin/board/qna/1">
-                  <font color="gray">상품문의 </font><span class="sr-only">(current)</span>
-                </a>
-              </li>
-             </ul>
-            </div>
-           <br><br><br>
-          </nav>
-      		</th:block>
-          <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
-      <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-        <h1 class="h2">상품등록</h1>
-        
-        </div><br>
-        <form class="form-inline" method="post" id="frm" action="/admin/product/register" enctype="multipart/form-data" style="font-size:14px;">
-        <table class="table">
-        <tr>
-        <th scope="row" >상품명</th>
-        <td><input type="text" name="product_name" id="product_name" class="form-control" style="width:500px" ></td>
-        </tr>
-        <tr>
-        <th scope="row" >판매가</th>
-        <td><input type="text" name="product_price" id="product_price" class="form-control" style="width:200px" >원</td>
-        </tr>
-        <tr>
-        <th scope="row" >제조 브랜드</th>
-        <td>
-        <select class="custom-select mr-sm-2" name="product_brand"id="product_brand" style="width:200px;">
-        <option selected>제조 브랜드</option>
-        <option value="1">Nike</option>
-        <option value="2">Adidas</option>
-        <option value="3">Puma</option>
-        <option value="4">NewBalance</option>
-        <option value="5">Reebok</option>
-        <option value="6">Vans</option>
-      </select>
-        </td>
-        </tr>
-        <tr>
-        <th scope="row" >상품 분류</th>
-        <td>
-        <select class="custom-select mr-sm-2" name="product_category"id="product_category" style="width:200px;">
-        <option selected>상품 분류</option>
-        <option value="1">운동화</option>
-        <option value="2">스니커즈</option>
-        <option value="3">슬리퍼</option>
-        <option value="4">샌들</option>
-        <option value="5">축구/농구</option>
-        <option value="6">슬립온</option>
-      </select>
-        </td>
-        </tr>
-        <tr>
-        <th scope="row" >상품 상세설명</th>
-        <td>
-        <script type="text/javascript" th:src="@{/static/smarteditor/js/HuskyEZCreator.js}" charset="utf-8"></script>
-        <textarea name="product_contents" id="ir1" rows="20" cols="100"></textarea>
-        </td>
-        </tr>
-        <tr>
-        <th scope="row" >대표이미지</th>
-        <td><input type="file" name="profile" id="profile" onchange="displayImage(this);"><br>
-        	<span class="text-primary">권장Size : 600px*500px</span>
-        	<br><img id="loadImg" style="width:280px;height:200px;">
-        </td>        
-        </tr>
-        <tr>
-        <th scope="row" >진열상태</th>
-        <td>       
-			<input type="radio" class="radio"name="product_isDisplay" id="product_isDisplay"value="1">진열함&nbsp&nbsp&nbsp
-			<input type="radio" name="product_isDisplay" id="product_isDisplay" value="0">진열안함
-		</td>
-        </tr>
-        <tr>
-        <th scope="row" >메인 진열</th>
-        <td>
-        <input type="checkbox" class="form-check-input" name="mainDisplay" value="1">BestAward&nbsp&nbsp&nbsp
-        <input type="checkbox" class="form-check-input" name="mainDisplay" value="2">Sale&nbsp&nbsp&nbsp
-        <input type="checkbox" class="form-check-input" name="mainDisplay" value="3">New&nbsp&nbsp&nbsp
-        </td>
-        </tr>
-        <tr>
-        <th scope="row">재고</th>
-        <td id="place">사이즈  <input type="text" class="form-control" id="size" style="width:100px">&nbsp&nbsp&nbsp
-        	재고  <input type="text" class="form-control" id="stock" style="width:100px">&nbsp&nbsp
-        		<button type="button"class="btn btn-sm btn-primary" onclick="addStock()">추가</button>
-        </td>
-        </tr>
-        </table>        
-        </form><hr>
-        <div align="center">
-        	<input type="button" class="btn btn-outline-primary btn-lg" style="width:200pt;" value="상품등록" onclick="register();">
+    <div th:fragment="header">
+        <nav class="navbar navbar-dark fixed-top bg-dark flex-md-nowrap p-0 shadow">
+            <a href="/"><span class="navbar-brand col-sm-3 col-md-2 mr-0">Shoes Factory</span></a>
+        </nav><br><br>
+    </div>
+    <div class="container-fluid">
+        <div class="row">
+            <th:block th:fragment="side">
+                <nav class="col-md-2 d-none d-md-block sidebar" style="background-color:#e6e6e6;">
+                    <div class="sidebar-sticky">
+                        <ul class="nav flex-column"><br>
+                            <li class="nav-item">
+                                <span class="nav-link " href="#">
+                                    <font color="black"><span data-feather="file"></span>
+                                        상품관리</font><span class="sr-only">(current)</span>
+                                </span>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link " href="/admin/product/register">
+                                    <font color="gray">상품등록</font><span class="sr-only">(current)</span>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link " href="/admin/product/list/1">
+                                    <font color="gray">상품목록</font><span class="sr-only">(current)</span>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link " href="/admin/product/mainDisplay">
+                                    <font color="gray">메인상품 진열</font><span class="sr-only">(current)</span>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <span class="nav-link " href="#">
+                                    <font color="black"><span data-feather="file"></span>
+                                        주문관리</font><span class="sr-only">(current)</span>
+                                </span>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link " href="/admin/order/list/1">
+                                    <font color="gray">주문목록/관리</font><span class="sr-only">(current)</span>
+                                </a>
+                            </li>
+
+                            <li class="nav-item">
+                                <span class="nav-link " href="#">
+                                    <font color="black"><span data-feather="file"></span>
+                                        회원관리</font><span class="sr-only">(current)</span>
+                                </span>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link " href="/admin/member/list/1">
+                                    <font color="gray">회원목록/관리</font><span class="sr-only">(current)</span>
+                                </a>
+                            </li>
+
+                            <li class="nav-item">
+                                <span class="nav-link " href="#">
+                                    <font color="black"><span data-feather="file"></span>
+                                        게시판관리</font><span class="sr-only">(current)</span>
+                                </span>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link " href="#">
+                                    <font color="gray">공지사항 </font><span class="sr-only">(current)</span>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link " href="#">
+                                    <font color="gray">FAQ </font><span class="sr-only">(current)</span>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link " href="/admin/board/qna/1">
+                                    <font color="gray">상품문의 </font><span class="sr-only">(current)</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                    <br><br>
+                </nav>               
+            </th:block>
+            <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
+                <div
+                    class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                    <h1 class="h2">상품등록</h1>
+
+                </div><br>
+                <form class="form-inline" method="post" id="frm" action="/admin/product/register"
+                    enctype="multipart/form-data" style="font-size:14px;">
+                    <table class="table">
+                        <tr>
+                            <th scope="row">상품명</th>
+                            <td><input type="text" name="product_name" id="product_name" class="form-control"
+                                    style="width:500px"></td>
+                        </tr>
+                        <tr>
+                            <th scope="row">판매가</th>
+                            <td><input type="text" name="product_price" id="product_price" class="form-control"
+                                    style="width:200px">원</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">제조 브랜드</th>
+                            <td>
+                                <select class="custom-select mr-sm-2" name="product_brand" id="product_brand"
+                                    style="width:200px;">
+                                    <option selected>제조 브랜드</option>
+                                    <option value="1">Nike</option>
+                                    <option value="2">Adidas</option>
+                                    <option value="3">Puma</option>
+                                    <option value="4">NewBalance</option>
+                                    <option value="5">Reebok</option>
+                                    <option value="6">Vans</option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th scope="row">상품 분류</th>
+                            <td>
+                                <select class="custom-select mr-sm-2" name="product_category" id="product_category"
+                                    style="width:200px;">
+                                    <option selected>상품 분류</option>
+                                    <option value="1">운동화</option>
+                                    <option value="2">스니커즈</option>
+                                    <option value="3">슬리퍼</option>
+                                    <option value="4">샌들</option>
+                                    <option value="5">축구/농구</option>
+                                    <option value="6">슬립온</option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th scope="row">상품 상세설명</th>
+                            <td>
+                                <script type="text/javascript" th:src="@{/static/smarteditor/js/HuskyEZCreator.js}"
+                                    charset="utf-8"></script>
+                                <textarea name="product_contents" id="ir1" rows="20" cols="100"></textarea>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th scope="row">대표이미지</th>
+                            <td><input type="file" name="profile" id="profile" onchange="displayImage(this);"><br>
+                                <span class="text-primary">권장Size : 600px*500px</span>
+                                <br><img id="loadImg" style="width:280px;height:200px;">
+                            </td>
+                        </tr>
+                        <tr>
+                            <th scope="row">진열상태</th>
+                            <td>
+                                <input type="radio" class="radio" name="product_isDisplay" id="product_isDisplay"
+                                    value="1">진열함&nbsp&nbsp&nbsp
+                                <input type="radio" name="product_isDisplay" id="product_isDisplay" value="0">진열안함
+                            </td>
+                        </tr>
+                        <tr>
+                            <th scope="row">메인 진열</th>
+                            <td>
+                                <input type="checkbox" class="form-check-input" name="mainDisplay"
+                                    value="1">BestAward&nbsp&nbsp&nbsp
+                                <input type="checkbox" class="form-check-input" name="mainDisplay"
+                                    value="2">Sale&nbsp&nbsp&nbsp
+                                <input type="checkbox" class="form-check-input" name="mainDisplay"
+                                    value="3">New&nbsp&nbsp&nbsp
+                            </td>
+                        </tr>
+                        <tr>
+                            <th scope="row">재고</th>
+                            <td id="place">사이즈 <input type="text" class="form-control" id="size"
+                                    style="width:100px">&nbsp&nbsp&nbsp
+                                재고 <input type="text" class="form-control" id="stock" style="width:100px">&nbsp&nbsp
+                                <button type="button" class="btn btn-sm btn-primary" onclick="addStock()">추가</button>
+                            </td>
+                        </tr>
+                    </table>
+                </form>
+                <hr>
+                <div align="center">
+                    <input type="button" class="btn btn-outline-primary btn-lg" style="width:200pt;" value="상품등록"
+                        onclick="register();">
+                </div>
+            </main>
+
         </div>
-        </main>
-        
-              </div>
-              </div><br>
-              
-         
+    </div><br>
+
+
 <!-- Icons -->
 <script src="https://unpkg.com/feather-icons/dist/feather.min.js"></script>
 <script>
-  feather.replace()
+    feather.replace()
 </script>
 <script type="text/javascript">
 var oEditors = [];
 nhn.husky.EZCreator.createInIFrame({
- oAppRef: oEditors,
- elPlaceHolder: "ir1",
- sSkinURI: "/static/smarteditor/SmartEditor2Skin.html",
- fCreator: "createSEditor2"
- 
-});
-function register(){
-	var name = $("#product_name").val();
-	var price = $("#product_price").val();
-	var brand = document.getElementById("product_brand");
-	var stock = $("#product_stock").val();
-	var category = document.getElementById("product_category");
-	var profile = $("#profile").val();
-	var isDisplay = $("input:radio[name='product_isDisplay']").is(':checked');
+    oAppRef: oEditors,
+    elPlaceHolder: "ir1",
+    sSkinURI: "/static/smarteditor/SmartEditor2Skin.html",
+    fCreator: "createSEditor2"
 
-	if(name=="") {
-		alert('상품명을 확인해주세요');
-		return;
-	}
-	if(price==""){
-		alert('판매가를 확인해주세요');
-		return;
-	}
-	if(brand.options[brand.selectedIndex].value=="제조 브랜드") {
-		alert('제조 브랜드를 확인해주세요');
-		return;
-	}
-	if(stock==""){
-		alert('재고를 확인해주세요');
-		return;
-	}
-	if(category.options[category.selectedIndex].value=="상품 분류") {
-		alert('상품분류를 확인해주세요');
-		return;
-	}
-	if(profile==""){
-		alert('대표이미지를 확인해주세요');
-		return;
-	}
-	if(isDisplay==false) {
-		alert('진열상태를 확인해주세요');
-		return;
-	}
-	
-	if(confirm('상품을 등록하시겠습니까?')){
-		document.getElementById('ir1').value = oEditors.getById["ir1"].getIR();
-		$('#frm').submit();
-	}
+});
+function register() {
+    var name = $("#product_name").val();
+    var price = $("#product_price").val();
+    var brand = document.getElementById("product_brand");
+    var stock = $("#product_stock").val();
+    var category = document.getElementById("product_category");
+    var profile = $("#profile").val();
+    var isDisplay = $("input:radio[name='product_isDisplay']").is(':checked');
+
+    if (name == "") {
+        alert('상품명을 확인해주세요');
+        return;
+    }
+    if (price == "") {
+        alert('판매가를 확인해주세요');
+        return;
+    }
+    if (brand.options[brand.selectedIndex].value == "제조 브랜드") {
+        alert('제조 브랜드를 확인해주세요');
+        return;
+    }
+    if (stock == "") {
+        alert('재고를 확인해주세요');
+        return;
+    }
+    if (category.options[category.selectedIndex].value == "상품 분류") {
+        alert('상품분류를 확인해주세요');
+        return;
+    }
+    if (profile == "") {
+        alert('대표이미지를 확인해주세요');
+        return;
+    }
+    if (isDisplay == false) {
+        alert('진열상태를 확인해주세요');
+        return;
+    }
+
+    if (confirm('상품을 등록하시겠습니까?')) {
+        document.getElementById('ir1').value = oEditors.getById["ir1"].getIR();
+        $('#frm').submit();
+    }
 
 }
 
 function addStock() {
-	var size = $("#size").val();
-	var count = $("#stock").val();
-	console.log(size);
-	console.log(count);
-	var append = "<span><br>사이즈 <input type='text' class='form-control' value='" +size+ "'style='width:100px' name='size' readonly>" +
-			 	 "&nbsp&nbsp&nbsp&nbsp" +
-			 	 "재고 <input type='text' class='form-control' value='" +count+ "'style='width:100px' name='count' readonly>" +
-			 	 "&nbsp&nbsp&nbsp" +
-			 	 "<button type='button' class='btn btn-sm btn-secondary' onclick='delStock(this)'>삭제</button></span>";
-	$("#place").append(append);
-	return;
+    var size = $("#size").val();
+    var count = $("#stock").val();
+    console.log(size);
+    console.log(count);
+    var append = "<span><br>사이즈 <input type='text' class='form-control' value='" + size + "'style='width:100px' name='size' readonly>" +
+        "&nbsp&nbsp&nbsp&nbsp" +
+        "재고 <input type='text' class='form-control' value='" + count + "'style='width:100px' name='count' readonly>" +
+        "&nbsp&nbsp&nbsp" +
+        "<button type='button' class='btn btn-sm btn-secondary' onclick='delStock(this)'>삭제</button></span>";
+    $("#place").append(append);
+    return;
 }
 
 function delStock(btn) {
-	btn.parentNode.innerHTML ="";
+    btn.parentNode.innerHTML = "";
 }
 
-function displayImage(value) { 
-	if(value.files && value.files[0]) {
-		var reader = new FileReader();
-		reader.onload = function(e) {
-			$('#loadImg').attr('src',e.target.result);
-		}
-		reader.readAsDataURL(value.files[0]);
-	}
+function displayImage(value) {
+    if (value.files && value.files[0]) {
+        var reader = new FileReader();
+        reader.onload = function (e) {
+            $('#loadImg').attr('src', e.target.result);
+        }
+        reader.readAsDataURL(value.files[0]);
+    }
 }
 </script>
 </body>
+
 </html>
