@@ -42,6 +42,7 @@ public class ManageOrderService {
 		return orderList;
 	}
 	public void updateState(String order_code, String order_state) {
+		order_state = orderDao.selectByCode(order_code).getOrder_state();
 		if(order_state.equals("배송준비중")) {
 			order_state = "배송중";
 		} else if(order_state.equals("배송중")) {

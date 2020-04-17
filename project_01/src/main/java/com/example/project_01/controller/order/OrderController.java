@@ -97,4 +97,10 @@ public class OrderController {
 		}
 		return msg;
 	}
+	
+	@ResponseBody
+	@RequestMapping("/order/updateState")
+	public void updateState(String order_code) {
+		orderService.updateState(order_code);		
+	}
 }

@@ -70,6 +70,10 @@ function openInNewTab() {
 }
 function answerBtn(){
 	var qna_answer = document.getElementById('qna_answer').value;
+	if(qna_answer=="") {
+		alert('답변을 입력해주세요');
+		return;
+	}
 	var qna_idx = [[${qnaDto.qna_idx}]];
 	if(confirm('작성을 완료하시겠습니까?')){
 		$.ajax({

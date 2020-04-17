@@ -29,6 +29,7 @@ public class OrderService {
 	OrderDAO orderDao;
 	@Autowired
 	MemberDAO memberDao;
+
 	// 품절 체크
 	public List<CartDTO> checkSoldOut(int[] size, int[] product, int[] count) {
 		List<CartDTO> soldOutList = new ArrayList<>();
@@ -44,7 +45,8 @@ public class OrderService {
 		}
 		return soldOutList;
 	}
-	//구매하려는 상품정보를 받아서 orderList로 반환
+
+	// 구매하려는 상품정보를 받아서 orderList로 반환
 	public List<CartDTO> getOrderList(int[] product, int[] size, int[] count) {
 		List<CartDTO> orderList = new ArrayList<>();
 		for (int i = 0; i < product.length; i++) {
@@ -66,7 +68,7 @@ public class OrderService {
 	public void insertOrder(int[] size, int[] count, int[] product, MemberDTO memberDto) {
 		Calendar calendar = Calendar.getInstance();
 		Date date = calendar.getTime();
-		String time = (new SimpleDateFormat("yyyyMMddHHmmss").format(date));	
+		String time = (new SimpleDateFormat("yyyyMMddHHmmss").format(date));
 		String member_idx = Integer.toString(memberDao.findById(memberDto.getMem_id()).getMem_idx());
 		OrderDTO[] orderList = new OrderDTO[product.length];
 		for (int i = 0; i < orderList.length; i++) {
@@ -81,7 +83,7 @@ public class OrderService {
 			orderList[i].setOrder_phone(memberDto.getMem_phone());
 			orderList[i].setOrder_postcode(memberDto.getMem_postcode());
 			orderList[i].setPay(productDao.selectOne(product[i]).getProduct_price() * count[i]);
-			String orderCode = time+member_idx+product[i]+i;
+			String orderCode = time + member_idx + product[i] + i;
 			orderList[i].setOrder_code(orderCode);
 			memberDao.updateTotal(memberDto.getMem_id(), orderList[i].getPay());
 		}
@@ -92,7 +94,7 @@ public class OrderService {
 			stockDao.updateStock(orderDto.getProduct_idx(), orderDto.getSize(), stock - orderDto.getCount());
 		}
 	}
-	
+
 	@Transactional
 	public void deleteOne(String order_code, String mem_id) {
 		OrderDTO orderDto = orderDao.selectByCode(order_code);
@@ -100,5 +102,14 @@ public class OrderService {
 		memberDao.updateTotal(mem_id, -orderDto.getPay());
 		int stock = stockDao.getStock(orderDto.getProduct_idx(), orderDto.getSize());
 		stockDao.updateStock(orderDto.getProduct_idx(), orderDto.getSize(), stock + orderDto.getCount());
+	}
+
+	public void updateState(String order_code) {
+		String order_state = orderDao.selectByCode(order_code).getOrder_state();
+		if (order_state.equals("배송완료")) {
+			order_state = "구매확정";
+			orderDao.updateState(order_code, order_state);
+		}
+		
 	}
 }
