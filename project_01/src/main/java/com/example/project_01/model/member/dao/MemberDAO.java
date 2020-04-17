@@ -20,4 +20,5 @@ public interface MemberDAO {
 	public List<RoleDTO> selectRole();
 	public void updateRole(int mem_idx, int mem_role);
 	public void updateTotal(String mem_id, int pay);
+	public RoleDTO selectRoleByRoleName(String role_name);
 }

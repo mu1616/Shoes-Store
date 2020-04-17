@@ -2,15 +2,17 @@ package com.example.project_01.controller.order;
 
 import java.security.Principal;
 import java.util.Calendar;
+import java.util.Collection;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.example.project_01.exception.UnauthorizedException;
 import com.example.project_01.model.cart.dto.CartDTO;
 import com.example.project_01.model.member.dao.MemberDAO;
 import com.example.project_01.model.member.dto.MemberDTO;
@@ -66,8 +68,9 @@ public class OrderController {
 			return "order/soldOut";
 		}
 		memberDto.setMem_id(principal.getName());
+		memberDto.setMem_role(memberDao.findById(memberDto.getMem_id()).getMem_role());
 		// 품절인 상품이 없을 때
-		orderService.insertOrder(size, count, product, memberDto);
+		orderService.insertOrder(memberDto, size, count, product);
 		return "order/orderComplete";
 	}
 
@@ -89,8 +92,11 @@ public class OrderController {
 	@RequestMapping("/order/cancel")
 	public String orderCancel(Principal principal, String order_code) {
 		String msg = null;
-		if (orderDao.selectByCode(order_code).getMem_id().equals(principal.getName())) {
-			orderService.deleteOne(order_code, principal.getName());
+		String mem_id = principal.getName();
+		MemberDTO memberDto = memberDao.findById(mem_id);
+		OrderDTO orderDto = orderDao.selectByCode(order_code);
+		if (orderDto.getMem_id().equals(mem_id)) {
+			orderService.orderCancel(memberDto, orderDto);
 			msg = "구매를 취소하였습니다.";
 		} else {
 			msg = "권한없음";

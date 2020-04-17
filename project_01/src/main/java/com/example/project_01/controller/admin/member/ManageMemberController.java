@@ -37,14 +37,13 @@ public class ManageMemberController {
 				searchMemberDto.setMem_id("%");
 		}
 		PageDTO pageDto = memberService.calPage(idx, searchMemberDto);
-		System.out.println(searchOption+"\n"+searchMemberDto);
 		List<MemberDTO> memberList = memberService.selectMember(pageDto.getCurrentPage(), searchMemberDto);
 		model.addAttribute("memberList",memberList);
 		model.addAttribute("pageDto",pageDto);
 		model.addAttribute("searchOption",searchOption);
 		searchMemberDto.setMem_id(search);
 		model.addAttribute("searchMemberDto",searchMemberDto);
-		
+		model.addAttribute("roleList",memberDao.selectRole());
 		return "admin/admin_memberlist";
 	}
 	@ResponseBody
@@ -71,10 +70,17 @@ public class ManageMemberController {
 		return "popup/memberRole";
 	}
 	
+	//관리자 임명
 	@ResponseBody
-	@RequestMapping("/admin/member/role/modify")
-	public void modifyRole(int mem_idx, int mem_role) {
-		memberDao.updateRole(mem_idx, mem_role);
+	@RequestMapping("/admin/member/role/getAdmin")
+	public void getAdmin(int mem_idx) {
+		memberDao.updateRole(mem_idx, 1);
 	}
 	
+	@ResponseBody
+	@RequestMapping("/admin/member/role/depriveAdmin")
+	public void depriveAdmin(int mem_idx) {
+		MemberDTO memberDto = memberDao.findByIdx(mem_idx);
+		memberService.depriveAdmin(memberDto);
+	}
 }

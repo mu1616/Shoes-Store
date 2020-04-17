@@ -65,7 +65,7 @@ public class OrderService {
 	}
 
 	@Transactional
-	public void insertOrder(int[] size, int[] count, int[] product, MemberDTO memberDto) {
+	public void insertOrder(MemberDTO memberDto, int[] size, int[] count, int[] product) {
 		Calendar calendar = Calendar.getInstance();
 		Date date = calendar.getTime();
 		String time = (new SimpleDateFormat("yyyyMMddHHmmss").format(date));
@@ -94,12 +94,12 @@ public class OrderService {
 			stockDao.updateStock(orderDto.getProduct_idx(), orderDto.getSize(), stock - orderDto.getCount());
 		}
 	}
-
+	
+	//구매취소
 	@Transactional
-	public void deleteOne(String order_code, String mem_id) {
-		OrderDTO orderDto = orderDao.selectByCode(order_code);
-		orderDao.deleteByCode(order_code);
-		memberDao.updateTotal(mem_id, -orderDto.getPay());
+	public void orderCancel(MemberDTO memberDto, OrderDTO orderDto) {
+		orderDao.deleteByCode(orderDto.getOrder_code());
+		memberDao.updateTotal(memberDto.getMem_id(), -orderDto.getPay());
 		int stock = stockDao.getStock(orderDto.getProduct_idx(), orderDto.getSize());
 		stockDao.updateStock(orderDto.getProduct_idx(), orderDto.getSize(), stock + orderDto.getCount());
 	}
