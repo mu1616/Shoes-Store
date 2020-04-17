@@ -5,8 +5,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
 <mapper namespace="com.example.project_01.model.member.dao.MemberDAO">
 	<select id="findById" resultType="com.example.project_01.model.member.dto.MemberDTO">
-		select mem_idx,mem_name,mem_birth,mem_id,mem_pw,mem_phone,mem_addr1,
-			mem_addr2,mem_regdate, mem_postcode, r.role_name as mem_role from member 
+		select mem_idx,mem_name,mem_birth,mem_id,mem_pw,mem_phone,mem_addr1,mem_total,
+			mem_addr2,mem_regdate, mem_postcode, r.role_name as mem_role 
+		from member 
 		join role as r 
 		on mem_role=role_idx 
 		where mem_id=#{mem_id};
@@ -54,6 +55,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	
 	<select id="selectRole" resultType = "com.example.project_01.model.member.dto.RoleDTO">
 		select * from role
+		order by role_idx asc
 	</select>
 	
 	<update id="updateRole">
@@ -67,4 +69,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		SET mem_total = mem_total + (#{pay}) 
 		WHERE mem_id= #{mem_id}
 	</update>
+	
+	<select id="selectRoleByRoleName" resultType = "com.example.project_01.model.member.dto.RoleDTO">
+		select * from role
+		where role_name = #{role_name}
+	</select>
 </mapper>

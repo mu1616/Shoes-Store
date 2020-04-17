@@ -24,16 +24,11 @@
 </tr>
 <tr>
 <th scope="row" class="table-active" width="150px">등급</th>
-<td>
-	<select class="custom-select" name="mem_role"id="mem_role" style="width:150px">
-		<th:block th:each="roleDto:${roleList}">
-       <option class="roleName"th:value="${roleDto.role_idx}" th:text="${roleDto.role_name}"></option>
-       </th:block>
-   	</select> 
-</td>
+<td th:text="${memberDto.mem_role}"></td>
 </tr>
 </table><br>
-<input type="button" class="btn btn-primary" style="width:100px;" value="수정" onclick="modifyBtn();">
+<input th:if="${memberDto.mem_role}!='ADMIN'" type="button" class="btn btn-primary" style="width:120px;" value="관리자 임명" onclick="getAdmin();">
+<input th:if="${memberDto.mem_role}=='ADMIN'" type="button" class="btn btn-primary" style="width:120px;" value="관리자 해임" onclick="depriveAdmin();">
 </div>
 <script th:inline="javascript">
 var mem_role = [[${memberDto.mem_role}]];
@@ -45,14 +40,31 @@ for(var i=0; i<a.length; i++) {
 	}
 }
 
-function modifyBtn() {
+function getAdmin() {
 	var mem_idx = [[${memberDto.mem_idx}]];
-	var mem_role = $('#mem_role option:selected').val();
 	if(confirm('수정하시겠습니까?')) {		
 		$.ajax({
-			url: "/admin/member/role/modify",
+			url: "/admin/member/role/getAdmin",
 			type: "POST",
-			data: {'mem_idx':mem_idx, 'mem_role':mem_role},
+			data: {'mem_idx':mem_idx},
+			error:function(request,status,error){
+		        alert("code = "+ request.status + " message = " + request.responseText + " error = " + error); // 실패 시 처리
+		       },
+		    success : function(data) {
+		    	alert('수정을 완료하였습니다.');
+		    	window.opener.location.reload();
+		    	window.close();
+		    }
+		});
+	}
+}
+function depriveAdmin() {
+	var mem_idx = [[${memberDto.mem_idx}]];
+	if(confirm('수정하시겠습니까?')) {		
+		$.ajax({
+			url: "/admin/member/role/depriveAdmin",
+			type: "POST",
+			data: {'mem_idx':mem_idx},
 			error:function(request,status,error){
 		        alert("code = "+ request.status + " message = " + request.responseText + " error = " + error); // 실패 시 처리
 		       },

@@ -1,6 +1,7 @@
 package com.example.project_01.controller.order;
 
 import java.security.Principal;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.List;
@@ -108,5 +109,13 @@ public class OrderController {
 	@RequestMapping("/order/updateState")
 	public void updateState(String order_code) {
 		orderService.updateState(order_code);		
+	}
+	
+	@ResponseBody
+	@RequestMapping("/order/detail")
+	public OrderDTO orderDetail(String order_code) {
+		OrderDTO orderDto = orderDao.selectByCode(order_code);
+		orderDto.setDate((new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(orderDto.getOrder_date())));
+		return orderDto;
 	}
 }

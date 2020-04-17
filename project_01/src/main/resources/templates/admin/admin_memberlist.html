@@ -77,9 +77,9 @@ th,td {
 	        <td class="left">
 	        	<select class="custom-select mr-sm-2" name="mem_role"id="mem_role" style="width:200px;">
 			        <option value="%" selected>등급</option>
-			        <option value="1">ADMIN</option>
-			        <option value="2">USER</option>
-			        <option value="3">VIP</option>
+			        <th:block th:each="roleDto:${roleList}">
+			        	<option th:value="${roleDto.role_idx}" th:text="${roleDto.role_name}"></option>
+			        </th:block>
 	     		 </select>
      		 </td>
         </tr>
@@ -90,6 +90,7 @@ th,td {
         </form>
         </div><br>
         <hr>
+        <div style="min-height:350px;">
         <font color="grey"><p>[총 <font color="red" th:text="${pageDto.countRecord}"></font>명]</p></font>
         <table class="table table-bordered" style="font-size:14px">
         <thead class="thead-light">
@@ -129,6 +130,7 @@ th,td {
 				<button class="btn btn-outline-secondary btn-sm pageBtn" style="WIDTH: 20pt; HEIGHT: 23pt" th:onclick="'clickPageBtn('+${pageDto.totalPage}+')'">&#187</button>
 	        </th:block>
         </th:block>
+        </div>
         </div>
         <br><br>
         </main>

@@ -59,6 +59,7 @@ li {
         <font color="gray">* 드래그하여 순서를 변경할 수 있습니다.</font><br>
      	<font color="gray">* 저장버튼을 누르지 않으면 삭제, 순서변경이 반영되지 않습니다.</font><br><br>
      	</span>
+     	<div style="min-height:350px;">
 			<ul id="sortable">
 			  <th:block th:each="productDto:${productList}">		
 			  <li class="ui-state-default" th:value = ${productDto.product_idx}>
@@ -74,12 +75,12 @@ li {
 			  </li>
 			  </th:block>			  
 			</ul>
-
+		</div>
 			<div align="center">
 				<button class="btn btn-outline-primary" onclick="saveBtn();">저장</button>
 				<button class="btn btn-outline-dark" onclick="addBtn();">추가</button>
 			</div>
-			<br><br>
+		<br><br>
 		</main>
 	</div>
 </div>

@@ -92,7 +92,12 @@
 	    <artifactId>thymeleaf-extras-springsecurity4</artifactId>
 	    <version>3.0.4.RELEASE</version>
 	</dependency>
-
+	
+	<!-- AOP -->
+	<dependency>
+	    <groupId>org.springframework.boot</groupId>
+	    <artifactId>spring-boot-starter-aop</artifactId>
+	</dependency>
 
 	</dependencies>
 
