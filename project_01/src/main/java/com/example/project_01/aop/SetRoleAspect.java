@@ -26,43 +26,44 @@ public class SetRoleAspect {
 		// before
 		Object result = joinPoint.proceed();
 		// after
-		RoleDTO myRole = null;
 		Object[] args = joinPoint.getArgs();
-		MemberDTO memberDto = (MemberDTO) args[0];
+		MemberDTO memberDto = (MemberDTO) args[0]; //중요!
 		memberDto = memberDao.findById(memberDto.getMem_id());
 		if (memberDto.getMem_role().equals("ADMIN")) return result;
 		List<RoleDTO> roleList = memberDao.selectRole();
-		for (RoleDTO roleDto : roleList) {
-			if (roleDto.getRole_name().equals(memberDto.getMem_role()))
-				myRole = roleDto;
+		int role=0;
+		for(int i=0; i< roleList.size(); i++) {
+			if(roleList.get(i).getRole_name().equals(memberDto.getMem_role())) {
+				role = i;
+			}
 		}
-		setRole(memberDto, roleList, myRole);
+		setRole(memberDto, roleList, role);
 		return result;
 	}
 
-	public void setRole(MemberDTO memberDto, List<RoleDTO> roleList, RoleDTO myRole) {
+	public void setRole(MemberDTO memberDto, List<RoleDTO> roleList, int role) {
 		RoleDTO nextRole = null;
 		RoleDTO beforeRole = null;
 		// role_idx == 1:ADMIN, 2:USER -> ... ->n ADMIN을 제외하고 숫자 올라갈수록 등급 높음
 		// Role down
-		while (myRole.getRole_idx() != 1) {
-			beforeRole = roleList.get(myRole.getRole_idx() - 2);
-			if (memberDto.getMem_total() < myRole.getRole_price()) {
-				memberDao.updateRole(memberDto.getMem_idx(), myRole.getRole_idx() - 1);
-				myRole = beforeRole;
-			} else {
+		for(int i=role; i > 1; i--) {
+			RoleDTO currentRole = roleList.get(i);
+			if(memberDto.getMem_total() < currentRole.getRole_price()) {
+				role--;
+			}else {
 				break;
 			}
 		}
 		// Role up
-		while (myRole.getRole_idx() != roleList.size()) {
-			nextRole = roleList.get(myRole.getRole_idx());
-			if (memberDto.getMem_total() > nextRole.getRole_price()) {
-				memberDao.updateRole(memberDto.getMem_idx(), myRole.getRole_idx() + 1);
-				myRole = nextRole;
+		for(int i=role+1; i<roleList.size(); i++) {
+			nextRole = roleList.get(i);
+			if(memberDto.getMem_total() > nextRole.getRole_price()) {
+				role = i;
 			} else {
 				break;
 			}
 		}
+		RoleDTO myRole = roleList.get(role);
+		memberDao.updateRole(memberDto.getMem_idx(),myRole.getRole_idx());
 	}
 }
