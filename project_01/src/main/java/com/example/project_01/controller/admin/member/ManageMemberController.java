@@ -14,9 +14,9 @@ import com.example.project_01.model.member.dao.MemberDAO;
 import com.example.project_01.model.member.dto.MemberDTO;
 import com.example.project_01.model.member.dto.RoleDTO;
 import com.example.project_01.model.member.dto.SearchMemberDTO;
-import com.example.project_01.model.order.dto.OrderDTO;
 import com.example.project_01.model.pagination.dto.PageDTO;
 import com.example.project_01.service.admin.member.ManageMemberService;
+import com.example.project_01.service.pagination.PageService;
 
 @Controller
 public class ManageMemberController {
@@ -24,10 +24,12 @@ public class ManageMemberController {
 	MemberDAO memberDao;
 	@Autowired
 	ManageMemberService memberService;
+	@Autowired
+	PageService pageService;
 	
 	@RequestMapping("/admin/member/list/{idx}")
 	public String memberList(Model model, 
-			@PathVariable(value = "idx", required = false) int idx, 
+			@PathVariable(value = "idx", required = false) int currentPage, 
 			String searchOption, SearchMemberDTO searchMemberDto, String search) {
 		if(searchOption == null || searchOption.equals("검색분류"))
 			searchMemberDto.setMem_id("%");
@@ -36,8 +38,9 @@ public class ManageMemberController {
 			if(search.equals(""))
 				searchMemberDto.setMem_id("%");
 		}
-		PageDTO pageDto = memberService.calPage(idx, searchMemberDto);
-		List<MemberDTO> memberList = memberService.selectMember(pageDto.getCurrentPage(), searchMemberDto);
+		int totalRecord = memberDao.countMember(searchMemberDto);
+		PageDTO pageDto = pageService.calPage(currentPage, 20, totalRecord, 10);
+		List<MemberDTO> memberList = memberService.selectMember(currentPage, 20, searchMemberDto);
 		model.addAttribute("memberList",memberList);
 		model.addAttribute("pageDto",pageDto);
 		model.addAttribute("searchOption",searchOption);

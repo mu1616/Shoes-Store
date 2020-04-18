@@ -15,23 +15,6 @@ public class ManageOrderService {
 	@Autowired
 	OrderDAO orderDao;
 	
-	public PageDTO calPage(int currentPage, int size, SearchOrderDTO searchOrderDto) {
-		int countRecord;
-		int startPage;
-		int endPage;
-		int totalPage;
-		PageDTO pageDto = new PageDTO();
-		pageDto.setCurrentPage(currentPage);
-		countRecord = orderDao.countOrder(searchOrderDto);
-		pageDto.setCountRecord(countRecord);
-		totalPage = (int)Math.ceil(countRecord/(double)size);
-		pageDto.setTotalPage(totalPage);
-		startPage = (currentPage-1)/10*10+1;
-		pageDto.setStartPage(startPage);
-		endPage = (startPage+9>totalPage)?totalPage:startPage+9;
-		pageDto.setEndPage(endPage);
-		return pageDto;
-	}
 	public List<OrderDTO> orderList(int currentPage, int size, SearchOrderDTO searchOrderDto){
 		int start = (currentPage-1) * size;
 		if(searchOrderDto.getSearchWord() != null && searchOrderDto.getSearchWord().equals(""))

@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.example.project_01.exception.UnauthorizedException;
 import com.example.project_01.model.category.dao.CategoryDAO;
 import com.example.project_01.model.pagination.dto.PageDTO;
 import com.example.project_01.model.product.dao.ProductDAO;
@@ -23,6 +22,7 @@ import com.example.project_01.model.product.qna.dto.SearchQnaDTO;
 import com.example.project_01.model.search.dto.SearchDTO;
 import com.example.project_01.model.stock.dao.StockDAO;
 import com.example.project_01.model.stock.dto.StockDTO;
+import com.example.project_01.service.pagination.PageService;
 import com.example.project_01.service.product.ProductService;
 import com.example.project_01.service.product.qna.QnaService;
 
@@ -40,19 +40,22 @@ public class ProductController {
 	QnaDAO qnaDao;
 	@Autowired
 	QnaService qnaService;
+	@Autowired
+	PageService pageService;
+	
 	@RequestMapping("/product/list/{idx}")
-	public String productList(Model model, @PathVariable(value = "idx", required = false) int idx,
+	public String productList(Model model, @PathVariable(value = "idx", required = false) int currentPage,
 			SearchDTO searchDto, String searchWord) {
 		searchDto.setProduct_isDisplay("1");
-		System.out.println(searchDto.getSort());
 		if(searchWord != null) { //검색어를 통해 요청한 경우
 			searchDto.setOption(1);
 			searchDto.setProduct_brand("%"+searchWord+"%");
 			searchDto.setProduct_category("%"+searchWord+"%");
 			searchDto.setProduct_name("%"+searchWord+"%");
 		}			
-		PageDTO pageDto = productService.calPage(idx, 20, searchDto);
-		List<ProductDTO> productList = productService.selectProduct(idx, 20, searchDto);	
+		int totalRecord = productDao.countProduct(searchDto);
+		PageDTO pageDto = pageService.calPage(currentPage, 20, totalRecord, 10);
+		List<ProductDTO> productList = productService.selectProduct(currentPage, 20, searchDto);	
 		model.addAttribute("productList",productList);
 		model.addAttribute("pageDto", pageDto);
 		model.addAttribute("searchDto",searchDto);
@@ -62,7 +65,6 @@ public class ProductController {
 				Integer.parseInt(searchDto.getProduct_category())));
 		else  //검색어를 통해 요청한 경우
 			model.addAttribute("searchWord",searchWord);
-		System.out.println(searchDto);
 		return "product/productList";
 	}
 	
@@ -95,10 +97,10 @@ public class ProductController {
 	public String qnaShow(int currentPage, int qna_product, Model model) {
 		SearchQnaDTO searchQnaDto = new SearchQnaDTO();
 		searchQnaDto.setQna_product(qna_product);
-		PageDTO pageDto = qnaService.calPage(currentPage, 10, 5, searchQnaDto);
+		int totalRecord = qnaDao.countByProduct(qna_product);
+		PageDTO pageDto = pageService.calPage(currentPage, 10, totalRecord, 5);
 		model.addAttribute("qna_pageDto",pageDto);
-		int start = (currentPage-1)*10;
-		List<QnaDTO> qnaList = qnaDao.selectQnaByProduct(start, 10, qna_product);
+		List<QnaDTO> qnaList = qnaService.selectQna(currentPage, 10, searchQnaDto);
 		model.addAttribute("qnaList",qnaList);
 		return "product/qnaTable";
 	}
@@ -111,6 +113,7 @@ public class ProductController {
 		if(!principal.getName().equals(qnaDto.getQna_member())) return new QnaDTO();
 		return qnaDto;
 	}
+	
 	@ResponseBody
 	@RequestMapping("/product/qna/delete")
 	public String deleteOne(Principal principal, int qna_idx)  {

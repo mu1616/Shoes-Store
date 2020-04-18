@@ -38,14 +38,10 @@ public class ManageProductService extends ProductService{
 			int []mainDisplay, int size[], int count[]) {
 		fileUpload(productEntity, files);
 		//prorduct테이블에 추가
-		productDao.productRegister(productEntity);
-		System.out.println(productEntity);
-		System.out.println(mainDisplay);
 		
 		//display 테이블에 추가
 		if(mainDisplay !=null) {
 			for(int i=0; i<mainDisplay.length ; i++) {
-				System.out.println("maindisplay테이블에 저장 "+ productEntity.getProduct_idx()+" "+mainDisplay[i]);
 				productDao.addProductMainDisplay(productEntity.getProduct_idx(), mainDisplay[i]);
 			}
 		}
@@ -53,7 +49,6 @@ public class ManageProductService extends ProductService{
 		//stock 테이블에 추가
 		if(size!=null) {
 			for(int i=0; i < size.length; i++) {
-				System.out.println("stock테이블에 저장 " + productEntity.getProduct_idx()+" "+ size[i]+" "+count[i]);
 				stockDao.insertStock(productEntity.getProduct_idx(), size[i], count[i]);
 			}
 		}

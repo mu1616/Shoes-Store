@@ -1,6 +1,8 @@
 package com.example.project_01.model.pagination.dto;
 
 public class PageDTO {
+	private int size;
+	private int block;
 	private int currentPage;
 	private int countRecord;
 	private int totalPage;
@@ -36,11 +38,26 @@ public class PageDTO {
 	public void setEndPage(int endPage) {
 		this.endPage = endPage;
 	}
+	
+	public int getSize() {
+		return size;
+	}
+	public void setSize(int size) {
+		this.size = size;
+	}
+	public int getBlock() {
+		return block;
+	}
+	public void setBlock(int block) {
+		this.block = block;
+	}
 	@Override
 	public String toString() {
-		return "PageDTO [currentPage=" + currentPage + ", countRecord=" + countRecord + ", totalPage=" + totalPage
-				+ ", startPage=" + startPage + ", endPage=" + endPage + "]";
+		return "PageDTO [size=" + size + ", block=" + block + ", currentPage=" + currentPage + ", countRecord="
+				+ countRecord + ", totalPage=" + totalPage + ", startPage=" + startPage + ", endPage=" + endPage + "]";
 	}
+	
+	
 	
 	
 	

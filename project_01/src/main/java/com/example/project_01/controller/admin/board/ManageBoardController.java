@@ -17,6 +17,7 @@ import com.example.project_01.model.product.qna.dao.QnaDAO;
 import com.example.project_01.model.product.qna.dto.QnaDTO;
 import com.example.project_01.model.product.qna.dto.SearchQnaDTO;
 import com.example.project_01.service.admin.board.ManageProductQnaService;
+import com.example.project_01.service.pagination.PageService;
 
 @Controller
 public class ManageBoardController {
@@ -26,13 +27,16 @@ public class ManageBoardController {
 	QnaDAO qnaDao;
 	@Autowired
 	ProductDAO productDao;
+	@Autowired
+	PageService pageService;
 	
 	@RequestMapping("/admin/board/qna/{idx}")
-	public String qnaList(@PathVariable("idx")int idx, Model model, SearchQnaDTO searchQnaDto) {
+	public String qnaList(@PathVariable("idx")int currentPage, Model model, SearchQnaDTO searchQnaDto) {
 		if(searchQnaDto.getQna_member().equals(""))
 			searchQnaDto.setQna_member("%");
-		PageDTO pageDto = qnaService.calPage(idx, 20, 10, searchQnaDto);
-		List<QnaDTO> qnaList = qnaService.selectQna(idx, 20, searchQnaDto);
+		int totalRecord = qnaDao.countQna(searchQnaDto);
+		PageDTO pageDto = pageService.calPage(currentPage, 20, totalRecord, 10);
+		List<QnaDTO> qnaList = qnaService.selectQna(currentPage, 20, searchQnaDto);
 		model.addAttribute("pageDto",pageDto);
 		model.addAttribute("qnaList",qnaList);
 		if(searchQnaDto.getQna_member().equals("%"))

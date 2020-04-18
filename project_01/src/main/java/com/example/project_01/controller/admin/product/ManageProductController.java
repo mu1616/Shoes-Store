@@ -6,7 +6,6 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.util.List;
-import java.util.Optional;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -32,6 +31,7 @@ import com.example.project_01.model.search.dto.SearchDTO;
 import com.example.project_01.model.stock.dao.StockDAO;
 import com.example.project_01.model.stock.dto.StockDTO;
 import com.example.project_01.service.admin.product.ManageProductService;
+import com.example.project_01.service.pagination.PageService;
 
 @Controller
 public class ManageProductController {
@@ -45,6 +45,9 @@ public class ManageProductController {
 	StockDAO stockDao;
 	@Autowired
 	ProductDAO productDao;
+	@Autowired
+	PageService pageService;
+	
 	@RequestMapping(value = "/admin/product/register", method = RequestMethod.GET)
 	public String registerPage() {
 		return "admin/admin";
@@ -125,28 +128,30 @@ public class ManageProductController {
 	
 	@RequestMapping("/admin/product/list/{currentPage}")
 	public String productList(@PathVariable(value = "currentPage", required = false) int currentPage, 
-			@ModelAttribute SearchDTO searchDto, Model model, String searchOption, String search) {			
+			@ModelAttribute SearchDTO searchDto, Model model, String searchOption, 
+			@RequestParam("search")String searchWord) {			
 		if(currentPage <=0) 
 			return "redirect:/admin/product/list/1";
 		if(searchOption !=null) {
 			if(searchOption.equals("상품명")) {
-				searchDto.setProduct_name("%"+search+"%");
+				searchDto.setProduct_name("%"+searchWord+"%");
 			}
 			if(searchOption.equals("상품번호")) 
-				if(search.equals("")) {
+				if(searchWord.equals("")) {
 					searchDto.setProduct_idx("%");
 				} else {
-					searchDto.setProduct_idx(search);
+					searchDto.setProduct_idx(searchWord);
 				}
 		}		
-		PageDTO pageDto = productService.calPage(currentPage, 10, searchDto);
+		int totalRecord = productDao.countProduct(searchDto);
+		PageDTO pageDto = pageService.calPage(currentPage, 10, totalRecord, 10);
 		if(currentPage > pageDto.getTotalPage() && pageDto.getCountRecord()!=0) 
 			return "redirect:/admin/product/list/"+pageDto.getTotalPage();		
 		model.addAttribute("pageDto", pageDto);
 		List<ProductDTO> productList = productService.selectProduct(currentPage, 10, searchDto);
 		model.addAttribute("productList", productList);
-		searchDto.setProduct_name(search);
-		searchDto.setProduct_idx(search);
+		searchDto.setProduct_name(searchWord);
+		searchDto.setProduct_idx(searchWord);
 		model.addAttribute("searchDto",searchDto);
 		model.addAttribute("searchOption",searchOption);
 		return "/admin/admin_productlist";
@@ -164,15 +169,12 @@ public class ManageProductController {
 	@ResponseBody
 	@RequestMapping("/admin/product/stock/add")
 	public void addStock(int product_idx, int size, int count) {
-		System.out.printf("%d %d %d", product_idx,size,count);
-		stockDao.insertStock(product_idx, size, count);
-		
+		stockDao.insertStock(product_idx, size, count);		
 	}
 	
 	@ResponseBody
 	@RequestMapping("/admin/product/stock/modify")
 	public void modifyStock(int product_idx, int size, int count) {
-		System.out.printf("%d %d %d", product_idx,size,count);
 		stockDao.updateStock(product_idx, size, count);
 		
 	}

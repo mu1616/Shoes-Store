@@ -12,7 +12,7 @@ import com.example.project_01.model.product.qna.dto.SearchQnaDTO;
 import com.example.project_01.service.product.qna.QnaService;
 
 @Service
-public class ManageProductQnaService extends QnaService{
+public class ManageProductQnaService {
 	@Autowired
 	QnaDAO qnaDao;
 	

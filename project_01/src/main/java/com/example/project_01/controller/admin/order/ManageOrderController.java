@@ -15,6 +15,7 @@ import com.example.project_01.model.order.dto.OrderDTO;
 import com.example.project_01.model.order.dto.SearchOrderDTO;
 import com.example.project_01.model.pagination.dto.PageDTO;
 import com.example.project_01.service.admin.order.ManageOrderService;
+import com.example.project_01.service.pagination.PageService;
 
 @Controller
 public class ManageOrderController {
@@ -22,10 +23,14 @@ public class ManageOrderController {
 	ManageOrderService orderService;
 	@Autowired
 	OrderDAO orderDao;
+	@Autowired
+	PageService pageService;
+	
 	@RequestMapping("/admin/order/list/{page}")
 	public String orderList(SearchOrderDTO searchOrderDto, @PathVariable(value = "page")int currentPage,
 			Model model) {
-		PageDTO pageDto = orderService.calPage(currentPage, 10, searchOrderDto);
+		int totalRecord = orderDao.countOrder(searchOrderDto);
+		PageDTO pageDto = pageService.calPage(currentPage, 10, totalRecord, 10);
 		List<OrderDTO> orderList = orderService.orderList(currentPage, 10, searchOrderDto);
 		model.addAttribute("pageDto",pageDto);
 		model.addAttribute("orderList",orderList);
