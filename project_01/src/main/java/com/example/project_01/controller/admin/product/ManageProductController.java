@@ -127,7 +127,7 @@ public class ManageProductController {
 	@RequestMapping("/admin/product/list/{currentPage}")
 	public String productList(@PathVariable(value = "currentPage", required = false) int currentPage, 
 			@ModelAttribute SearchDTO searchDto, Model model, String searchOption, 
-			@RequestParam("search")String searchWord) {			
+			@RequestParam(value="search", required=false)String searchWord) {			
 		if(currentPage <=0) 
 			return "redirect:/admin/product/list/1";
 		if(searchOption !=null) {
@@ -173,13 +173,8 @@ public class ManageProductController {
 	public String modify(@ModelAttribute ProductEntity productEntity, int product_idx,
 			@RequestPart(value="profile", required=false) MultipartFile files) {
 		
-		if(files != null) {
-			productService.fileUpload(productEntity, files);
-		} else {
-			productEntity.setProduct_image(null);
-		}
-		productDao.updateProduct(productEntity, product_idx);
-		return "admin_modifyComplete";
+		productService.modifyProduct(productEntity, files, product_idx);
+		return "admin/admin_modifyComplete";
 	}
 	
 }

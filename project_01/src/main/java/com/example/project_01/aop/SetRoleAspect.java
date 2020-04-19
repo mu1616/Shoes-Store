@@ -58,7 +58,7 @@ public class SetRoleAspect {
 		// Role up
 		for (int i = role + 1; i < roleList.size(); i++) {
 			nextRole = roleList.get(i);
-			if (memberDto.getMem_total() > nextRole.getRole_price()) {
+			if (memberDto.getMem_total() >= nextRole.getRole_price()) {
 				role++;
 			} else {
 				break;

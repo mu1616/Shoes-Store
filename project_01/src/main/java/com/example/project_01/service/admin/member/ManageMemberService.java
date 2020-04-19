@@ -24,8 +24,5 @@ public class ManageMemberService {
 		return memberList;
 	}
 	
-	@Transactional
-	public void depriveAdmin(MemberDTO memberDto) {
-		memberDao.updateRole(memberDto.getMem_idx(), 2);
-	}
+
 }

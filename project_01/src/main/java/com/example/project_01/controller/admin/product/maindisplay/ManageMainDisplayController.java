@@ -45,6 +45,7 @@ public class ManageMainDisplayController {
 			searchDto.setProduct_name("%"+searchWord+"%");
 		if(searchOption.equals("상품번호"))
 			searchDto.setProduct_idx(searchWord);
+		searchDto.setProduct_isDisplay("1");
 		List<ProductDTO> productList = productDao.selectProduct(0, 20, searchDto);
 		model.addAttribute("productList",productList);
 		return "popup/searchList";

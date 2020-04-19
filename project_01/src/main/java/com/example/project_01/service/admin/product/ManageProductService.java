@@ -79,5 +79,17 @@ public class ManageProductService extends ProductService{
 		productEntity.setProduct_image(filePath + filename);
 	}
 	
+	@Transactional
+	public void modifyProduct(ProductEntity productEntity, MultipartFile files, int product_idx) {
+		if(files != null) {
+			fileUpload(productEntity, files);
+		} else {
+			productEntity.setProduct_image(null);
+		}
+		productDao.updateProduct(productEntity, product_idx);
+		if(productEntity.getProduct_isdisplay()==0)
+			productDao.delProductMainDisplayByProduct(product_idx);
+	}
+	
 
 }

@@ -64,26 +64,5 @@ public class ManageMemberController {
 		return memberDto;
 	}
 	
-	@RequestMapping("/admin/member/role")
-	public String memberRole(int mem_idx, Model model) {
-		MemberDTO memberDto = memberDao.findByIdx(mem_idx);
-		List<RoleDTO> roleList = memberDao.selectRole();
-		model.addAttribute("memberDto", memberDto);
-		model.addAttribute("roleList",roleList);
-		return "popup/memberRole";
-	}
-	
-	//관리자 임명
-	@ResponseBody
-	@RequestMapping("/admin/member/role/getAdmin")
-	public void getAdmin(int mem_idx) {
-		memberDao.updateRole(mem_idx, 1);
-	}
-	
-	@ResponseBody
-	@RequestMapping("/admin/member/role/depriveAdmin")
-	public void depriveAdmin(int mem_idx) {
-		MemberDTO memberDto = memberDao.findByIdx(mem_idx);
-		memberService.depriveAdmin(memberDto);
-	}
+
 }
