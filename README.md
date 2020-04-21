@@ -1,9 +1,9 @@
 # project_01
-java springboot 신발쇼핑몰 웹사이트 개발 
+ java springboot 신발쇼핑몰 웹사이트 개발 
 
 
 
-사용한 기술스택
+# 사용한 기술스택
 
 
 Back-end: Spring Boot, Java, Myabis, Mysql
