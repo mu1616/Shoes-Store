@@ -44,7 +44,27 @@ public class ManageRoleController {
 	}
 	
 	@RequestMapping("/admin/member/role/manage")
-	public String manageRole() {
+	public String manageRole(Model model) {
+		List<RoleDTO> roleList = memberDao.selectRole();
+		model.addAttribute("roleList",roleList);
 		return "admin/admin_manageRole";
+	}
+	
+	@RequestMapping("/admin/member/role/add")
+	public String addRole(RoleDTO roleDto) {
+		roleService.addRole(roleDto);
+		return "redirect:/admin/member/role/manage";
+	}
+	
+	@ResponseBody
+	@RequestMapping("/admin/member/role/delete")
+	public void deleteRole(String role_name) {
+		roleService.deleteRole(role_name);
+	}
+	
+	@ResponseBody
+	@RequestMapping("/admin/member/role/modify")
+	public void modifyRoleInfo(RoleDTO roleDto) {
+		roleService.modifyRoleInfo(roleDto);
 	}
 }

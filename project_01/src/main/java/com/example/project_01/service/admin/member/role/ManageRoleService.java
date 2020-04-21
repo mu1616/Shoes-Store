@@ -6,6 +6,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.example.project_01.model.member.dao.MemberDAO;
 import com.example.project_01.model.member.dto.MemberDTO;
+import com.example.project_01.model.member.dto.RoleDTO;
 
 @Service
 public class ManageRoleService {
@@ -15,5 +16,26 @@ public class ManageRoleService {
 	@Transactional
 	public void depriveAdmin(MemberDTO memberDto) {
 		memberDao.updateRole(memberDto.getMem_idx(), 2);
+	}
+	
+	@Transactional
+	public void addRole(RoleDTO roleDto) {
+		memberDao.insertRole(roleDto);
+		memberDao.sortRole();	
+		memberDao.UpdateAllMemberRole();
+	}
+	
+	@Transactional
+	public void deleteRole(String role_name) {
+		memberDao.deleteRole(role_name);
+		memberDao.sortRole();
+		memberDao.UpdateAllMemberRole();
+	}
+	
+	@Transactional
+	public void modifyRoleInfo(RoleDTO roleDto) {
+		memberDao.updateRoleInfo(roleDto);
+		memberDao.sortRole();
+		memberDao.UpdateAllMemberRole();
 	}
 }

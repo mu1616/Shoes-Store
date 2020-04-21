@@ -1,0 +1,12 @@
+{"properties": [
+  {
+    "name": "file.upload.directory",
+    "type": "java.lang.String",
+    "description": "A description for 'file.upload.directory'"
+  },
+  {
+    "name": "smarteditor.upload.directory",
+    "type": "java.lang.String",
+    "description": "A description for 'smarteditor.upload.directory'"
+  }
+]}
