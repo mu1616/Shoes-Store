@@ -24,7 +24,8 @@ Front-end: HTML, JS, BootStrap, AJAX
 
 ## 구현할 것
 
-공지사항, FAQ, 상품리뷰
+공지사항, FAQ, 상품리뷰 등..
+
 
 ## 사용자 페이지
 <img width="900" alt="캡처" src="https://user-images.githubusercontent.com/26829633/79899250-81982e00-8447-11ea-810b-cbf3cfedd931.PNG">
