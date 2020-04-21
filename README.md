@@ -6,7 +6,7 @@
 ## 사용한 기술스택
 
 
-Back-end: Spring Boot, Java, Myabis, Mysql
+Back-end: Spring Boot, Java, Myabatis, Mysql
 
 Front-end: HTML, JS, BootStrap, AJAX
 
