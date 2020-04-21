@@ -25,7 +25,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
         http
-                .authorizeRequests()
+                .authorizeRequests()     //antMatchers() -> 앞에꺼 우선 적용
+                	.antMatchers("/product/qna/qnaShow").permitAll()
                 	.antMatchers("/product/qna/**", "/cart/**", "/order/**").authenticated()
                 	.antMatchers("/admin/**").hasRole("ADMIN")
                     .antMatchers("/**","/static/**").permitAll()
