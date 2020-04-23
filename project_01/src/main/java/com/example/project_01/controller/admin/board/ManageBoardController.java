@@ -62,4 +62,9 @@ public class ManageBoardController {
 	public void deleteOne(int qna_idx) {
 		qnaDao.deleteOne(qna_idx);
 	}
+	
+	@RequestMapping("/admin/board/notice/write")
+	public String writeNotice() {
+		return "admin/admin_writeNotice";
+	}
 }
