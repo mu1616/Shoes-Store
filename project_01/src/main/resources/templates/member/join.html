@@ -284,7 +284,7 @@ function idCheck2(obj){
 	}
 }
 function pwCheck(obj){
-	var re= /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9])/;	
+	var re= /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]){8,}$/;	
     if(!re.test(obj.value)) {
     	document.getElementById('pwText1').style.color='red';
     	return false;
@@ -317,7 +317,7 @@ function birthCheck(obj){
 	}
 }
 function phoneCheck(obj){
-	var re = /^[0-9]{11}$/;
+	var re = /^[0-9]{10,11}$/;
 	if(!re.test(obj.value)){
 		document.getElementById('phoneText').style.color='red';
 		return false;

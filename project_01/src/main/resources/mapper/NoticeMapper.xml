@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.project_01.model.notice.dao.NoticeDAO">
+	<!-- 레코드 삽입 -->
+	<insert id="insertOne" parameterType = "com.example.project_01.model.notice.dto.NoticeDTO">
+		insert into notice
+		(notice_type, notice_title, notice_contents, notice_id)
+		values 
+		(#{notice_type}, #{notice_title}, #{notice_contents}, #{notice_id})
+	</insert>
+	
+	<!-- 전체 레코드 select -->
+	<select id="selectNoticeType" resultType="String">
+		select * from noticetype
+	</select>
+	
+	<!-- 특정 notice_idx를 가지는 레코드 select -->
+	<select id="selectOne" resultType = "com.example.project_01.model.notice.dto.NoticeDTO">
+		select * from notice
+		where notice_idx = #{notice_idx}
+	</select>
+	
+	<!-- 전체 레코드 개수 출력 -->
+	<select id="countRecord" resultType = "int">
+		select count(*) from notice
+	</select>
+</mapper>

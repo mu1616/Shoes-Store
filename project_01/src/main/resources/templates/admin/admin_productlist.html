@@ -114,8 +114,7 @@ th,td {
 		        </th:block>
 	        </td>
 	        <td style="vertical-align:middle;"><input type="button" value="재고관리" class="btn btn-link" th:onclick="'showStock('+${productDto.product_idx}+')'"></td>
-	        <td style="vertical-align:middle;"><input type="button" value="수정" class="btn btn-sm" th:onclick="'modify('+${productDto.product_idx}+')'" >
-	       		 <input type="button" value="삭제" class="btn btn-sm" th:onclick="'deleteOne('+${productDto.product_idx}+')'"></td>
+	        <td style="vertical-align:middle;"><input type="button" value="정보수정" class="btn btn-sm" th:onclick="'modify('+${productDto.product_idx}+')'" ></td>
         </tr>
         </th:block>
         </table><br>

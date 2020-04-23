@@ -53,8 +53,6 @@ public class ProductDaoTest {
 	}
 	
 	public void countProduct() {
-		PageDTO pageDto = productService.calPage(21, new SearchDTO());
-		System.out.println(pageDto);
 		
 	}
 	

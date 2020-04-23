@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import com.example.project_01.model.notice.dao.NoticeDAO;
 import com.example.project_01.model.notice.dto.NoticeDTO;
 import com.example.project_01.model.pagination.dto.PageDTO;
+import com.example.project_01.service.admin.board.ManageNoticeService;
 import com.example.project_01.service.pagination.PageService;
 
 @Controller
@@ -20,6 +21,8 @@ public class ManageNoticeController {
 	NoticeDAO noticeDao;
 	@Autowired
 	PageService pageService;
+	@Autowired
+	ManageNoticeService noticeService;
 	
 	@RequestMapping("/admin/board/notice/write")
 	public String writeNotice(Model model, String notice_idx) {
@@ -36,19 +39,31 @@ public class ManageNoticeController {
 	public String writeComplete(NoticeDTO noticeDto, Principal principal) {
 		noticeDto.setNotice_id(principal.getName());
 		noticeDao.insertOne(noticeDto);
-		return "admin/admin";
+		return "redirect:/admin/board/notice/1";
 	}
 	
 	@RequestMapping("/admin/board/notice/modify")
 	public String modify(NoticeDTO noticeDto, Principal principal) {
 		noticeDto.setNotice_id(principal.getName());
+		noticeDao.updateOne(noticeDto);
 		return "admin/admin_modifyComplete";
 	}
 	
 	@RequestMapping("/admin/board/notice/{currentPage}")
-	public String noticeList(@PathVariable("currentPage")int currentPage) {
+	public String noticeList(@PathVariable("currentPage")int currentPage, Model model) {
 		int totalRecord = noticeDao.countRecord();
 		PageDTO pageDto = pageService.calPage(currentPage, 20, totalRecord, 10);
+		List<NoticeDTO> noticeList = noticeService.selectNotice(currentPage, 20);
+		for(NoticeDTO dto : noticeList)
+			System.out.println(dto);
+		model.addAttribute("pageDto",pageDto);
+		model.addAttribute("noticeList",noticeList);
 		return "admin/admin_noticeList.html";
+	}
+	
+	@RequestMapping("/admin/board/notice/delete")
+	public String deleteNotice(int notice_idx) {
+		noticeDao.deleteOne(notice_idx);
+		return "redirect:/admin/board/notice/1";
 	}
 }

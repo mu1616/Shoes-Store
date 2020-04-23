@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+<meta charset="UTF-8">
+<title>Admin Page</title>
+<th:block th:include="./bootstrap.html::bootstrap"></th:block>
+<style>
+table {
+	font-size:14px;
+	width:100%;
+}
+select {
+	width:200px;
+}
+td {
+	height:40px;
+}
+.writePlace{
+	margin: 0% 0% 0% 0%;
+	padding: 20px;
+	width: 85%;
+	border: 1px solid #D8D8D8;
+	min-height: 500px;
+}
+textarea{
+	width:100%;
+	height:450px;
+}
+</style>
+</head>
+<body>
+	<th:block th:include="admin/admin.html::header"></th:block>
+	<div class="container-fluid">
+		<div class="row">
+			<th:block th:include="admin/admin.html::side"></th:block>
+			<main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
+				<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+					<h1 class="h2">공지글 작성</h1>
+				</div>
+				<div class="writePlace">
+					<form action="/admin/board/notice/writeComplete" method="post" id="frm">
+					<table>
+						<tr th:if="${noticeDto} != null">
+							<td>작성자</td>
+							<td th:text="${noticeDto.notice_id}"></td>
+						</tr>
+						<tr>
+							<th style="width:25%;">공지글  유형</th>
+							<td style="width:75p%;">
+								<select class="custom-select" style="width:30%;" name="notice_type">
+									<th:block th:each="type:${typeList}">
+									<option th:id="${type}" th:value="${type}" th:text="${type}"></option>
+									</th:block>
+								</select>
+							</td>
+						</tr>
+						<tr>
+							<th>제목</th>
+							<td><input type="text" class="form-control" name="notice_title" id="notice_title"></td>
+						</tr>
+						<tr th:if="${noticeDto} != null">
+							<td></td>
+							<td><button type="button" class="btn btn-sm btn-dark" onclick="setContents()">Click</button><font color="blue">(기존의 내용이 보이지 않는다면 눌러주세요.)</font></td>
+						</tr>
+						<tr>
+							<td colspan="2">
+								<script type="text/javascript" th:src="@{/static/smarteditor/js/HuskyEZCreator.js}"
+                                    charset="utf-8"></script>
+                                <textarea id="ir1" style="width:100%;" name="notice_contents"></textarea>
+							</td>
+						</tr>
+					</table>	
+					</form>								
+				</div>
+				<div align="center" style="width:85%;padding:20px;">
+						<input type="button" class="btn btn-outline-primary" value="확인" onclick="writeBtn();">
+				</div>
+				<br><br>
+			</main>
+		</div>
+	</div>
+
+	<!-- Icons -->
+<script src="https://unpkg.com/feather-icons/dist/feather.min.js"></script>
+<script>
+feather.replace()
+</script>
+<script th:inline="javascript">
+var oEditors = [];
+nhn.husky.EZCreator.createInIFrame({
+    oAppRef: oEditors,
+    elPlaceHolder: "ir1",
+    sSkinURI: "/static/smarteditor/SmartEditor2Skin.html",
+    fCreator: "createSEditor2"
+});
+function writeBtn(){
+	if([[${noticeDto}]] != null) {
+		var noticeDto = [[${noticeDto}]];
+		document.getElementById('frm').action = "/admin/board/notice/modify?notice_idx="+noticeDto.notice_idx;
+	}
+	if(confirm('작성하시겠습니까?')) {
+		oEditors[0].exec("UPDATE_CONTENTS_FIELD", []);
+		//document.getElementById('ir1').value = oEditors.getById["ir1"].getIR();
+		document.getElementById('frm').submit();
+	}
+}
+window.onload = function(){
+	if([[${noticeDto}]] != null){
+		var noticeDto = [[${noticeDto}]];
+		document.getElementById(noticeDto.notice_type).selected = true;
+		document.getElementById('notice_title').value = noticeDto.notice_title;
+		oEditors.getById["ir1"].setIR(noticeDto.notice_contents);
+	}
+}
+function setContents(){
+	var noticeDto = [[${noticeDto}]];
+	oEditors.getById["ir1"].setIR(noticeDto.notice_contents);
+}
+	
+</script>
+</body>
+</html>

@@ -107,6 +107,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     		</if>
 			where product_idx = #{product_idx}
 	</update>
+	
 	<select id="selectProductDTO" resultType="com.example.project_01.model.product.dto.ProductDTO">
 		SELECT product_idx, product_name, product_price, 
 				product_contents, product_image, product_isDisplay, 
@@ -137,5 +138,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<delete id="delProductMainDisplay">
 		DELETE FROM display 
 		WHERE display_md = #{display_md}
+	</delete>
+	<delete id="delProductMainDisplayByProduct">
+		delete from display
+		where display_product = #{product_idx}
 	</delete>
 </mapper>

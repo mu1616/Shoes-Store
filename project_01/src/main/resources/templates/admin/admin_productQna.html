@@ -21,8 +21,7 @@ th, td {
 		<div class="row">
 			<th:block th:include="admin/admin.html::side"></th:block>
 			<main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
-				<div
-					class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+				<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
 					<h1 class="h2">상품문의 관리</h1>
 				</div>
 				<br>
@@ -119,11 +118,11 @@ th, td {
 
 
 	<!-- Icons -->
-	<script src="https://unpkg.com/feather-icons/dist/feather.min.js"></script>
-	<script>
-  feather.replace()
+<script src="https://unpkg.com/feather-icons/dist/feather.min.js"></script>
+<script>
+feather.replace()
 </script>
-	<script th:inline="javascript">
+<script th:inline="javascript">
 var currentPage = [[${pageDto.currentPage}]];
 makePageBtn(currentPage);
 searchOption();

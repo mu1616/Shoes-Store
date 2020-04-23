@@ -2,10 +2,15 @@
 <html xmlns:th="http://www.thymeleaf.org">
 
 <head>
-    <meta charset="UTF-8">
-    <title>Admin Page</title>
-    <th:block th:include="./bootstrap.html::bootstrap"></th:block>
-
+<meta charset="UTF-8">
+<title>Admin Page</title>
+<th:block th:include="./bootstrap.html::bootstrap"></th:block>
+<style>
+textarea{
+	width:90%;
+	height:500px;
+}
+</style>
 </head>
 
 
@@ -65,6 +70,11 @@
                                     <font color="gray">회원목록/관리</font><span class="sr-only">(current)</span>
                                 </a>
                             </li>
+                            <li class="nav-item">
+                                <a class="nav-link " href="/admin/member/role/manage">
+                                    <font color="gray">등급관리</font><span class="sr-only">(current)</span>
+                                </a>
+                            </li>
 
                             <li class="nav-item">
                                 <span class="nav-link " href="#">
@@ -73,13 +83,8 @@
                                 </span>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link " href="#">
-                                    <font color="gray">공지사항 </font><span class="sr-only">(current)</span>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link " href="#">
-                                    <font color="gray">FAQ </font><span class="sr-only">(current)</span>
+                                <a class="nav-link " href="/admin/board/notice/1">
+                                    <font color="gray">공지글 </font><span class="sr-only">(current)</span>
                                 </a>
                             </li>
                             <li class="nav-item">
@@ -100,19 +105,19 @@
                 </div><br>
                 <form class="form-inline" method="post" id="frm" action="/admin/product/register"
                     enctype="multipart/form-data" style="font-size:14px;">
-                    <table class="table">
+                    <table class="table table-bordered">
                         <tr>
-                            <th scope="row">상품명</th>
+                            <th scope="row" class="align-middle">상품명</th>
                             <td><input type="text" name="product_name" id="product_name" class="form-control"
                                     style="width:500px"></td>
                         </tr>
                         <tr>
-                            <th scope="row">판매가</th>
+                            <th scope="row" class="align-middle">판매가</th>
                             <td><input type="text" name="product_price" id="product_price" class="form-control"
                                     style="width:200px">원</td>
                         </tr>
                         <tr>
-                            <th scope="row">제조 브랜드</th>
+                            <th scope="row" class="align-middle">제조 브랜드</th>
                             <td>
                                 <select class="custom-select mr-sm-2" name="product_brand" id="product_brand"
                                     style="width:200px;">
@@ -127,7 +132,7 @@
                             </td>
                         </tr>
                         <tr>
-                            <th scope="row">상품 분류</th>
+                            <th scope="row" class="align-middle">상품 분류</th>
                             <td>
                                 <select class="custom-select mr-sm-2" name="product_category" id="product_category"
                                     style="width:200px;">
@@ -142,22 +147,22 @@
                             </td>
                         </tr>
                         <tr>
-                            <th scope="row">상품 상세설명</th>
+                            <th scope="row" class="align-middle">상품 상세설명</th>
                             <td>
                                 <script type="text/javascript" th:src="@{/static/smarteditor/js/HuskyEZCreator.js}"
                                     charset="utf-8"></script>
-                                <textarea name="product_contents" id="ir1" rows="20" cols="100"></textarea>
+                                <textarea name="product_contents" id="ir1"></textarea>
                             </td>
                         </tr>
                         <tr>
-                            <th scope="row">대표이미지</th>
+                            <th scope="row" class="align-middle">대표이미지</th>
                             <td><input type="file" name="profile" id="profile" onchange="displayImage(this);"><br>
                                 <span class="text-primary">권장Size : 600px*500px</span>
                                 <br><img id="loadImg" style="width:280px;height:200px;">
                             </td>
                         </tr>
                         <tr>
-                            <th scope="row">진열상태</th>
+                            <th scope="row" class="align-middle">진열상태</th>
                             <td>
                                 <input type="radio" class="radio" name="product_isDisplay" id="product_isDisplay"
                                     value="1">진열함&nbsp&nbsp&nbsp
@@ -165,7 +170,7 @@
                             </td>
                         </tr>
                         <tr>
-                            <th scope="row">메인 진열</th>
+                            <th scope="row" class="align-middle">메인 진열</th>
                             <td>
                                 <input type="checkbox" class="form-check-input" name="mainDisplay"
                                     value="1">BestAward&nbsp&nbsp&nbsp
@@ -176,7 +181,7 @@
                             </td>
                         </tr>
                         <tr>
-                            <th scope="row">재고</th>
+                            <th scope="row" class="align-middle">재고</th>
                             <td id="place">사이즈 <input type="text" class="form-control" id="size"
                                     style="width:100px">&nbsp&nbsp&nbsp
                                 재고 <input type="text" class="form-control" id="stock" style="width:100px">&nbsp&nbsp
@@ -184,12 +189,11 @@
                             </td>
                         </tr>
                     </table>
-                </form>
-                <hr>
+                </form><br>
                 <div align="center">
                     <input type="button" class="btn btn-outline-primary btn-lg" style="width:200pt;" value="상품등록"
                         onclick="register();">
-                </div>
+                </div><br>
             </main>
 
         </div>

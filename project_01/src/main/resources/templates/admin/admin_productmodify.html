@@ -5,94 +5,113 @@
 <meta charset="UTF-8">
 <title>Admin Page</title>
 <th:block th:include="./bootstrap.html::bootstrap"></th:block>
-    
+<style>
+textarea {
+	width: 90%;
+}
+</style>
 </head>
 <body>
-<th:block th:include="admin/admin.html::header"></th:block>
- <div class="container-fluid">
-     <div class="row">
-	<th:block th:include="admin/admin.html::side"></th:block>
-	<main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
-		<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-        <h1 class="h2">상품정보 수정</h1>
-        </div>
-        <form class="form-inline" method="post" id="frm" action="/admin/product/modify" enctype="multipart/form-data">
-        <table class="table">
-        <tr>
-        <th scope="row" >상품명</th>
-        <td><input type="text" name="product_name" id="product_name" class="form-control" style="width:500px" th:value="${productEntity.product_name}"></td>
-        </tr>
-        <tr>
-        <th scope="row" >판매가</th>
-        <td><input type="text" name="product_price" id="product_price" class="form-control" style="width:200px" th:value="${productEntity.product_price}">원</td>
-        </tr>
-        <tr>
-        <th scope="row" >제조 브랜드</th>
-        <td>
-        <select class="custom-select mr-sm-2" name="product_brand"id="product_brand" style="width:200px;">
-        <option selected>제조 브랜드</option>
-        <option value="1">Nike</option>
-        <option value="2">Adidas</option>
-        <option value="3">Puma</option>
-        <option value="4">NewBalance</option>
-        <option value="5">Reebok</option>
-        <option value="6">Vans</option>
-      </select>
-        </td>
-        </tr>
-        <tr>
-        <th scope="row" >상품 분류</th>
-        <td>
-        <select class="custom-select mr-sm-2" name="product_category"id="product_category" style="width:200px;">
-        <option selected>상품 분류</option>
-        <option value="1">운동화</option>
-        <option value="2">스니커즈</option>
-        <option value="3">슬리퍼</option>
-        <option value="4">샌들</option>
-        <option value="5">축구/농구</option>
-        <option value="6">슬립온</option>
-      </select>
-        </td>
-        </tr>
-        <tr>
-        <th scope="row" >상품 상세설명</th>
-        <td>
-        <button type="button" class="btn btn-sm btn-dark" onclick="setContents()">Click</button><font color="blue">(기존의 내용이 보이지 않는다면 눌러주세요.)</font>
-        <script type="text/javascript" th:src="@{/static/smarteditor/js/HuskyEZCreator.js}" charset="utf-8"></script>
-        <textarea name="product_contents" id="ir1" rows="20" cols="110"></textarea>
-        </td>
-        </tr>
-        <tr>
-        <th scope="row" >대표이미지</th>
-        <td>
-        	<div id="file">
-        		<button type="button" class="btn btn-sm btn-dark" onclick="displayFile();">수정하기</button>
-        	</div>
-        	<img id="loadImg" th:src = "${productEntity.product_image}" style="width:280px;height:200px;">
-        </td>        
-        </tr>
-        <tr>
-        <th scope="row" >진열상태</th>
-        <td id="isDisplay">       
-			<input type="radio" name="product_isDisplay" id="product_isDisplay"value="1">진열함&nbsp&nbsp&nbsp
-			<input type="radio" name="product_isDisplay" id="product_isDisplay" value="0">진열안함
-		</td>
-        </tr>
-        <input type="hidden" name="product_idx" th:value="${productEntity.product_idx}"> 
-        
-        </table>        
-        </form><hr>
-        <div align="center">
-        	<input type="button" class="btn btn-outline-primary btn-lg" style="width:200pt;" value="수정" onclick="register();">
-        </div>
-        </main>
-        </div>
-        </div>><br>
-<script src="https://unpkg.com/feather-icons/dist/feather.min.js"></script>
-<script>
+	<th:block th:include="admin/admin.html::header"></th:block>
+	<div class="container-fluid">
+		<div class="row">
+			<th:block th:include="admin/admin.html::side"></th:block>
+			<main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
+				<div
+					class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+					<h1 class="h2">상품정보 수정</h1>
+				</div>
+				<form class="form-inline" method="post" id="frm"
+					action="/admin/product/modify" enctype="multipart/form-data">
+					<table class="table table-bordered">
+						<tr>
+							<th scope="row" class="align-middle">상품명</th>
+							<td><input type="text" name="product_name" id="product_name"
+								class="form-control" style="width: 500px"
+								th:value="${productEntity.product_name}"></td>
+						</tr>
+						<tr>
+							<th scope="row" class="align-middle">판매가</th>
+							<td><input type="text" name="product_price"
+								id="product_price" class="form-control" style="width: 200px"
+								th:value="${productEntity.product_price}">원</td>
+						</tr>
+						<tr>
+							<th scope="row" class="align-middle">제조 브랜드</th>
+							<td><select class="custom-select mr-sm-2"
+								name="product_brand" id="product_brand" style="width: 200px;">
+									<option selected>제조 브랜드</option>
+									<option value="1">Nike</option>
+									<option value="2">Adidas</option>
+									<option value="3">Puma</option>
+									<option value="4">NewBalance</option>
+									<option value="5">Reebok</option>
+									<option value="6">Vans</option>
+							</select></td>
+						</tr>
+						<tr>
+							<th scope="row" class="align-middle">상품 분류</th>
+							<td><select class="custom-select mr-sm-2"
+								name="product_category" id="product_category"
+								style="width: 200px;">
+									<option selected>상품 분류</option>
+									<option value="1">운동화</option>
+									<option value="2">스니커즈</option>
+									<option value="3">슬리퍼</option>
+									<option value="4">샌들</option>
+									<option value="5">축구/농구</option>
+									<option value="6">슬립온</option>
+							</select></td>
+						</tr>
+						<tr>
+							<th scope="row" class="align-middle">상품 상세설명</th>
+							<td>
+								<button type="button" class="btn btn-sm btn-dark"
+									onclick="setContents()">Click</button>
+								<font color="blue">(기존의 내용이 보이지 않는다면 눌러주세요.)</font> <script
+									type="text/javascript"
+									th:src="@{/static/smarteditor/js/HuskyEZCreator.js}"
+									charset="utf-8"></script> <textarea name="product_contents"
+									id="ir1" rows="20"></textarea>
+							</td>
+						</tr>
+						<tr>
+							<th scope="row" class="align-middle">대표이미지</th>
+							<td>
+								<div id="file">
+									<button type="button" class="btn btn-sm btn-dark"
+										onclick="displayFile();">수정하기</button>
+								</div> <img id="loadImg" th:src="${productEntity.product_image}"
+								style="width: 280px; height: 200px;">
+							</td>
+						</tr>
+						<tr>
+							<th scope="row">진열상태</th>
+							<td id="isDisplay"><input type="radio"
+								name="product_isDisplay" id="product_isDisplay" value="1">진열함&nbsp&nbsp&nbsp
+								<input type="radio" name="product_isDisplay"
+								id="product_isDisplay" value="0">진열안함</td>
+						</tr>
+						<input type="hidden" name="product_idx"
+							th:value="${productEntity.product_idx}">
+
+					</table>
+				</form>
+				<hr>
+				<div align="center">
+					<input type="button" class="btn btn-outline-primary btn-lg"
+						style="width: 200pt;" value="수정" onclick="register();">
+				</div>
+			</main>
+		</div>
+	</div>
+	>
+	<br>
+	<script src="https://unpkg.com/feather-icons/dist/feather.min.js"></script>
+	<script>
   feather.replace()
 </script>
-<script th:inline="javascript">
+	<script th:inline="javascript">
 var oEditors = [];
 nhn.husky.EZCreator.createInIFrame({
  oAppRef: oEditors,
@@ -107,10 +126,9 @@ setBrand();
 setCategory();
 setIsDisplay();
 //setContents();
-$(window).on('load',(function(){		
-		setContents();
-	})
-	); 
+window.onload = function(){
+	setContents();
+}
 
 function setContents(){
 	var contents = [[${productEntity.product_contents}]]

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+<meta charset="UTF-8">
+<title>Admin Page</title>
+<th:block th:include="./bootstrap.html::bootstrap"></th:block>
+<style>
+table{
+	font-size:13px;
+}
+</style>
+</head>
+<body>
+	<th:block th:include="admin/admin.html::header"></th:block>
+	<div class="container-fluid">
+		<div class="row">
+			<th:block th:include="admin/admin.html::side"></th:block>
+			<main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
+				<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+					<h1 class="h2">공지글 관리</h1>					
+				</div>
+				<div style="min-height:620px;">
+					<font color="grey">
+							[총 <font color="red">82</font>개]
+					</font>
+					<table class="table table-bordered">
+						<thead class="thead-light">
+							<tr>
+								<th>번호</th>
+								<th>공지유형</th>
+								<th>제목</th>
+								<th>작성자</th>
+								<th>작성일</th>
+						</thead>
+					</table>
+				</div>
+			</main>
+		</div>
+	</div>
+<!-- Icons -->
+<script src="https://unpkg.com/feather-icons/dist/feather.min.js"></script>
+<script>
+feather.replace()
+</script>
+</body>
+</html>

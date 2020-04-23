@@ -16,4 +16,10 @@ public interface NoticeDAO {
 	public NoticeDTO selectOne(int notice_idx);
 	//전체 레코드 개수 출력
 	public int countRecord();
+	//전체 레코드 select (start ~ start+length) 
+	public List<NoticeDTO> selectNotice(int start, int length);
+	//레코드 수정
+	public void updateOne(NoticeDTO noticeDto);
+	//레코드 삭제
+	public void deleteOne(int notice_idx);
 }

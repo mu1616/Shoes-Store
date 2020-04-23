@@ -129,51 +129,10 @@ th,td {
 <br><br><hr>
 <th:block th:include="./home.html::footer"></th:block>
 </div>
-<script th:inline="javascript">
-qna_page(1);
-var contents = [[${productDto.product_contents}]];
-document.getElementById('contents').innerHTML = contents;
-
-function qnaBtn(){
-	var product_idx = [[${productDto.product_idx}]];
-	window.open("/product/qna/"+product_idx,"stock","width=550, height=600");
-}
-
-function qna_page(num) {
-	var page=num;
-	var qna_product = [[${productDto.product_idx}]];
-	$.ajax({
-		url: "/product/qnaShow",
-		type: "POST",
-		data: {"currentPage":page, "qna_product":qna_product},
-		dataType:"html",
-		error:function(request,status,error){
-	        alert("code = "+ request.status + " message = " + request.responseText + " error = " + error); // 실패 시 처리
-	       },
-	    success : function(data) {
-	    	document.getElementById('qna').innerHTML = data;
-	    	var btns = document.getElementsByClassName('qna-page');
-	    	for(var i=0; i<btns.length; i++) {
-	    		if(btns[i].innerText == page){
-	    			btns[i].classList.remove('btn-outline-secondary');
-	    			btns[i].classList.add('btn-outline-primary');
-	    		}
-	    	}
-	    }
-	});
-}
-function qnaDetail(num,obj){
-	var parent = obj.parentNode;
-	var tag = parent.nextElementSibling;
-	if(tag.style.display =='none') {
-		tag.style.display = '';
-	} else {
-		tag.style.display = 'none';
-	}
-}
+<script th:inline="javascript" sec:authorize="isAuthenticated()">
 function qnaDetail_secret(qna_idx,obj,qna_product){
 	$.ajax({
-		url: "/product/showSecret",
+		url: "/product/qna/showSecret",
 		type: "POST",
 		data: {"qna_idx":qna_idx},
 		dataType:"json",
@@ -215,6 +174,55 @@ function qnaDetail_secret(qna_idx,obj,qna_product){
 	    }
 	});
 }
+</script>
+<script th:inline="javascript" sec:authorize="!isAuthenticated()">
+function qnaDetail_secret(qna_idx,obj,qna_product){
+	alert('권한이 없습니다.');
+}
+</script>
+<script th:inline="javascript" >
+qna_page(1);
+var contents = [[${productDto.product_contents}]];
+document.getElementById('contents').innerHTML = contents;
+
+function qnaBtn(){
+	var product_idx = [[${productDto.product_idx}]];
+	window.open("/product/qna/"+product_idx,"stock","width=550, height=600");
+}
+
+function qna_page(num) {
+	var page=num;
+	var qna_product = [[${productDto.product_idx}]];
+	$.ajax({
+		url: "/product/qna/qnaShow",
+		type: "POST",
+		data: {"currentPage":page, "qna_product":qna_product},
+		dataType:"html",
+		error:function(request,status,error){
+	        alert("code = "+ request.status + " message = " + request.responseText + " error = " + error); // 실패 시 처리
+	       },
+	    success : function(data) {
+	    	document.getElementById('qna').innerHTML = data;
+	    	var btns = document.getElementsByClassName('qna-page');
+	    	for(var i=0; i<btns.length; i++) {
+	    		if(btns[i].innerText == page){
+	    			btns[i].classList.remove('btn-outline-secondary');
+	    			btns[i].classList.add('btn-outline-primary');
+	    		}
+	    	}
+	    }
+	});
+}
+function qnaDetail(num,obj){
+	var parent = obj.parentNode;
+	var tag = parent.nextElementSibling;
+	if(tag.style.display =='none') {
+		tag.style.display = '';
+	} else {
+		tag.style.display = 'none';
+	}
+}
+
 function changeItem(obj){
 	var item = obj.options[obj.selectedIndex].value;
 	if(item ==0) return;

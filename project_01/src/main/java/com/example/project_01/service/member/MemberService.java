@@ -42,7 +42,6 @@ public class MemberService implements UserDetailsService{
 		MemberDTO memberDto = memberDao.findById(username);
 		List<GrantedAuthority> authorities = new ArrayList<>();
 		authorities.add(new SimpleGrantedAuthority("ROLE_"+memberDto.getMem_role()));
-		System.out.println(memberDto);
 		return new User(memberDto.getMem_id(),memberDto.getMem_pw(),authorities);
 	}
 }

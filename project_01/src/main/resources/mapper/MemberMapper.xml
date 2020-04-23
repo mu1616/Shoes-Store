@@ -55,7 +55,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	
 	<select id="selectRole" resultType = "com.example.project_01.model.member.dto.RoleDTO">
 		select * from role
-		order by role_idx asc
+		order by role_price asc
 	</select>
 	
 	<update id="updateRole">
@@ -74,4 +74,45 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		select * from role
 		where role_name = #{role_name}
 	</select>
+	
+	<update id="updateMemberRole">
+		UPDATE member AS m 
+		SET mem_role = 
+			(SELECT r.role_idx from role AS r 
+				WHERE r.role_price &lt;= m.mem_total AND r.role_idx > 1 
+				ORDER BY r.role_price desc LIMIT 1)
+		WHERE mem_role != 1 and mem_id = #{mem_id}
+	</update>
+	
+	<insert id="insertRole" parameterType = "com.example.project_01.model.member.dto.RoleDTO">
+		insert into role
+		(role_idx, role_name, role_price) 
+		values (0, upper(#{role_name}), #{role_price})
+	</insert>
+	
+	<update id="sortRole">
+		UPDATE role 
+		SET role_idx=@rank:=@rank+1 
+		WHERE role_name != 'ADMIN' and (@rank:=1)=1 
+		ORDER BY role_price;
+	</update>
+	
+	<update id="UpdateAllMemberRole">
+		UPDATE member AS m 
+		SET mem_role = (SELECT r.role_idx from role AS r 
+						WHERE r.role_price &lt;= m.mem_total AND r.role_idx > 1 
+						ORDER BY r.role_price desc LIMIT 1)
+		WHERE mem_role != 1
+	</update>
+	
+	<delete id="deleteRole">
+		delete from role
+		where role_name = #{role_name}
+	</delete>
+	
+	<update id="updateRoleInfo">
+		update role
+		set role_name = #{role_name}, role_price = #{role_price}
+		where role_idx = #{role_idx}
+	</update>
 </mapper>
