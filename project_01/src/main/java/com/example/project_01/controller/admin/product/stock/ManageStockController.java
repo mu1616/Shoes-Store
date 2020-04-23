@@ -31,16 +31,15 @@ public class ManageStockController {
 	}
 	
 	@ResponseBody
-	@RequestMapping("/admin/product/stock/add")
+	@RequestMapping("/admin/product/stock/insert")
 	public void addStock(int product_idx, int size, int count) {
 		stockDao.insertStock(product_idx, size, count);		
 	}
 	
 	@ResponseBody
-	@RequestMapping("/admin/product/stock/modify")
-	public void modifyStock(int product_idx, int size, int count) {
-		stockDao.updateStock(product_idx, size, count);
-		
+	@RequestMapping("/admin/product/stock/add")
+	public void modifyStock(int product_idx, int size, int add) {
+		stockDao.addStock(product_idx, size, add);		
 	}
 	
 	@ResponseBody
