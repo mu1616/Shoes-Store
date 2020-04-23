@@ -1,0 +1,19 @@
+package com.example.project_01.model.notice.dao;
+
+import java.util.List;
+
+import org.apache.ibatis.annotations.Mapper;
+
+import com.example.project_01.model.notice.dto.NoticeDTO;
+
+@Mapper
+public interface NoticeDAO {
+	//레코드 삽입
+	public void insertOne(NoticeDTO noticeDto);
+	//전체 레코드 select
+	public List<String> selectNoticeType();
+	//특정 notice_idx를 가지는 레코드 select
+	public NoticeDTO selectOne(int notice_idx);
+	//전체 레코드 개수 출력
+	public int countRecord();
+}

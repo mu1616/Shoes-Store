@@ -20,7 +20,7 @@ import com.example.project_01.service.admin.board.ManageProductQnaService;
 import com.example.project_01.service.pagination.PageService;
 
 @Controller
-public class ManageBoardController {
+public class ManageProductQnaController {
 	@Autowired
 	ManageProductQnaService qnaService;
 	@Autowired
@@ -63,8 +63,4 @@ public class ManageBoardController {
 		qnaDao.deleteOne(qna_idx);
 	}
 	
-	@RequestMapping("/admin/board/notice/write")
-	public String writeNotice() {
-		return "admin/admin_writeNotice";
-	}
 }

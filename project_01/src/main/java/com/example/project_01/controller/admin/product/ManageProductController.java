@@ -107,7 +107,6 @@ public class ManageProductController {
 	@RequestMapping(value = "/admin/product/modify", method = RequestMethod.POST)
 	public String modify(@ModelAttribute ProductEntity productEntity, int product_idx,
 			@RequestPart(value="profile", required=false) MultipartFile files) {
-		
 		productService.modifyProduct(productEntity, files, product_idx);
 		return "admin/admin_modifyComplete";
 	}
