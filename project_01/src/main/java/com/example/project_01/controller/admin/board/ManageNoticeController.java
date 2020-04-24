@@ -54,8 +54,6 @@ public class ManageNoticeController {
 		int totalRecord = noticeDao.countRecord();
 		PageDTO pageDto = pageService.calPage(currentPage, 20, totalRecord, 10);
 		List<NoticeDTO> noticeList = noticeService.selectNotice(currentPage, 20);
-		for(NoticeDTO dto : noticeList)
-			System.out.println(dto);
 		model.addAttribute("pageDto",pageDto);
 		model.addAttribute("noticeList",noticeList);
 		return "admin/admin_noticeList.html";

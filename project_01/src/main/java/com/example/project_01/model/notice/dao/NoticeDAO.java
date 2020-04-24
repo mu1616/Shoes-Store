@@ -22,4 +22,8 @@ public interface NoticeDAO {
 	public void updateOne(NoticeDTO noticeDto);
 	//레코드 삭제
 	public void deleteOne(int notice_idx);
+	//공지글 타입에 맞는 레코드 select
+	public List<NoticeDTO> selectByType(String notice_type, int start, int length);
+	//공지글 타입에 맞는 레코드 개수 select
+	public int selectCountByType(String notice_type);
 }
