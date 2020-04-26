@@ -98,7 +98,7 @@
 			<hr>
 			<div style="min-height:350px;">
 			<font color="grey"><p>[총 <font color="red" th:text="${pageDto.countRecord}"></font>개]</p></font>
-			<table class="table" style="font-size:14px;text-align:center;">
+			<table class="table" style="font-size:13px;text-align:center;">
 				<thead class="thead-light">
 			        <tr>       
 				        <th scope="col" colspan="2">상품정보</th>
@@ -205,9 +205,10 @@
 <script>
   feather.replace()
 </script>
+<script src="/static/js/make_pageBtn.js"></script>
 <script th:inline="javascript">
+makePageBtn([[${pageDto.currentPage}]]);
 initDate();
-makePageBtn();
 searchOption();
 function initDate(){
 	document.getElementById('fromDate').valueAsDate = new Date();
@@ -233,16 +234,6 @@ function searchOption(){
 		document.getElementById('all').checked = true;
 	}else {
 		document.getElementById([[${searchOrderDto.order_state}]]).checked = true;
-	}
-}
-function makePageBtn(){
-	currentPage = [[${pageDto.currentPage}]];
-	var btns = document.getElementsByClassName('pageBtn');
-	for(var i=0; i<btns.length; i++) {
-		if(btns[i].innerText == currentPage){
-			btns[i].classList.remove('btn-outline-secondary');
-			btns[i].classList.add('btn-outline-primary');
-		}
 	}
 }
 

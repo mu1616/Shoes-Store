@@ -21,23 +21,26 @@
 <span style="font-size:14px"th:text=${productEntity.product_name}></span><br><br>
 사이즈  <input type="text"  id="size"style="width:100px;float:center">
 재고  <input type="text"  id="count" style="width:100px">&nbsp&nbsp
-<button type="button"class="btn btn-sm btn-primary" onclick="addStock()">추가</button>
+<button type="button"class="btn btn-sm btn-primary" onclick="insertStock()">재고등록</button>
 <hr><br>
 <div id="place">
 <table class="table table-bordered">
 	<thead class="thead-light">
 	<tr>
-	<th>사이즈</th>
-	<th>재고</th>
-	<th></th>
+	<th style="width:20%;">사이즈</th>
+	<th style="width:15%;">재고</th>
+	<th style="width:30%;">재고추가</th>
+	<th style="width:15%;"></th>
 	</tr>
 	<th:block th:each="stock:${stockList}">
 	<tr>
-	<td><span th:text="${stock.size}"></span></td>
-	<td><input type="text"  id="stock" style="width:100px;float:center;" th:value="${stock.count}"></td>
-	<td><input type="button" id="modifyBtn"class="btn btn-sm" value="수정" onclick="modifyStock(this)">
-		<input type="button" id="deleteBtn"class="btn btn-sm" value="삭제" onclick="deleteStock(this)">
-	</td>
+		<td class="align-middle"><span th:text="${stock.size}" th:id="'size'+${stock.size}"></span></td>
+		<td class="align-middle"th:text="${stock.count}"></td>
+		<td class="align-middle">
+			<input type="text" style="width:50%;"placeholder="수량">
+			<input type="button" id="modifyBtn"class="btn btn-sm" value="추가" th:onclick="'addStock(this,'+${stock.size}+')'">			
+		</td>
+		<td class="align-middle"><input type="button" id="deleteBtn"class="btn btn-sm" value="삭제" th:onclick="'deleteStock(this,'+${stock.size}+')'"></td>
 	</tr>
 	</th:block>
 	</thead>
@@ -45,13 +48,13 @@
 </div>
 </div><br>
 <script>
-function addStock(){
-	if(confirm('추가하시겠습니까?')) {
-		var size = $("#size").val();
-		var count = $("#count").val();
+function insertStock(){
+	if(confirm('재고를 등록하시겠습니까?')) {
+		var size = document.getElementById('size').value;
+		var count = document.getElementById('count').value;
 		var product_idx = [[${product_idx}]];
 		$.ajax({
-			url: "/admin/product/stock/add",
+			url: "/admin/product/stock/insert",
 			type: "POST",
 			data: {"product_idx":product_idx, "size":size, "count":count},
 			error:function(request,status,error){
@@ -65,16 +68,16 @@ function addStock(){
 	}
 }
 
-function modifyStock(modifyBtn) {
+function addStock(obj,size) {
 	
-	var size = modifyBtn.parentNode.parentNode.childNodes[1].childNodes[0].innerHTML;
-	var count = modifyBtn.parentNode.parentNode.childNodes[3].childNodes[0].value;
+	var size = document.getElementById('size'+size).innerHTML;
+	var add = obj.previousElementSibling.value;
 	var product_idx = [[${product_idx}]];
-	if(confirm('수정하시겠습니까?')){
+	if(confirm('재고를 추가하시겠습니까?')){
 		$.ajax({
-			url: "/admin/product/stock/modify",
+			url: "/admin/product/stock/add",
 			type: "POST",
-			data: {"product_idx":product_idx, "size":size, "count":count},
+			data: {"product_idx":product_idx, "size":size, "add":add},
 			error:function(request,status,error){
 		        alert("code = "+ request.status + " message = " + request.responseText + " error = " + error); // 실패 시 처리
 		       },
@@ -87,8 +90,8 @@ function modifyStock(modifyBtn) {
 	
 }
 
-function deleteStock(deleteBtn){
-	var size = deleteBtn.parentNode.parentNode.childNodes[1].childNodes[0].innerHTML;
+function deleteStock(obj,size){
+	var size = document.getElementById('size'+size).innerHTML;
 	var product_idx = [[${product_idx}]];
 	if(confirm('삭제하시겠습니까?')){
 		$.ajax({

@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<!-- 레이아웃 참고한 소스 -->
+<!-- view-source:https://getbootstrap.com/docs/4.1/examples/dashboard/# -->
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Shoes Factory</title>
+<th:block th:include="./bootstrap.html::bootstrap"></th:block>
+<!-- 부모 요소의 크기에 맞기 이미지 크기 조절 -->
+<style>
+h3{
+	font-weight:600;
+}
+table{
+	font-size:14px;
+	min-height:550px;
+}
+th {
+	text-align:center;
+	height:50px;
+}
+</style>
+</head>
+<body>
+<div class="container">
+	<th:block th:include="./home.html::header"></th:block>
+	<br><br>
+	<h3>공지사항</h3>
+	<hr>
+	<table class="table table-bordered">
+		<tr>
+			<th style="width:200px;">제목</th>
+			<td th:text="${noticeDto.notice_title}"></td>
+		</tr>
+		<tr>
+			<th>작성자</th>
+			<td th:text="${noticeDto.notice_id}"></td>
+		</tr>
+		<tr>
+			<th>작성일</th>
+			<td th:text="${#calendars.format(noticeDto.notice_date,'yyyy-MM-dd')}"></td>
+		</tr>
+		<tr>
+			<td colspan="2" th:utext="${noticeDto.notice_contents}" ></td>
+		</tr>
+	</table>
+	<button class="btn btn-outline-dark" onclick="location.href='/board/list#notice'">목록</button>
+	<th:block th:include="./home.html::footer"></th:block>
+</div>
+
+</body>
+</html>

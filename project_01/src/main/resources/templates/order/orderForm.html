@@ -7,6 +7,7 @@
 <title>Shoes Factory</title>
 <th:block th:include="./bootstrap.html::bootstrap"></th:block>
 <script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+<script type="text/javascript" src="https://cdn.iamport.kr/js/iamport.payment-1.1.5.js"></script>
 <style>
   th,td {
     text-align: center;
@@ -43,13 +44,13 @@
         <td style="vertical-align:middle;"th:text=${cartDtoStat.count}></td>
         <td style="vertical-align:middle;"><a th:href="'/product/detail?product_idx='+${cartDto.cart_product}"><img th:src="${cartDto.product_image}" style="width:100px;height:80px"></a></td>
         <td style="vertical-align:middle;text-align:left">
-        	<span th:text="'['+${cartDto.product_brand}+']'"></span>&nbsp
+        	<span th:text="'['+${cartDto.product_brand}+']'"></span>&nbsp;
         	<span th:text=${cartDto.product_name} th:value=${cartDto.cart_product} class="productList"></span><br>
         	<span style="color:gray;font-weight:300">사이즈: </span>
         	<span style="color:gray;font-weight:300" th:text="${cartDto.cart_size}" class="sizeList"></span>
         </td>
         <td style="vertical-align:middle;">
-        	&nbsp<span th:text=${cartDto.cart_count} class="countList"></span>개&nbsp
+        	&nbsp<span th:text=${cartDto.cart_count} class="countList"></span>개&nbsp;
         </td>
         <td style="vertical-align:middle;" class="price" th:value="${cartDto.product_price}" th:text="${#numbers.formatInteger(cartDto.product_price*cartDto.cart_count, 0, 'COMMA')}+'원'"></td>
         </tr>
@@ -60,22 +61,22 @@
 <table class="table" style="font-size:14px">
 		<tbody>
 		<tr>
-		<th scope="row" class="table-active">배송지 선택&nbsp</th>
+		<th scope="row" class="table-active">배송지 선택&nbsp;</th>
 		<td colspan="2" class="left">
-			<input type="radio" name="dest" onclick="setDest()" checked>기존 배송지&nbsp&nbsp&nbsp&nbsp
+			<input type="radio" name="dest" onclick="setDest()" checked>기존 배송지&nbsp;&nbsp;&nbsp;&nbsp;
 			<input type="radio" name="dest" onclick="newDest()">새로운 배송지
 		</td>
 		</tr>
 		<tr>
-		<th scope="row" class="table-active">이름&nbsp</th>
+		<th scope="row" class="table-active">이름&nbsp;</th>
 		<td colspan="2" class="left"><input type="text" class="left" id="name" name=mem_name style="width:160px" ></td>
 		</tr>
 		<tr>
-		<th scope="row" class="table-active">연락처&nbsp</th>
+		<th scope="row" class="table-active">연락처&nbsp;</th>
 		<td colspan="2" class="left"><input type="text" placeholder="예시) 01047156017" id="phone" name="mem_phone" style="width:230px"></td>
 		</tr>
 		<tr>
-		<th scope="row" class="table-active">주소&nbsp</th>
+		<th scope="row" class="table-active">주소&nbsp;</th>
 		<td class="left">
 			<input type="text"  id="sample6_postcode" placeholder="우편번호" readonly>&nbsp<input type="button" onclick="sample6_execDaumPostcode()" value="주소찾기"><br>
 			<input type="text"  style="width:300px;"id="sample6_address" name="mem_addr1" placeholder="주소" readonly>
@@ -226,67 +227,39 @@ function order(){
     	alert('주소를 확인해주세요');
     	return;
     }
-    if(confirm('주문을 진행하시겠습니까?')) {
-		var form = document.createElement("form");
-		form.setAttribute("charset","UTF-8");
-		form.setAttribute("method","Post");
-		form.setAttribute("action","/order/orderProcess");
-		var productList = document.getElementsByClassName('productList');
-		var sizeList = document.getElementsByClassName('sizeList');
-		var countList = document.getElementsByClassName('countList');
-		for(var i=0; i<productList.length; i++) {
-			var product = productList[i].getAttribute('value');
-			var size = sizeList[i].innerHTML;
-			var count = countList[i].innerHTML;
-			var hiddenField = document.createElement("input");
-            hiddenField.setAttribute("type", "hidden");
-            hiddenField.setAttribute("name", "size");
-            hiddenField.setAttribute("value", size);
-            form.appendChild(hiddenField);
-            hiddenField = document.createElement("input");
-            hiddenField.setAttribute("type", "hidden");
-            hiddenField.setAttribute("name", "count");
-            hiddenField.setAttribute("value", count);
-            form.appendChild(hiddenField);
-            hiddenField = document.createElement("input");
-            hiddenField.setAttribute("type", "hidden");
-            hiddenField.setAttribute("name", "product");
-            hiddenField.setAttribute("value", product);
-            form.appendChild(hiddenField);
-		}
-		var name = document.getElementById('name').value;
-		var phone = document.getElementById('phone').value;
-		var postcode = document.getElementById('sample6_postcode').value;
-	    var addr1 = document.getElementById("sample6_address").value;
-	    var addr2 = document.getElementById("sample6_detailAddress").value;
-	    var hiddenField = document.createElement("input");
-        hiddenField.setAttribute("type", "hidden");
-        hiddenField.setAttribute("name", "mem_name");
-        hiddenField.setAttribute("value", name);
-        form.appendChild(hiddenField);
-        hiddenField = document.createElement("input");
-        hiddenField.setAttribute("type", "hidden");
-        hiddenField.setAttribute("name", "mem_phone");
-        hiddenField.setAttribute("value", phone);
-        form.appendChild(hiddenField);
-        hiddenField = document.createElement("input");
-        hiddenField.setAttribute("type", "hidden");
-        hiddenField.setAttribute("name", "mem_postcode");
-        hiddenField.setAttribute("value", postcode);
-        form.appendChild(hiddenField);
-        hiddenField = document.createElement("input");
-        hiddenField.setAttribute("type", "hidden");
-        hiddenField.setAttribute("name", "mem_addr1");
-        hiddenField.setAttribute("value", addr1);
-        form.appendChild(hiddenField);
-        hiddenField = document.createElement("input");
-        hiddenField.setAttribute("type", "hidden");
-        hiddenField.setAttribute("name", "mem_addr2");
-        hiddenField.setAttribute("value", addr2);
-        form.appendChild(hiddenField);
-        document.body.appendChild(form);
-		form.submit();
+    var size= [];
+    var count = [];
+    var product = [];
+    var productList = document.getElementsByClassName('productList');
+    var sizeList = document.getElementsByClassName('sizeList');
+    var countList = document.getElementsByClassName('countList');
+    for(var i=0; i<productList.length; i++) {
+       var p = productList[i].getAttribute('value');
+       var s = sizeList[i].innerHTML;
+       var c = countList[i].innerHTML;
+       size.push(s);
+       count.push(c);
+       product.push(p);          
     }
+
+    $.ajax({
+		url: "/order/makeInfo",
+		type: "POST",
+		traditional: true,
+		data: {"product":product, "size":size, "count":count,"mem_name":name,"mem_phone":phone,"mem_postcode":postcode,"mem_addr1":addr1,"mem_addr2":addr2},
+		error:function(request,status,error){
+	        alert("code = "+ request.status + " message = " + request.responseText + " error = " + error); // 실패 시 처리
+	       },
+	    success : function(data) {
+	    	if(data.message !=null){
+	    		alert(data.message);
+	    		return;
+	    	}else {
+	    		pay(data);
+	    	}
+	    }
+	});
+    
 }
 function phoneCheck(phone){
 	var re = /^[0-9]{11}$/;
@@ -295,6 +268,51 @@ function phoneCheck(phone){
 	}else {
 		return true;
 	}
+}
+
+function pay(payment){
+    IMP.init("imp73082250")
+    IMP.request_pay({ // param
+    	pg: "danal_tpay",
+        pay_method: "card",
+        merchant_uid: payment.merchant_uid,
+        name: "shoes factory",
+        amount: payment.amount,
+        buyer_tel: payment.buyer_tel
+    }, function (rsp) {  //결제 완료 시 실행
+        if (rsp.success) {
+        	$.ajax({
+    			url: "/order/validate",
+    			type: "POST",
+    			data: {"imp_uid":rsp.imp_uid, "merchant_uid":rsp.merchant_uid},
+    			error:function(request,status,error){
+    		        alert("code = "+ request.status + " message = " + request.responseText + " error = " + error); // 실패 시 처리
+    		       },
+    		       
+    		    success : function(complete) {
+    		    	if(complete == 0){
+    		    		alert('결제 오류');
+    		    	}else {
+    		    		location.href = '/order/complete';
+    		    	}
+    		    }
+    		});
+            //결제 비완료시 실행 
+        } else {
+        	$.ajax({
+    			url: "/order/payCancel",
+    			type: "POST",
+    			data: {"merchant_uid":payment.merchant_uid},
+    			error:function(request,status,error){
+    		        alert("code = "+ request.status + " message = " + request.responseText + " error = " + error); // 실패 시 처리
+    		       },
+    		    success : function(data) {
+    		    	return;
+    		    }
+    		});
+        }
+    });
+    
 }
 </script>
 </div>

@@ -1,0 +1,19 @@
+<table class="table" style="font-size:15px;">
+	<tbody>
+		<th:block th:each="noticeDto:${noticeList}">
+			<tr style="cursor:pointer;height:70px;" onclick="showAnswer(this);">
+				<td class="align-middle"style="color:red;width:30%;">Question</td>
+				<td class="align-middle"th:text="${noticeDto.notice_title}" style="text-align: left;"></td>
+			</tr>
+			<tr style="display:none;" class="answer">
+				<td class="align-middle"style="color:blue;">Answer</td>
+				<td class="align-middle"th:utext="${noticeDto.notice_contents}" style="text-align: left;"></td>
+			</tr>
+		</th:block>
+	</tbody>
+	<tr><td></td></tr>
+</table>
+<br>
+<div align="center">
+	<th:block th:include="admin/admin_productQna.html::page"></th:block>
+</div>

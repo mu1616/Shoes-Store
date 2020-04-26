@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<!-- 레이아웃 참고한 소스 -->
+<!-- view-source:https://getbootstrap.com/docs/4.1/examples/dashboard/# -->
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Shoes Factory</title>
+<th:block th:include="./bootstrap.html::bootstrap"></th:block>
+<!-- 부모 요소의 크기에 맞기 이미지 크기 조절 -->
+<style>
+.category {
+	width: 100%;
+	height: 50px;
+}
+
+.board {
+	font-size: 13px;
+	min-height: 300px;
+}
+
+th, td {
+	text-align: center;
+}
+</style>
+</head>
+<body>
+	<div class="container">
+		<th:block th:include="./home.html::header"></th:block>
+		<br>
+		<div class="row">
+			<div class="col-6">
+				<button class="btn btn-primary category" value="notice" onclick="noticeBtn(this);">공지사항</button>
+			</div>
+			<div class="col-6">
+				<button class="btn  category" value="faq" onclick="faqBtn(this);">FAQ</button>
+			</div>
+		</div>
+		<br>
+		<br>
+		<div class="board" id="board">
+			
+		</div>
+		<th:block th:include="./home.html::footer"></th:block>
+		<br>
+	</div>
+<script src="/static/js/make_pageBtn.js"></script>
+<script th:inline="javascript">
+setBoard(1);
+
+function noticeBtn(obj){
+	location.href= '#notice';
+	setBoard(1,obj);
+}
+function faqBtn(obj){
+	location.href= '#faq';
+	setBoard(1,obj);
+}
+function setBoard(currentPage,obj){
+	var url = document.location.href;
+	var index = url.indexOf('#');
+	var notice_type = url.substring(index+1,url.length);
+	$.ajax({
+		url: "/board/getList",
+		type: "POST",
+		dataType: "html",
+		data: {"notice_type":notice_type, "currentPage":currentPage},
+		error:function(request,status,error){
+	        alert("code = "+ request.status + " message = " + request.responseText + " error = " + error); // 실패 시 처리
+	       },
+	    success : function(data) {
+	    	document.getElementById('board').innerHTML = data;
+	    	makePageBtn(currentPage);
+	    	var btns = document.getElementsByClassName('category');
+	    	for(var i=0; i<btns.length; i++){
+	    		btns[i].classList.remove('btn-primary');
+	    		if(btns[i].getAttribute('value')==notice_type)
+	    			btns[i].classList.add('btn-primary');
+	    	}
+	    	
+	    }
+	});
+}
+function showAnswer(obj){
+	if(obj.nextElementSibling.style.display=='none'){
+		obj.nextElementSibling.style.display = '';
+	}
+	else {
+		obj.nextElementSibling.style.display = 'none';
+	}
+}
+
+function clickPageBtn(num){
+	setBoard(num);
+}
+
+function contents(num){
+	location.href = "/board/notice/contents?notice_idx="+num;
+}
+</script>
+</body>
+</html>

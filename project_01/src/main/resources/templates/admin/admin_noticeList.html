@@ -9,6 +9,13 @@
 table{
 	font-size:13px;
 }
+th,td{
+	text-align:center;
+}
+.link {
+	cursor:pointer;
+}
+.link:hover{ text-decoration:underline;}
 </style>
 </head>
 <body>
@@ -22,18 +29,41 @@ table{
 				</div>
 				<div style="min-height:620px;">
 					<font color="grey">
-							[총 <font color="red">82</font>개]
+							[총 <font color="red" th:text="${pageDto.countRecord}"></font>개]
 					</font>
+					<button class="btn btn-outline-dark" style="float:right;" onclick="location.href='/admin/board/notice/write'">글쓰기</button><br><br>
 					<table class="table table-bordered">
 						<thead class="thead-light">
 							<tr>
-								<th>번호</th>
-								<th>공지유형</th>
-								<th>제목</th>
-								<th>작성자</th>
-								<th>작성일</th>
+								<th class="align-middle" style="width:8%;">번호</th>
+								<th class="align-middle"style="width:10%;">공지유형</th>
+								<th class="align-middle"style="width:40%;">제목</th>
+								<th class="align-middle"style="width:10%;">작성자</th>
+								<th class="align-middle"style="width:10%;">작성일</th>
+								<th class="align-middle"style="width:12%;"></th>
 						</thead>
+						<tbody>
+							<th:block th:each="noticeDto:${noticeList}">
+							<tr>
+								<td class="align-middle"th:text=${noticeDtoStat.count}></td>
+								<td class="align-middle"th:text="${noticeDto.notice_type}"></td>
+								<td class="align-middle"style="text-align:left;">
+									<span th:if="${noticeDto.notice_type}=='공지사항'"class="link" th:text="${noticeDto.notice_title}" th:onclick="'linkBtn('+${noticeDto.notice_idx}+')'"></span>
+									<span th:if="${noticeDto.notice_type}=='FAQ'"class="link" th:text="${noticeDto.notice_title}" onclick="window.open('/board/list#faq','')"></span>
+								</td>
+								<td class="align-middle"th:text="${noticeDto.notice_id}"></td>
+								<td class="align-middle"th:text="${#calendars.format(noticeDto.notice_date,'yyyy-MM-dd')}"></td>
+								<td>
+									<button class="btn btn-sm" th:onclick="'modifyBtn('+${noticeDto.notice_idx}+')'">수정</button> 
+									<button class="btn btn-sm" th:onclick="'deleteBtn('+${noticeDto.notice_idx}+')'">삭제</button>
+								</td>
+							</tr>
+							</th:block>
+						</tbody>
 					</table>
+					<div align="center">
+						<th:block th:include="admin/admin_productQna.html::page"></th:block>	
+					</div>				
 				</div>
 			</main>
 		</div>
@@ -42,6 +72,24 @@ table{
 <script src="https://unpkg.com/feather-icons/dist/feather.min.js"></script>
 <script>
 feather.replace()
+</script>
+<script src="/static/js/make_pageBtn.js"></script>
+<script th:inline="javascript">
+makePageBtn([[${pageDto.currentPage}]]);
+function modifyBtn(num){
+	location.href = '/admin/board/notice/write?notice_idx='+num;
+}
+function linkBtn(num){
+	window.open('/board/notice/contents?notice_idx='+num,"");
+}
+
+function clickPageBtn(num){
+	location.href = "/admin/board/notice/"+num;
+}
+function deleteBtn(num){
+	if(confirm('삭제하시겠습니까?'))
+		location.href = '/admin/board/notice/delete?notice_idx='+num;
+}
 </script>
 </body>
 </html>

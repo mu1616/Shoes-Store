@@ -1,0 +1,47 @@
+[33mcommit b9633227b21c336a60c4c921321053fc6b6313c4[m[33m ([m[1;36mHEAD -> [m[1;32mmaster[m[33m)[m
+Author: mu161 <mu161@DESKTOP-L9EQHQD>
+Date:   Sat Jan 18 04:07:44 2020 +0900
+
+    상품등록 뷰페이지 추가 (admin.html)
+
+[33mcommit 4acabd8dfc804e4f48f851e963664b2313515981[m
+Author: mu161 <mu161@DESKTOP-L9EQHQD>
+Date:   Thu Jan 16 21:33:33 2020 +0900
+
+    spring-security role 설정 및 로그인 인증 구현
+
+[33mcommit e29e5b5cafb66019dd7ab96ac1aea2b2b0399156[m
+Author: mu161 <mu161@DESKTOP-L9EQHQD>
+Date:   Wed Jan 15 01:00:07 2020 +0900
+
+    Login/Logout 구현
+
+[33mcommit 29675731e8b53875a00c9100b6d61162a8c3fd72[m
+Author: mu161 <mu161@DESKTOP-L9EQHQD>
+Date:   Tue Jan 14 03:13:19 2020 +0900
+
+    spring security 적용하여 패스워드 암호화 및 SecurityConfig 설정
+
+[33mcommit c0929ca5534d934aa3bf2228e9f77075f8a6ee35[m
+Author: mu161 <mu161@DESKTOP-L9EQHQD>
+Date:   Sun Jan 12 08:29:06 2020 +0900
+
+    네번째 커밋: 회원가입 백엔드 구현 (memberDAO,DTO 등), 회원가입 시 각종 예외 처리
+
+[33mcommit f3269a648dd43908313bb407f0e780994830b75d[m
+Author: mu161 <mu161@DESKTOP-L9EQHQD>
+Date:   Sat Jan 11 00:45:58 2020 +0900
+
+    세번째 커밋: join.html 뷰페이지 완성
+
+[33mcommit 85d40fecb04c3e68473ffe7440ea65a5ea140610[m
+Author: mu161 <mu161@DESKTOP-L9EQHQD>
+Date:   Thu Jan 9 03:59:22 2020 +0900
+
+    두번째커밋 : MemberController생성, login.html생성, static-path-pattern 설정
+
+[33mcommit e33a8fc3a0fa3125c229dddd22caad6ffaa6bcb7[m
+Author: mu161 <mu161@DESKTOP-L9EQHQD>
+Date:   Thu Jan 9 02:04:00 2020 +0900
+
+    first commit

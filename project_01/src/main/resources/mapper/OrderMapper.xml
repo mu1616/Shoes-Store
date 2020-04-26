@@ -8,9 +8,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<insert id="insertOrder">
 		insert into order_
 		(mem_id, mem_name, order_postcode, order_addr1, order_addr2, order_phone,
-			product_idx, size, count, pay, order_code)
+			product_idx, size, count, pay, order_code, merchant_uid)
 		values (#{mem_id}, #{mem_name}, #{order_postcode}, #{order_addr1}, #{order_addr2}, #{order_phone},
-				#{product_idx}, #{size}, #{count}, #{pay}, #{order_code})
+				#{product_idx}, #{size}, #{count}, #{pay}, #{order_code}, #{merchant_uid})
 	</insert>
 	
 	<select id="selectById" resultType ="com.example.project_01.model.order.dto.OrderDTO">
@@ -77,4 +77,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		set order_state = #{order_state}
 		where order_code = #{order_code}
 	</update>
+	
+	<select id="selectByMerchantUid" resultType = "com.example.project_01.model.order.dto.OrderDTO">
+		select * from order_
+		where merchant_uid = #{merchant_uid}
+	</select>
 </mapper>

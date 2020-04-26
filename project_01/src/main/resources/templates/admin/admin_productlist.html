@@ -82,7 +82,7 @@ th,td {
         <div style="min-height:350px;">
         <font color="grey"><p>[총 <font color="red" th:text="${pageDto.countRecord}"></font>개]</p></font>
         <input type="button" value="선택삭제" class="btn btn-outline-primary btn-sm" onclick="deleteList();">
-        <table class="table" style="font-size:14px">
+        <table class="table" style="font-size:13px">
         <thead class="thead-light">
         <tr>
         <th scope="col"><input type="checkbox" id="allCheck"></th>
@@ -144,7 +144,9 @@ th,td {
 <script>
   feather.replace()
 </script>
+<script src="/static/js/make_pageBtn.js"></script>
 <script th:inline="javascript">
+makePageBtn([[${pageDto.currentPage}]]);
 $(function(){ 
 	//전체선택 체크박스 클릭 
 	$("#allCheck").click(function(){ 
@@ -160,7 +162,6 @@ $(function(){
 	}) 
 	//var html = $("#place").html();
 	//$("#place").html("");
-	makePageBtn();
 	searchOption();
 	
 
@@ -202,17 +203,6 @@ function searchOption(){
 			$("#product_isDisplay").children().eq(1).prop("checked",true);
 		if(isDisplay == 0)
 			$("#product_isDisplay").children().eq(2).prop("checked",true);
-	}
-}
-
-function makePageBtn(){
-	currentPage = [[${pageDto.currentPage}]];
-	var btns = document.getElementsByClassName('pageBtn');
-	for(var i=0; i<btns.length; i++) {
-		if(btns[i].innerText == currentPage){
-			btns[i].classList.remove('btn-outline-secondary');
-			btns[i].classList.add('btn-outline-primary');
-		}
 	}
 }
 

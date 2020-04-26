@@ -59,8 +59,9 @@
         <br><br><hr>
 <th:block th:include="./home.html::footer"></th:block>
 </div>
+<script src="/static/js/make_pageBtn.js"></script>
 <script th:inline="javascript">
-makePageBtn();
+makePageBtn([[${pageDto.currentPage}]]);
 searchOption();
 function searchOption(){
 	var searchWord = [[${searchWord}]];
@@ -71,17 +72,6 @@ function searchOption(){
 	var sort = [[${searchDto.sort}]];
 	document.getElementsByClassName('sort')[sort-1].style.fontWeight = "bold";
 	document.getElementsByClassName('sort')[sort-1].color = "black";
-}
-
-function makePageBtn(){
-	currentPage = [[${pageDto.currentPage}]];
-	var btns = document.getElementsByClassName('pageBtn');
-	for(var i=0; i<btns.length; i++) {
-		if(btns[i].innerText == currentPage){
-			btns[i].classList.remove('btn-outline-secondary');
-			btns[i].classList.add('btn-outline-primary');
-		}
-	}
 }
 
 function clickPageBtn(num){

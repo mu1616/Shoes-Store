@@ -1,0 +1,26 @@
+<table class="table">
+	<thead>
+		<tr>
+			<th style="width: 10%">번호</th>
+			<th style="width: 60%">제목</th>
+			<th style="width: 15%">작성자</th>
+			<th style="width: 15%">작성일</th>
+		</tr>
+	</thead>
+	<tbody>
+		<th:block th:each="noticeDto:${noticeList}">
+			<tr>
+				<td th:text="${noticeDtoStat.count}"></td>
+				<td style="text-align: left;"><span th:text="${noticeDto.notice_title}" style="cursor:pointer;" th:onclick="'contents('+${noticeDto.notice_idx}+')'"></span></td>
+				<td th:text="${noticeDto.notice_id}"></td>
+				<td
+					th:text="${#calendars.format(noticeDto.notice_date,'yyyy-MM-dd')}"></td>
+			</tr>
+		</th:block>
+	</tbody>
+	<tr><td></td></tr>
+</table>
+<br>
+<div align="center">
+	<th:block th:include="admin/admin_productQna.html::page"></th:block>
+</div>

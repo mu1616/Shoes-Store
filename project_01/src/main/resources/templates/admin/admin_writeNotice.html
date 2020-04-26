@@ -13,6 +13,9 @@ table {
 select {
 	width:200px;
 }
+th{
+	text-align:center;
+}
 td {
 	height:40px;
 }
@@ -40,13 +43,13 @@ textarea{
 				</div>
 				<div class="writePlace">
 					<form action="/admin/board/notice/writeComplete" method="post" id="frm">
-					<table>
+					<table class="table" style="font-size:14px;">
 						<tr th:if="${noticeDto} != null">
-							<td>작성자</td>
+							<th class="align-middle">작성자</th>
 							<td th:text="${noticeDto.notice_id}"></td>
 						</tr>
 						<tr>
-							<th style="width:25%;">공지글  유형</th>
+							<th class="align-middle"style="width:25%;">공지글  유형</th>
 							<td style="width:75p%;">
 								<select class="custom-select" style="width:30%;" name="notice_type">
 									<th:block th:each="type:${typeList}">
@@ -56,7 +59,7 @@ textarea{
 							</td>
 						</tr>
 						<tr>
-							<th>제목</th>
+							<th class="align-middle">제목</th>
 							<td><input type="text" class="form-control" name="notice_title" id="notice_title"></td>
 						</tr>
 						<tr th:if="${noticeDto} != null">

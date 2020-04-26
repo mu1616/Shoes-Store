@@ -21,7 +21,8 @@ th, td {
 		<div class="row">
 			<th:block th:include="admin/admin.html::side"></th:block>
 			<main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
-				<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+				<div
+					class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
 					<h1 class="h2">상품문의 관리</h1>
 				</div>
 				<br>
@@ -31,7 +32,8 @@ th, td {
 						style="font-size: 14px;">
 						<table class="table table-bordered">
 							<tr>
-								<th scope="row" style="width: 100px" class="table-active">작성자</th>
+								<th scope="row" style="width: 100px"
+									class="table-active align-middle">작성자</th>
 								<td class="left" style="width: 200px"><input type="text"
 									id="qna_member" name="qna_member" class="form-control"
 									style="width: 250px;"></td>
@@ -52,64 +54,69 @@ th, td {
 				</div>
 				<br>
 				<hr>
-				<div style="min-height:350px;">
-				<font color="grey"><p>
-						[총 <font color="red" th:text="${pageDto.countRecord}"></font>개]
-					</p></font>
-				<table class="table table-bordered" style="font-size: 13px">
-					<thead class="thead-light">
-						<tr align="center">
-							<th style="width: 80px">번호</th>
-							<th style="width: 100px">답변상태</th>
-							<th style="width: 100px">문의유형</th>
-							<th style="width: 300px">문의제목</th>
-							<th style="width: 100px">작성자</th>
-							<th style="width: 100px">작성일자</th>
-							<th style="width: 100px"></th>
-						</tr>
-					</thead>
-					<th:block th:each="qnaDto:${qnaList}">
-						<tr>
-							<td th:text=${qnaDto.rownum}></td>
-							<td th:if="${qnaDto.qna_answer} eq null" th:text="답변대기"></td>
-							<td th:if="${qnaDto.qna_answer} ne null" th:text="답변완료"
-								style="color: #088A08"></td>
-							<td th:text=${qnaDto.qna_type}></td>
-							<td class="left" th:text="${qnaDto.qna_question}"
-								style="cursor: pointer;"
-								th:onclick="'qnaDetail('+${qnaDto.qna_idx}+','+${qnaDto.qna_product}+')'"></td>
-							<td th:text="${qnaDto.qna_member}"></td>
-							<td th:text="${#calendars.format(qnaDto.qna_date,'yyyy-MM-dd')}"></td>
-							<td><button type="button" class="btn btn-sm"
-									th:onclick="'deleteOne('+${qnaDto.qna_idx}+')'">삭제</button></td>
-						</tr>
-					</th:block>
-				</table>
-				<br>
-				<div align="center">
-					<th:block th:if="${pageDto.totalPage}>0">
-						<th:block th:if="${pageDto.startPage}>10">
-							<button class="btn btn-outline-secondary btn-sm pageBtn"
-								style="WIDTH: 20pt; HEIGHT: 23pt" onclick="clickPageBtn(1)">&#171</button>
-							<button class="btn btn-outline-secondary btn-sm pageBtn"
-								th:onclick="'clickPageBtn('+${pageDto.startPage}+'-10)'">&#60</button>
+				<div style="min-height: 350px;">
+					<font color="grey"><p>
+							[총 <font color="red" th:text="${pageDto.countRecord}"></font>개]
+						</p></font>
+					<table class="table table-bordered" style="font-size: 13px">
+						<thead class="thead-light">
+							<tr align="center">
+								<th style="width: 80px">번호</th>
+								<th style="width: 100px">답변상태</th>
+								<th style="width: 100px">문의유형</th>
+								<th style="width: 300px">문의제목</th>
+								<th style="width: 100px">작성자</th>
+								<th style="width: 100px">작성일자</th>
+								<th style="width: 100px"></th>
+							</tr>
+						</thead>
+						<th:block th:each="qnaDto:${qnaList}">
+							<tr>
+								<td class="align-middle" th:text=${qnaDto.rownum}></td>
+								<td class="align-middle" th:if="${qnaDto.qna_answer} eq null"
+									th:text="답변대기"></td>
+								<td class="align-middle" th:if="${qnaDto.qna_answer} ne null"
+									th:text="답변완료" style="color: #088A08"></td>
+								<td class="align-middle" th:text=${qnaDto.qna_type}></td>
+								<td class="left align-middle" th:text="${qnaDto.qna_question}"
+									style="cursor: pointer;"
+									th:onclick="'qnaDetail('+${qnaDto.qna_idx}+','+${qnaDto.qna_product}+')'"></td>
+								<td class="align-middle" th:text="${qnaDto.qna_member}"></td>
+								<td class="align-middle"
+									th:text="${#calendars.format(qnaDto.qna_date,'yyyy-MM-dd')}"></td>
+								<td class="align-middle"><button type="button"
+										class="btn btn-sm"
+										th:onclick="'deleteOne('+${qnaDto.qna_idx}+')'">삭제</button></td>
+							</tr>
 						</th:block>
-						<th:block
-							th:each="num:${#numbers.sequence(pageDto.startPage,pageDto.endPage)}">
-							<button class="btn btn-outline-secondary btn-sm pageBtn"
-								th:onclick="'clickPageBtn('+${num}+')'">
-								<th:block th:text="${num}"></th:block>
-							</button>
+					</table>
+					<br>
+					<div align="center">
+						<th:block th:fragment="page">
+							<th:block th:if="${pageDto.totalPage}>0">
+								<th:block th:if="${pageDto.startPage}>10">
+									<button class="btn btn-outline-secondary btn-sm pageBtn"
+										style="WIDTH: 20pt; HEIGHT: 23pt" onclick="clickPageBtn(1)">&#171</button>
+									<button class="btn btn-outline-secondary btn-sm pageBtn"
+										th:onclick="'clickPageBtn('+${pageDto.startPage}+'-10)'">&#60</button>
+								</th:block>
+								<th:block
+									th:each="num:${#numbers.sequence(pageDto.startPage,pageDto.endPage)}">
+									<button class="btn btn-outline-secondary btn-sm pageBtn"
+										th:onclick="'clickPageBtn('+${num}+')'">
+										<th:block th:text="${num}"></th:block>
+									</button>
+								</th:block>
+								<th:block th:if="${pageDto.endPage}<${pageDto.totalPage}">
+									<button class="btn btn-outline-secondary btn-sm pageBtn"
+										th:onclick="'clickPageBtn('+${pageDto.startPage}+'+10)'">></button>
+									<button class="btn btn-outline-secondary btn-sm pageBtn"
+										style="WIDTH: 20pt; HEIGHT: 23pt"
+										th:onclick="'clickPageBtn('+${pageDto.totalPage}+')'">&#187</button>
+								</th:block>
+							</th:block>
 						</th:block>
-						<th:block th:if="${pageDto.endPage}<${pageDto.totalPage}">
-							<button class="btn btn-outline-secondary btn-sm pageBtn"
-								th:onclick="'clickPageBtn('+${pageDto.startPage}+'+10)'">></button>
-							<button class="btn btn-outline-secondary btn-sm pageBtn"
-								style="WIDTH: 20pt; HEIGHT: 23pt"
-								th:onclick="'clickPageBtn('+${pageDto.totalPage}+')'">&#187</button>
-						</th:block>
-					</th:block>
-				</div>
+					</div>
 				</div>
 				<br>
 			</main>
@@ -118,13 +125,14 @@ th, td {
 
 
 	<!-- Icons -->
-<script src="https://unpkg.com/feather-icons/dist/feather.min.js"></script>
-<script>
+	<script src="https://unpkg.com/feather-icons/dist/feather.min.js"></script>
+	<script>
 feather.replace()
 </script>
+<script src="/static/js/make_pageBtn.js"></script>
 <script th:inline="javascript">
+makePageBtn([[${pageDto.currentPage}]]);
 var currentPage = [[${pageDto.currentPage}]];
-makePageBtn(currentPage);
 searchOption();
 
 function searchOption(){	
@@ -138,17 +146,6 @@ function searchOption(){
 			$("#is_answer").children().eq(1).prop("checked",true);
 		if(is_answer == 3)
 			$("#is_answer").children().eq(2).prop("checked",true);
-	}
-}
-
-function makePageBtn(){
-	currentPage = [[${pageDto.currentPage}]];
-	var btns = document.getElementsByClassName('pageBtn');
-	for(var i=0; i<btns.length; i++) {
-		if(btns[i].innerText == currentPage){
-			btns[i].classList.remove('btn-outline-secondary');
-			btns[i].classList.add('btn-outline-primary');
-		}
 	}
 }
 

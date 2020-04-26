@@ -1,0 +1,374 @@
+[33mcommit 148e1cc3cd8f779d50cf76012c6f50d9262abd1e[m[33m ([m[1;36mHEAD -> [m[1;32mmaster[m[33m, [m[1;31morigin/master[m[33m)[m
+Author: mu1616 <mu1616@naver.com>
+Date:   Thu Apr 23 21:53:56 2020 +0900
+
+    파일관련기능 따로 분리, 공지글작성,수정기능 구현
+
+[33mcommit 3b0871c5a3383a5443cf43d30fa3fa26889c0caa[m
+Merge: 152262b e44c63d
+Author: mu1616 <mu1616@naver.com>
+Date:   Thu Apr 23 21:51:37 2020 +0900
+
+    Merge remote-tracking branch 'origin/master'
+
+[33mcommit 152262bb234b69409864302ea61748e4e4b74be4[m
+Author: mu1616 <mu1616@naver.com>
+Date:   Thu Apr 23 21:44:12 2020 +0900
+
+    파일관련기능 따로분리, 공지글작성,수정기능
+
+[33mcommit 6eec593c8af98158f05e1950099227ceb9c85aec[m
+Author: mu1616 <mu1616@naver.com>
+Date:   Thu Apr 23 18:38:56 2020 +0900
+
+    공지글작성 뷰페이지 구현, 파일관련기능 따로 분리
+    
+    ManageFileController, ManageFileService에서 파일관련 기능 관리
+
+[33mcommit e44c63d58b8c288eace50c6ba450e658b44c6670[m
+Author: mu1616 <mu1616@naver.com>
+Date:   Wed Apr 22 03:28:47 2020 +0900
+
+    Update README.md
+
+[33mcommit 10be9eba40523a0418e311dd521ff934bb188ab2[m
+Author: mu1616 <mu1616@naver.com>
+Date:   Wed Apr 22 03:24:48 2020 +0900
+
+    Update README.md
+
+[33mcommit 77d8afae8ec17d88ee6afeb30f39a5866f2db4d6[m
+Author: mu1616 <mu1616@naver.com>
+Date:   Wed Apr 22 03:24:14 2020 +0900
+
+    Update README.md
+
+[33mcommit dfcfef0bf56a8ac317ef91211cce0bb102568331[m
+Author: mu1616 <mu1616@naver.com>
+Date:   Wed Apr 22 03:22:18 2020 +0900
+
+    Update README.md
+
+[33mcommit d17f647f303703395dab788c97766f8eae9412ff[m
+Author: mu1616 <mu1616@naver.com>
+Date:   Wed Apr 22 03:16:39 2020 +0900
+
+    Update README.md
+
+[33mcommit f6c10e35cf2ea2a134cb9c1db684bf0e5cd65213[m
+Author: mu1616 <mu1616@naver.com>
+Date:   Wed Apr 22 03:13:40 2020 +0900
+
+    Update README.md
+
+[33mcommit aad40831d4aee119fc24de1454a6e008de4d94b3[m
+Author: mu1616 <mu1616@naver.com>
+Date:   Wed Apr 22 03:13:02 2020 +0900
+
+    Update README.md
+
+[33mcommit 14072802eadf7af08a5a4d89ba7e6c8b26a5ad9a[m
+Author: mu1616 <mu1616@naver.com>
+Date:   Wed Apr 22 03:08:10 2020 +0900
+
+    Create README.md
+
+[33mcommit 4fb98b63e8add744674673c942cbd1ccb5b5a4a2[m
+Author: mu1616 <mu1616@naver.com>
+Date:   Wed Apr 22 02:14:19 2020 +0900
+
+    회원가입정보 백엔드에서 유효성검사
+    
+    validator 구현, 회원가입컨트롤러 테스트코드 작성
+
+[33mcommit 4c893d23591e9f28bfe2c0a32a08af114f540ab0[m
+Author: mu1616 <mu1616@naver.com>
+Date:   Tue Apr 21 21:33:35 2020 +0900
+
+    등급관리 기능 구현
+    
+    등급추가, 등급정보수정, 등급삭제 구현
+
+[33mcommit e712c744c146d34ee9f8ea3e82d033e34e8bb021[m
+Author: mu1616 <mu1616@naver.com>
+Date:   Mon Apr 20 01:57:26 2020 +0900
+
+    총 구매가격에 맞게 role 변경하는 소스 간소화
+    
+    코드량 줄이고 쿼리변경
+
+[33mcommit e266d8b529ca86b28a298ee444a852abbbe629fb[m
+Author: mu1616 <mu1616@naver.com>
+Date:   Mon Apr 20 00:21:31 2020 +0900
+
+    상품삭제기능 뷰페이지에서 제거, 상품진열안함 선택 시 메인진열 테이블에서도 제거
+
+[33mcommit 7083b5ee99b33147dd2745a5abf7b52059340717[m
+Author: mu1616 <mu1616@naver.com>
+Date:   Sun Apr 19 18:30:15 2020 +0900
+
+    메인진열, 재고관리 기능 ManageProductcontroller 에서 분리
+
+[33mcommit 18b5921b8ff6b70d90186c3b37cc241fa5127517[m
+Author: mu1616 <mu1616@naver.com>
+Date:   Sat Apr 18 16:34:07 2020 +0900
+
+    상품문의 처리 컨트롤러 product컨트롤러에서 분리
+    
+    상품문의기능 contorller.product.qna.ProductQnaController에서 처리
+
+[33mcommit 3d07249ad6a84e8eb0f6f96d91d5db1018b090a8[m
+Author: mu1616 <mu1616@naver.com>
+Date:   Sat Apr 18 16:24:40 2020 +0900
+
+    pagination 코드 중복제거
+    
+    pagination 구현체 이용하여 중복되었던 페이징처리 코드 제거
+
+[33mcommit 5c7dac0598efa834e58593072b3b7fe57b1d7442[m
+Author: mu1616 <mu1616@naver.com>
+Date:   Sat Apr 18 03:28:03 2020 +0900
+
+    등급 변경 Aspect 코드 가독성좋게 수정
+
+[33mcommit 23d2262fdc0322f724a15b9860a9ef134160f700[m
+Author: mu1616 <mu1616@naver.com>
+Date:   Sat Apr 18 03:19:50 2020 +0900
+
+    등급 변경 aspect 코드 간소화
+
+[33mcommit b4501853fde8a0dc5c052eb82bbaa6784b4931ab[m
+Author: mu1616 <mu1616@naver.com>
+Date:   Sat Apr 18 02:32:13 2020 +0900
+
+    주문상세보기(사용자페이지), ruquestCache 삭제
+    
+    배송/주문 조회 페이지에서 주문번호 클릭 시 주문상세정보 출력하는 기능 구현,
+    로그인페이지에서 다른페이지로 이동 시에 requestcache 삭제
+
+[33mcommit dd84e885d6883fabeda9b08855334e8762c51ee0[m
+Author: mu1616 <mu1616@naver.com>
+Date:   Sat Apr 18 01:14:15 2020 +0900
+
+    총구매가격에 따라 등급 변경기능 추가, 관리자가 임의로 등급지정할 수 있는 기능 삭제(관리자권한위임만가능)
+    
+    AOP 사용하여 총 구매가격에 영향이 있는 기능(구매,구매취소)을 실행하거나 관리자 해임시에, 총 구매가격에 따라 등급 변경하도록
+    구현.
+
+[33mcommit dc0ccde992c86f1c9936fe1a712a51ef502aa941[m
+Author: mu1616 <mu1616@naver.com>
+Date:   Fri Apr 17 19:55:56 2020 +0900
+
+    구매확정 안되는 문제 픽스
+
+[33mcommit 765f111eec053da34d74949e60b4cb1c9ea476bd[m
+Author: mu1616 <mu1616@naver.com>
+Date:   Wed Apr 15 14:52:43 2020 +0900
+
+    회원상세정보 팝업창 -> 모달창으로 변경
+
+[33mcommit cbc8ecd139238f2b2ea3c9d400cda12d3cd1d6c0[m
+Author: mu1616 <mu1616@naver.com>
+Date:   Wed Apr 15 14:21:20 2020 +0900
+
+    주문관리 페이지 구현
+    
+    주문목록 불러오기, 주문검색(필터링)기능, 주문상태 변경기능, 주문상세정보
+
+[33mcommit 8a3bcbe8fdf4e8600fbf72d9b09bade97f940a15[m
+Author: mu1616 <mu1616@naver.com>
+Date:   Wed Apr 15 05:40:17 2020 +0900
+
+    구매 또는 구매 취소 시 재고,총구매금액 변경 안되는 점 수정
+
+[33mcommit c33734de69e96e6e6710109eece03bb55e96a238[m
+Author: mu1616 <mu1616@naver.com>
+Date:   Sun Apr 12 13:06:46 2020 +0900
+
+    주문/배송조회 구현, 구매취소 구현
+    
+    고객이 주문내역을 조회할 수 있도록 주문/배송조회 기능 구현,
+    주문상태가 배송준비중일 때 고객이 구매취소를 할 수 있도록 구현
+    그 외 html(뷰) 조금씩 수정, ajax 요청 권한 없을 시 권한없음 메시지 띄우게 수정
+
+[33mcommit dc3bee0849772d2a0a0a584193f89043773717ac[m
+Author: mu1616 <mu1616@naver.com>
+Date:   Fri Apr 10 12:29:04 2020 +0900
+
+    인증(로그인) 시 이동할 페이지 지정
+    
+    SavedRequestAwareAuthenticationSuccessHandler를 상속받은 클래스 구현
+
+[33mcommit a9606b2593abc6aec668b013eff2fdbbbf51e58a[m
+Author: mu1616 <mu1616@naver.com>
+Date:   Thu Apr 9 07:46:35 2020 +0900
+
+    템플릿 폴더 구조 정리, 주문하기 기능 구현
+
+[33mcommit 3d274e6cfc4407f2f7bd870d12a7016f89567d4c[m
+Author: mu1616 <mu1616@naver.com>
+Date:   Mon Apr 6 04:41:38 2020 +0900
+
+    주문확인페이지 구현, 회원테이블에 우편번호 추가 및 우편번호 관련된 쿼리들 수정
+
+[33mcommit a9dc72ce72de74b902bfcd1567a3bb7a4a4e7a42[m
+Author: mu1616 <mu1616@naver.com>
+Date:   Fri Apr 3 04:17:59 2020 +0900
+
+    품절 시 처리 구현
+
+[33mcommit e31a84b19d077eba3243ca09db4d5045c71f2742[m
+Author: mu1616 <mu1616@naver.com>
+Date:   Wed Apr 1 05:04:26 2020 +0900
+
+    상품등록시 메인진열 안되는 오류 수정,상품정보페이지 js 리팩토링, 주문버튼 클릭시 상품정보 컨트롤러로 전송(주문하기구현중..)
+
+[33mcommit 845d615ac67a44586aedb65eb296c64f8b850268[m
+Author: mu1616 <mu1616@naver.com>
+Date:   Sun Mar 29 19:42:57 2020 +0900
+
+    메인진열 기능 구현
+
+[33mcommit b17ff97fe4cc0cfdcf1522ed77e5262abd98f671[m
+Author: mu1616 <mu1616@naver.com>
+Date:   Sat Mar 21 08:00:30 2020 +0900
+
+    상품문의관리 -> 검색기능추가
+
+[33mcommit d40fc72db95d12ef86332cd9187def2b935ec66a[m
+Author: mu1616 <mu1616@naver.com>
+Date:   Thu Mar 19 07:13:19 2020 +0900
+
+    상품문의 관리 기능 구현
+
+[33mcommit 62568de455049aa6e69745fceedc056a2a974f63[m
+Author: mu1616 <mu1616@naver.com>
+Date:   Tue Mar 17 08:10:09 2020 +0900
+
+    장바구니 선택삭제기능 추가, 프론트엔드코드(페이징) 간소화, 상품문의관리기능 구현초기단계
+
+[33mcommit e956a69e56b6f3b68c41d257901ed1b3306e0850[m
+Author: mu1616 <mu1616@naver.com>
+Date:   Sat Mar 14 01:21:49 2020 +0900
+
+    장바구니 기능 구현
+
+[33mcommit d77a88ca0c1d112418a00e5a523f9df5409f02a7[m
+Author: mu1616 <mu1616@naver.com>
+Date:   Mon Mar 9 05:57:55 2020 +0900
+
+    상품정렬기능, 상품qna기능 추가
+
+[33mcommit ef4d110c03e476881154297b3a13b6918d984857[m
+Author: mu1616 <mu1616@naver.com>
+Date:   Sun Mar 1 04:15:02 2020 +0900
+
+    상품정보 페이지 - 뷰페이지, 상품정보 불러오기 구현
+
+[33mcommit 1080c4d9c537e94aac13d56e2d5c4bb7822f3315[m
+Author: mu1616 <mu1616@naver.com>
+Date:   Thu Feb 27 04:00:17 2020 +0900
+
+    카테고리별 신발목록 불러오기, 검색기능 구현
+
+[33mcommit 5452b5376dfbd92de1923f73bbf18b97c734f5b0[m
+Author: mu1616 <mu1616@naver.com>
+Date:   Sat Feb 22 03:36:43 2020 +0900
+
+    회원등급 설정기능 구현
+
+[33mcommit 6992ac0b14fbcac4a5866e6bcc3778eea76fa435[m
+Author: mu1616 <mu1616@naver.com>
+Date:   Thu Feb 20 06:02:57 2020 +0900
+
+    회원목록 페이지 구현
+
+[33mcommit ddee0f865dbbbabc21a1ccea582be72de0ec4665[m
+Author: mu1616 <mu1616@naver.com>
+Date:   Fri Feb 14 04:58:05 2020 +0900
+
+    상품 수정,삭제 기능 구현
+
+[33mcommit 003ad3b1090746a702cb09eca6d12f207e183bbc[m
+Author: mu1616 <mu1616@naver.com>
+Date:   Tue Feb 11 05:29:51 2020 +0900
+
+    상품목록 관리자페이지에서 상품검색(필터링) 기능 추가
+
+[33mcommit a3c9818e78b0a4f5c0318e26b3143e2b61293478[m
+Author: mu1616 <mu1616@naver.com>
+Date:   Fri Feb 7 03:35:57 2020 +0900
+
+    재고관리 기능구현
+
+[33mcommit 3a34431aeb15bb810b52539b9e7d9053ff170020[m
+Author: mu1616 <mu1616@naver.com>
+Date:   Wed Feb 5 03:50:19 2020 +0900
+
+    product.stock컬럼 테이블로 분리, size에따라 재고관리하도록 수정
+
+[33mcommit 624c0744a1ace24a4f59eb7fe9cff7fa5b5f5d01[m
+Author: mu1616 <mu1616@naver.com>
+Date:   Tue Feb 4 04:09:02 2020 +0900
+
+    상품목록 가져오기 구현, pagination처리, product객체 entity와dto 구분
+
+[33mcommit adff21aa8310718d6cd21d38efad972fae93770a[m
+Author: mu1616 <mu1616@naver.com>
+Date:   Mon Jan 27 21:46:58 2020 +0900
+
+    상품등록 기능 구현완료
+
+[33mcommit 18a257bcf974269ab02a205b96c47e7d5822d9a3[m
+Author: mu1616 <mu1616@naver.com>
+Date:   Wed Jan 22 00:47:50 2020 +0900
+
+    smarteditor 사진 업로드 프로젝트 외부에 저장
+
+[33mcommit c6ac552591d3b15728afac8edc891cabb1a78350[m
+Author: mu161 <mu161@DESKTOP-L9EQHQD>
+Date:   Sat Jan 18 04:07:44 2020 +0900
+
+    상품등록 뷰페이지 추가 (admin.html)
+
+[33mcommit 4acabd8dfc804e4f48f851e963664b2313515981[m
+Author: mu161 <mu161@DESKTOP-L9EQHQD>
+Date:   Thu Jan 16 21:33:33 2020 +0900
+
+    spring-security role 설정 및 로그인 인증 구현
+
+[33mcommit e29e5b5cafb66019dd7ab96ac1aea2b2b0399156[m
+Author: mu161 <mu161@DESKTOP-L9EQHQD>
+Date:   Wed Jan 15 01:00:07 2020 +0900
+
+    Login/Logout 구현
+
+[33mcommit 29675731e8b53875a00c9100b6d61162a8c3fd72[m
+Author: mu161 <mu161@DESKTOP-L9EQHQD>
+Date:   Tue Jan 14 03:13:19 2020 +0900
+
+    spring security 적용하여 패스워드 암호화 및 SecurityConfig 설정
+
+[33mcommit c0929ca5534d934aa3bf2228e9f77075f8a6ee35[m
+Author: mu161 <mu161@DESKTOP-L9EQHQD>
+Date:   Sun Jan 12 08:29:06 2020 +0900
+
+    네번째 커밋: 회원가입 백엔드 구현 (memberDAO,DTO 등), 회원가입 시 각종 예외 처리
+
+[33mcommit f3269a648dd43908313bb407f0e780994830b75d[m
+Author: mu161 <mu161@DESKTOP-L9EQHQD>
+Date:   Sat Jan 11 00:45:58 2020 +0900
+
+    세번째 커밋: join.html 뷰페이지 완성
+
+[33mcommit 85d40fecb04c3e68473ffe7440ea65a5ea140610[m
+Author: mu161 <mu161@DESKTOP-L9EQHQD>
+Date:   Thu Jan 9 03:59:22 2020 +0900
+
+    두번째커밋 : MemberController생성, login.html생성, static-path-pattern 설정
+
+[33mcommit e33a8fc3a0fa3125c229dddd22caad6ffaa6bcb7[m
+Author: mu161 <mu161@DESKTOP-L9EQHQD>
+Date:   Thu Jan 9 02:04:00 2020 +0900
+
+    first commit

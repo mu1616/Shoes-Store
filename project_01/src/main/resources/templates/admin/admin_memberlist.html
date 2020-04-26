@@ -63,7 +63,7 @@ th,td {
         <form id="searchFrm" action="/admin/member/list/1" method="get" style="font-size:14px;">
         <table class="table table-bordered">
         <tr>
-        <th scope="row" style="width:100px" class="table-active">검색분류</th>
+        <th scope="row" style="width:100px" class="table-active align-middle">검색분류</th>
         <td class="left" style="width:200px">        	
 	        <select class="custom-select mr-sm-2" name="searchOption"style="width:200px;float:left;">
 	        <option id="option" value="검색분류"  selected>검색분류</option>
@@ -73,7 +73,7 @@ th,td {
         </td>
         </tr>
         <tr>
-        <th scope="row" class="table-active">등급</th>
+        <th scope="row" class="table-active align-middle">등급</th>
 	        <td class="left">
 	        	<select class="custom-select mr-sm-2" name="mem_role"id="mem_role" style="width:200px;">
 			        <option value="%" selected>등급</option>
@@ -92,7 +92,7 @@ th,td {
         <hr>
         <div style="min-height:350px;">
         <font color="grey"><p>[총 <font color="red" th:text="${pageDto.countRecord}"></font>명]</p></font>
-        <table class="table table-bordered" style="font-size:14px">
+        <table class="table table-bordered" style="font-size:13px">
         <thead class="thead-light">
         <tr>
         <th scope="col">회원번호</th>
@@ -189,8 +189,9 @@ th,td {
 <script>
   feather.replace()
 </script>
+<script src="/static/js/make_pageBtn.js"></script>
 <script th:inline="javascript">
-makePageBtn();
+makePageBtn([[${pageDto.currentPage}]]);
 searchOption();
 
 function searchOption() {
@@ -208,16 +209,6 @@ function searchOption() {
 		$("#mem_role").children().eq(num).prop("selected",true);
 	}
 	
-}
-function makePageBtn(){
-	currentPage = [[${pageDto.currentPage}]];
-	var btns = document.getElementsByClassName('pageBtn');
-	for(var i=0; i<btns.length; i++) {
-		if(btns[i].innerText == currentPage){
-			btns[i].classList.remove('btn-outline-secondary');
-			btns[i].classList.add('btn-outline-primary');
-		}
-	}
 }
 
 function clickPageBtn(num){
