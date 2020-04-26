@@ -15,6 +15,7 @@ public class OrderDTO {
 	private Date order_date;
 	private String order_state;
 	private String order_code;
+	private String merchant_uid;
 	private int product_idx;
 	private int size;
 	private int count;
@@ -25,6 +26,12 @@ public class OrderDTO {
 	private String date;
 	
 	
+	public String getMerchant_uid() {
+		return merchant_uid;
+	}
+	public void setMerchant_uid(String merchant_uid) {
+		this.merchant_uid = merchant_uid;
+	}
 	public String getDate() {
 		return date;
 	}
@@ -142,9 +149,11 @@ public class OrderDTO {
 		return "OrderDTO [order_idx=" + order_idx + ", mem_id=" + mem_id + ", mem_name=" + mem_name
 				+ ", order_postcode=" + order_postcode + ", order_addr1=" + order_addr1 + ", order_addr2=" + order_addr2
 				+ ", order_phone=" + order_phone + ", order_date=" + order_date + ", order_state=" + order_state
-				+ ", order_code=" + order_code + ", product_idx=" + product_idx + ", size=" + size + ", count=" + count
-				+ ", pay=" + pay + "]";
+				+ ", order_code=" + order_code + ", merchant_uid=" + merchant_uid + ", product_idx=" + product_idx
+				+ ", size=" + size + ", count=" + count + ", pay=" + pay + ", product_image=" + product_image
+				+ ", product_brand=" + product_brand + ", product_name=" + product_name + ", date=" + date + "]";
 	}
+	
 	
 	
 	

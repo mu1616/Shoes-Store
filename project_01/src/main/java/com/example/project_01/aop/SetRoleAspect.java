@@ -21,6 +21,7 @@ public class SetRoleAspect {
 	// 현재 Role에서 총 구매가격에 상응하는 Role로 변경, 반드시 첫번째 인자로 MemberDTO가 와야함!!
 	@Around("execution(* com.example.project_01..OrderService.insertOrder(..)) || "
 			+ "execution(* com.example.project_01..OrderService.orderCancel(..)) || "
+			+ "execution(* com.example.project_01..OrderService.cancelOne(..)) || "
 			+ "execution(* com.example.project_01..ManageMemberService.depriveAdmin(..))")
 	public Object updateRole(ProceedingJoinPoint joinPoint) throws Throwable {
 		// before

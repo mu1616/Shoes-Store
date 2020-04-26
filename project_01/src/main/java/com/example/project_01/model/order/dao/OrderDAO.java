@@ -23,4 +23,6 @@ public interface OrderDAO {
 	public List<OrderDTO> selectOrder(int start, int size, SearchOrderDTO searchOrderDto);
 	//주문 상태 변경
 	public void updateState(String order_code, String order_state);
+	//merchant_uid 에 맞는 주문내역 조회
+	public List<OrderDTO> selectByMerchantUid(String merchant_uid);
 }

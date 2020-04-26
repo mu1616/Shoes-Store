@@ -3,12 +3,9 @@ package com.example.project_01.controller.order;
 import java.security.Principal;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Collection;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,6 +16,7 @@ import com.example.project_01.model.member.dao.MemberDAO;
 import com.example.project_01.model.member.dto.MemberDTO;
 import com.example.project_01.model.order.dao.OrderDAO;
 import com.example.project_01.model.order.dto.OrderDTO;
+import com.example.project_01.model.order.dto.PaymentInfo;
 import com.example.project_01.model.product.dao.ProductDAO;
 import com.example.project_01.model.stock.dao.StockDAO;
 import com.example.project_01.service.order.OrderService;
@@ -35,7 +33,7 @@ public class OrderController {
 	MemberDAO memberDao;
 	@Autowired
 	OrderDAO orderDao;
-
+	
 	@RequestMapping("/order/orderForm")
 	public String orderForm(int[] size, int[] count, int[] product, Model model) {
 		List<CartDTO> soldOutList = orderService.checkSoldOut(size, product, count);
@@ -57,22 +55,6 @@ public class OrderController {
 		memberDto.setMem_pw("");
 		memberDto.setMem_birth(null);
 		return memberDto;
-	}
-
-	@RequestMapping("/order/orderProcess")
-	public String orderProcess(int[] size, int[] count, int[] product, MemberDTO memberDto, Model model,
-			Principal principal) {
-		List<CartDTO> soldOutList = orderService.checkSoldOut(size, product, count);
-		// 품절인 상품이 존재할 때
-		if (soldOutList.size() != 0) {
-			model.addAttribute("soldOutList", soldOutList);
-			return "order/soldOut";
-		}
-		memberDto.setMem_id(principal.getName());
-		memberDto.setMem_role(memberDao.findById(memberDto.getMem_id()).getMem_role());
-		// 품절인 상품이 없을 때
-		orderService.insertOrder(memberDto, size, count, product);
-		return "order/orderComplete";
 	}
 
 	@RequestMapping("/order/list")
@@ -97,7 +79,7 @@ public class OrderController {
 		MemberDTO memberDto = memberDao.findById(mem_id);
 		OrderDTO orderDto = orderDao.selectByCode(order_code);
 		if (orderDto.getMem_id().equals(mem_id)) {
-			orderService.orderCancel(memberDto, orderDto);
+			orderService.cancelOne(memberDto, orderDto);
 			msg = "구매를 취소하였습니다.";
 		} else {
 			msg = "권한없음";
@@ -118,4 +100,64 @@ public class OrderController {
 		orderDto.setDate((new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(orderDto.getOrder_date())));
 		return orderDto;
 	}
+	
+	@ResponseBody
+	@RequestMapping("/order/validate")
+	public int paymentComplete(String imp_uid, String merchant_uid, Principal principal) {
+		MemberDTO memberDto = new MemberDTO();
+		memberDto.setMem_id(principal.getName());
+		int complete = orderService.validate(imp_uid, merchant_uid, memberDto);
+		return complete;
+	}
+	
+	@ResponseBody
+	@RequestMapping("/order/makeInfo")
+	public PaymentInfo makeInfo(int[] size, int[] count, int[] product,String mem_name, String mem_addr1, 
+			String mem_addr2, String mem_postcode, String mem_phone, Principal principal) {
+		PaymentInfo payment = new PaymentInfo();
+		MemberDTO memberDto = new MemberDTO();
+		memberDto.setMem_addr1(mem_addr1);
+		memberDto.setMem_addr2(mem_addr2);
+		memberDto.setMem_name(mem_name);
+		memberDto.setMem_postcode(mem_postcode);
+		memberDto.setMem_phone(mem_phone);
+		memberDto.setMem_id(principal.getName());
+		memberDto.setMem_role(memberDao.findById(memberDto.getMem_id()).getMem_role());
+		List<CartDTO> soldOutList = orderService.checkSoldOut(size, product, count);
+		// 품절인 상품이 존재할 때
+		if (soldOutList.size() != 0) {
+			String message = "품절입니다. 구매수량이 현재 남아있는 재고보다 많은지 확인해주세요.";
+			for(int i=0; i<soldOutList.size(); i++){
+				message += "\n";
+				message += soldOutList.get(i).getProduct_name()+" ";
+				message += soldOutList.get(i).getCart_size();
+				message += " (남은수량: "+soldOutList.get(i).getCart_count()+"개)";
+			}
+			payment.setMessage(message);
+			return payment;
+		}	
+		//품절인 상품이 없을 때
+		payment = orderService.insertOrder(memberDto, size, count, product);
+		return payment;
+	}
+	
+	@ResponseBody
+	@RequestMapping("/order/payCancel")
+	public void payCancel(String merchant_uid, Principal principal) {
+		List<OrderDTO> orderList = orderDao.selectByMerchantUid(merchant_uid);
+		if(!orderList.get(0).getMem_id().equals(principal.getName())) {
+			return;
+		}
+		MemberDTO memberDto = new MemberDTO();
+		memberDto.setMem_id(principal.getName());
+		for(int i=0; i< orderList.size(); i++) {
+			orderService.orderCancel(memberDto, orderList.get(i));
+		}
+	}
+	
+	@RequestMapping("/order/complete")
+	public String orderComplete() {
+		return "/order/orderComplete";
+	}
+	
 }

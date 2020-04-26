@@ -1,5 +1,10 @@
 package com.example.project_01.service.order;
 
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+
+import java.io.IOException;
+import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -15,9 +20,16 @@ import com.example.project_01.model.member.dao.MemberDAO;
 import com.example.project_01.model.member.dto.MemberDTO;
 import com.example.project_01.model.order.dao.OrderDAO;
 import com.example.project_01.model.order.dto.OrderDTO;
+import com.example.project_01.model.order.dto.PaymentInfo;
 import com.example.project_01.model.product.dao.ProductDAO;
 import com.example.project_01.model.product.dto.ProductDTO;
 import com.example.project_01.model.stock.dao.StockDAO;
+import com.siot.IamportRestClient.IamportClient;
+import com.siot.IamportRestClient.exception.IamportResponseException;
+import com.siot.IamportRestClient.request.CancelData;
+import com.siot.IamportRestClient.response.AccessToken;
+import com.siot.IamportRestClient.response.IamportResponse;
+import com.siot.IamportRestClient.response.Payment;
 
 @Service
 public class OrderService {
@@ -29,6 +41,10 @@ public class OrderService {
 	OrderDAO orderDao;
 	@Autowired
 	MemberDAO memberDao;
+
+	private static final String SECRET_KEY = "PJQ4LCn15b8PLKGZXAFnv5RjpUaG8LMYvD2gfqikBrancRm9r2xX7ogwjqdsc0rHDuYTUgewHoTUfg3H";
+	private static final String REST_KEY = "2481756821864944";
+	IamportClient client = new IamportClient(REST_KEY, SECRET_KEY);
 
 	// 품절 체크
 	public List<CartDTO> checkSoldOut(int[] size, int[] product, int[] count) {
@@ -65,12 +81,14 @@ public class OrderService {
 	}
 
 	@Transactional
-	public void insertOrder(MemberDTO memberDto, int[] size, int[] count, int[] product) {
+	public PaymentInfo insertOrder(MemberDTO memberDto, int[] size, int[] count, int[] product) {
 		Calendar calendar = Calendar.getInstance();
 		Date date = calendar.getTime();
 		String time = (new SimpleDateFormat("yyyyMMddHHmmss").format(date));
 		String member_idx = Integer.toString(memberDao.findById(memberDto.getMem_id()).getMem_idx());
 		OrderDTO[] orderList = new OrderDTO[product.length];
+		String merchant_uid = memberDto.getMem_id() + time;
+		int amount = 0;
 		for (int i = 0; i < orderList.length; i++) {
 			orderList[i] = new OrderDTO();
 			orderList[i].setProduct_idx(product[i]);
@@ -85,7 +103,9 @@ public class OrderService {
 			orderList[i].setPay(productDao.selectOne(product[i]).getProduct_price() * count[i]);
 			String orderCode = time + member_idx + product[i] + i;
 			orderList[i].setOrder_code(orderCode);
+			orderList[i].setMerchant_uid(merchant_uid);
 			memberDao.updateTotal(memberDto.getMem_id(), orderList[i].getPay());
+			amount = amount + orderList[i].getPay();
 		}
 
 		for (OrderDTO orderDto : orderList) {
@@ -93,9 +113,33 @@ public class OrderService {
 			int stock = stockDao.getStock(orderDto.getProduct_idx(), orderDto.getSize());
 			stockDao.updateStock(orderDto.getProduct_idx(), orderDto.getSize(), stock - orderDto.getCount());
 		}
+		PaymentInfo payment = new PaymentInfo();
+		payment.setMerchant_uid(merchant_uid);
+		payment.setBuyer_tel(memberDto.getMem_phone());
+		payment.setAmount(amount);
+		return payment;
 	}
-	
-	//구매취소
+
+	// 구매 취소(한 상품 취소)
+	@Transactional
+	public void cancelOne(MemberDTO memberDto, OrderDTO orderDto) {
+		orderCancel(memberDto, orderDto);
+		String merchant_uid = orderDto.getMerchant_uid();
+		getToken();
+		CancelData cancel_data = new CancelData(merchant_uid, false, BigDecimal.valueOf(orderDto.getPay()));
+		try {
+			IamportResponse<Payment> cancel_response = client.cancelPaymentByImpUid(cancel_data);
+			//System.out.println(cancel_response.getResponse().getCancelAmount());
+			//System.out.println(cancel_response.getResponse().getCancelHistory());
+		} catch (IamportResponseException e) {
+			System.out.println(e.getMessage());
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+	// 구매취소시 테이블에서 내역 삭제
 	@Transactional
 	public void orderCancel(MemberDTO memberDto, OrderDTO orderDto) {
 		orderDao.deleteByCode(orderDto.getOrder_code());
@@ -110,6 +154,52 @@ public class OrderService {
 			order_state = "구매확정";
 			orderDao.updateState(order_code, order_state);
 		}
-		
+
+	}
+
+	public int validate(String imp_uid, String merchant_uid, MemberDTO memberDto) {
+		int amount = 0;
+		List<OrderDTO> orderList = orderDao.selectByMerchantUid(merchant_uid);
+		// 인증 체크
+		if (!orderList.get(0).getMem_id().equals(memberDto.getMem_id()))
+			return 0;
+		for (OrderDTO orderDto : orderList)
+			amount = amount + orderDto.getPay();
+		getToken();
+		try {
+			IamportResponse<Payment> payment_response = client.paymentByImpUid(imp_uid);
+			assertNotNull(payment_response.getResponse());
+			//System.out.println(payment_response.getResponse().getImpUid());
+			//System.out.println(payment_response.getResponse().getAmount());
+			// 총 결제금액과 테이블에 저장된 금액이 다르다면 전액 취소, 테이블 롤백
+			if (payment_response.getResponse().getAmount().intValue() != amount) {
+				for (OrderDTO orderDto : orderList)
+					orderCancel(memberDto, orderDto);
+				CancelData cancel_data = new CancelData(imp_uid, true);
+				IamportResponse<Payment> cancel_response = client.cancelPaymentByImpUid(cancel_data);
+				System.out.println(cancel_response.getMessage());
+				return 0;
+			}
+		} catch (IamportResponseException e) {
+			System.out.println(e.getMessage());
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return 1;
+	}
+
+	public void getToken() {
+		try {
+			IamportResponse<AccessToken> auth_response = client.getAuth();
+
+			assertNotNull(auth_response.getResponse());
+			assertNotNull(auth_response.getResponse().getToken());
+		} catch (IamportResponseException e) {
+			System.out.println(e.getMessage());
+		} catch (IOException e) {
+			// 서버 연결 실패
+			e.printStackTrace();
+		}
 	}
 }
