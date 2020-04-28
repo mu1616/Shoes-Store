@@ -23,16 +23,17 @@
 <body>
 	<div class="container">
 	<div th:fragment="header">
-		<div class="shop-menu clearfix pull-right" th:object="${session.memberDto}" style="font-size:14px;">
+		<div class="shop-menu clearfix pull-right" th:object="${session.memberDto}" style="font-size:12px;color:grey;margin:5px;">
 			<span sec:authorize="isAuthenticated()"><a href="/order/list" class="text-dark"><i class="fa text-primary" th:text="${#authentication.principal.username}+'님'"></i></a>&nbsp; <font color="grey">|</font></span>
-			<span sec:authorize="hasRole('ROLE_ADMIN')"><a href="/admin" class="text-dark">ADMIN</a>&nbsp; <font color="grey">|</font></span>
-			<span sec:authorize="isAuthenticated()"><a  href="/cart/list" class="text-dark">장바구니</a>&nbsp; <font color="grey">|</font></span> 
-			<a sec:authorize="!isAuthenticated()" href="/member/login"class="text-dark">로그인</a>
-			<a sec:authorize="isAuthenticated()" href="/member/logout"class="text-dark">로그아웃</a>
-			
+			<span sec:authorize="hasRole('ROLE_ADMIN')"><a href="/admin" style="color:#777777;">ADMIN</a>&nbsp; <font color="grey">|</font></span>
+			<span sec:authorize="isAuthenticated()"><a  href="/cart/list" style="color:#777777;">장바구니</a>&nbsp; <font color="grey">|</font></span> 
+			<a sec:authorize="!isAuthenticated()" href="/member/login"style="color:#777777;">로그인</a>
+			<a sec:authorize="isAuthenticated()" href="/member/logout"style="color:#777777;">로그아웃</a>			
 		</div>
-		<br>
-		<h2 class="text-danger text-center"><a href="/" style="text-decoration:none"><span class="text-danger" style="font-family: 'Frijole', cursive;">Shoes Factory</span></a></h2><br>
+		<br><br>
+		
+			<h2 class="text-danger text-center"><a href="/" style="text-decoration:none"><span class="text-danger" style="font-family: 'Frijole', cursive;">Shoes Factory</span></a></h2><br>
+		
 		<nav class="navbar navbar-expand-sm navbar-light bg-light navbar-inverse">
 			<div class="container-fluid" id="navbarNavAltMarkup">
 

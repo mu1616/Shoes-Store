@@ -3,20 +3,21 @@ package com.example.project_01.service.admin.board;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
-import com.example.project_01.model.pagination.dto.PageDTO;
 import com.example.project_01.model.product.qna.dao.QnaDAO;
 import com.example.project_01.model.product.qna.dto.QnaDTO;
 import com.example.project_01.model.product.qna.dto.SearchQnaDTO;
-import com.example.project_01.service.product.qna.QnaService;
+import com.example.project_01.service.product.qna.ProductQnaService;
 
 @Service
-public class ManageProductQnaService {
+@Qualifier("ManageProductQna")
+public class ManageProductQnaService implements ProductQnaService{
 	@Autowired
 	QnaDAO qnaDao;
 	
-	//페이지당 상품개수 = 20
+	@Override
 	public List<QnaDTO> selectQna(int currentPage, int size, SearchQnaDTO searchQnaDto) {
 		int start = (currentPage-1) * size;
 		int length = size;

@@ -17,7 +17,7 @@ table {
 <div class="container">
 <th:block th:include="./home.html::header"></th:block><br><br><br>
 <div class="row">
-	<div class="col-md-9 ml-auto mr-auto">
+	<div class="col-md-10 ml-auto mr-auto">
 	<h3 align="center">회원가입</h3><br><br>
 	<form class="form-inline" method="post" id="frm" action="/member/join">
 	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />	
@@ -25,7 +25,7 @@ table {
 		<table class="table">
 		<tbody>
 		<tr>
-		<th scope="row" >이름&nbsp</th>
+		<th scope="row">이름&nbsp</th>
 		<td colspan="3"><input type="text" class="form-control mb-2 mr-sm-2" placeholder="이름" id="name" name=mem_name></td>
 		</tr>
 		<tr>
@@ -45,7 +45,7 @@ table {
 		<td colspan="2" id='pwText1'> (영문/숫자/특수문자 조합 8자 이상)</td>
 		</tr>
 		<tr>
-		<th scope="row" width="  25%">비밀번호확인</th>
+		<th scope="row">비밀번호확인</th>
 		<td><input type="password" class="form-control mb-2 mr-sm-2" placeholder="Password" id="password2" onkeyup="isMatch(this);"></td>
 		<td colspan="2" id="pwText2"></td>
 		</tr>
@@ -56,7 +56,7 @@ table {
 		</tr>
 		<tr>
 		<th scope="row" rowspan="">주소&nbsp</th>
-		<td width="100px"><input type="text" class="form-control mb-2 mr-sm-2" id="sample6_postcode" placeholder="우편번호" readonly><br>
+		<td width="150px"><input type="text" class="form-control mb-2 mr-sm-2" id="sample6_postcode" placeholder="우편번호" readonly><br>
 			<input type="text" class="form-control mb-2 mr-sm-2" style="width:300px;"id="sample6_address" name="mem_addr1" placeholder="주소" readonly><br>
 			<input type="text" class="form-control mb-2 mr-sm-2" id="sample6_detailAddress" name="mem_addr2" placeholder="상세주소"></td>
 		<td colspan="2"><input type="button" class="btn btn-outline-secondary" onclick="sample6_execDaumPostcode()" value="우편번호 찾기"><br>
@@ -284,7 +284,7 @@ function idCheck2(obj){
 	}
 }
 function pwCheck(obj){
-	var re= /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]){8,}$/;	
+	var re = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]{8,}$/;
     if(!re.test(obj.value)) {
     	document.getElementById('pwText1').style.color='red';
     	return false;

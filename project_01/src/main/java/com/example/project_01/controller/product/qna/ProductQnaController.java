@@ -1,6 +1,7 @@
 package com.example.project_01.controller.product.qna;
 
 import java.security.Principal;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,12 +14,14 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.example.project_01.model.pagination.dto.PageDTO;
 import com.example.project_01.model.product.dao.ProductDAO;
+import com.example.project_01.model.product.dto.ProductDTO;
 import com.example.project_01.model.product.dto.ProductEntity;
 import com.example.project_01.model.product.qna.dao.QnaDAO;
 import com.example.project_01.model.product.qna.dto.QnaDTO;
 import com.example.project_01.model.product.qna.dto.SearchQnaDTO;
+import com.example.project_01.service.admin.board.ManageProductQnaService;
 import com.example.project_01.service.pagination.PageService;
-import com.example.project_01.service.product.qna.QnaService;
+import com.example.project_01.service.product.qna.ProductQnaServiceImpl;
 
 @Controller
 public class ProductQnaController {
@@ -29,8 +32,9 @@ public class ProductQnaController {
 	@Autowired
 	PageService pageService;
 	@Autowired
-	QnaService qnaService;
-	
+	ProductQnaServiceImpl qnaService;
+	@Autowired
+	ManageProductQnaService productQnaService;
 	
 	@RequestMapping(value="/product/qna/{product_idx}" , method = RequestMethod.GET)
 	public String qnaGet(@PathVariable(value = "product_idx", required = false)int product_idx,
@@ -83,5 +87,22 @@ public class ProductQnaController {
 			msg = "권한없음";
 		}
 		return msg;
+	}
+	
+	@RequestMapping("/product/qna/myqna/{currentPage}")
+	public String myqna(Principal principal, Model model,@PathVariable("currentPage")int currentPage) {
+		String mem_id = principal.getName();
+		SearchQnaDTO searchQnaDto = new SearchQnaDTO();
+		searchQnaDto.setQna_member(mem_id);
+		int totalRecord = qnaDao.countQna(searchQnaDto);
+		PageDTO pageDto = pageService.calPage(currentPage, 10, totalRecord, 10);
+		List<QnaDTO> qnaList = productQnaService.selectQna(currentPage, 10, searchQnaDto);
+		List<ProductDTO> productList = new ArrayList<>();
+		for(QnaDTO qnaDto : qnaList)
+			productList.add(productDao.selectProductDTO(qnaDto.getQna_product()));
+		model.addAttribute("pageDto",pageDto);
+		model.addAttribute("qnaList",qnaList);
+		model.addAttribute("productList",productList);
+		return "product/myqna";
 	}
 }

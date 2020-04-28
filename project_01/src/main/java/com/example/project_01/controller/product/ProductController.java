@@ -24,7 +24,7 @@ import com.example.project_01.model.stock.dao.StockDAO;
 import com.example.project_01.model.stock.dto.StockDTO;
 import com.example.project_01.service.pagination.PageService;
 import com.example.project_01.service.product.ProductService;
-import com.example.project_01.service.product.qna.QnaService;
+import com.example.project_01.service.product.qna.ProductQnaServiceImpl;
 
 @Controller
 public class ProductController {
@@ -39,7 +39,7 @@ public class ProductController {
 	@Autowired
 	QnaDAO qnaDao;
 	@Autowired
-	QnaService qnaService;
+	ProductQnaServiceImpl qnaService;
 	@Autowired
 	PageService pageService;
 	

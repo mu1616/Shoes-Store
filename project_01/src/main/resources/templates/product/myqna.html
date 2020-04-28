@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<!-- 레이아웃 참고한 소스 -->
+<!-- view-source:https://getbootstrap.com/docs/4.1/examples/dashboard/# -->
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+
+<meta charset="UTF-8">
+<title>Shoes Factory</title>
+<th:block th:include="./bootstrap.html::bootstrap"></th:block>
+<style>
+th, td {
+	text-align: center;
+}
+
+.left {
+	text-align: left;
+}
+
+table {
+	font-size: 13px;
+}
+</style>
+</head>
+<body>
+	<div class="container">
+		<th:block th:include="./home.html::header"></th:block>
+		<br>
+		<div class="container-fluid">
+			<div class="row">
+				<th:block th:include="order/orderList.html::side"></th:block>
+				<main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
+					<div
+						class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+						<h3 style="font-weight: 600">상품문의</h3>
+					</div>
+					<div style="min-height: 200px">
+						<table class="table">
+							<thead class="table-active">
+								<tr>
+									<th colspan="2" style="width:35%;">상품정보</th>
+									<th>제목</th>
+									<th style="width:10%;">문의유형</th>
+									<th style="width:15%;">작성일</th>
+									<th style="width:10%;">답변상태</th>
+								</tr>
+							</thead>
+							<tbody>
+								<th:block th:each="qnaDto:${qnaList}">
+									<tr>
+										<td class="align-middle"><a th:href="'/product/detail?product_idx='+${qnaDto.qna_product}"><img class="image" style="width:100px;height:80px"></a></td>
+										<td class="align-middle" style="text-align:left;">
+											<span class="brand"></span><br>
+        									<span class="pName"></span><br>
+										</td>
+										<td class="align-middle"th:text="${qnaDto.qna_title}" style="text-align:left;cursor:pointer;"onclick="show(this);"></td>
+										<td class="align-middle"th:text="${qnaDto.qna_type}"></td>
+										<td class="align-middle"th:text="${#calendars.format(qnaDto.qna_date,'yyyy-MM-dd')}"></td>
+										<td class="align-middle" th:if="${qnaDto.qna_answer} eq null"
+											th:text="답변대기"></td>
+										<td class="align-middle" th:if="${qnaDto.qna_answer} ne null"
+											th:text="답변완료" style="color: #088A08"></td>
+									</tr>
+									<span>
+									<tr style="height:5em;background-color:#F2F2F2;display:none;">
+										<td class="align-middle" colspan="2" style="font-weight:600;">질문</td>
+										<td class="align-middle" colspan="4" th:text="${qnaDto.qna_question}" style="text-align:left;"></td>
+									</tr>
+									<tr style="height:5em;background-color:#F2F2F2;display:none;">
+										<td class="align-middle" colspan="2" style="font-weight:600;">답변</td>
+										<td class="align-middle" colspan="4" th:text="${qnaDto.qna_answer}" style="text-align:left;"></td>
+									</tr>
+									</span>
+								</th:block>
+							</tbody>
+						</table><hr>				
+					</div>
+					<div align="center">
+						<th:block th:include="admin/admin_productQna.html::page"></th:block>	
+					</div>	
+				</main>
+			</div>
+		</div>
+		<th:block th:include="./home.html::footer"></th:block>
+		<br>
+	</div>
+
+<script src="/static/js/make_pageBtn.js"></script>
+<script th:inline="javascript">
+makePageBtn([[${pageDto.currentPage}]]);
+setImage();
+function setImage(){
+	var imageList = document.getElementsByClassName('image');
+	var brandList = document.getElementsByClassName('brand');
+	var nameList = document.getElementsByClassName('pName');
+	for(var i=0; i<imageList.length; i++){
+		imageList[i].src = [[${productList}]][i].product_image;
+		brandList[i].innerHTML = "["+[[${productList}]][i].product_brand+"]";
+		nameList[i].innerHTML = [[${productList}]][i].product_name;
+	}
+	
+}
+function show(obj){
+	var question = obj.parentNode.nextElementSibling;
+	var answer = obj.parentNode.nextElementSibling.nextElementSibling;
+	if(question.style.display == 'none'){
+		question.style.display='';
+		answer.style.display='';
+	}else {
+		question.style.display='none';
+		answer.style.display='none';
+	}
+}
+function clickPageBtn(num){
+	location.href = "/product/qna/myqna/"+num;
+}
+</script>
+</body>
+</html>

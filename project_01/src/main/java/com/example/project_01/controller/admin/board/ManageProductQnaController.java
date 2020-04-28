@@ -3,6 +3,7 @@ package com.example.project_01.controller.admin.board;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -16,13 +17,14 @@ import com.example.project_01.model.product.dto.ProductDTO;
 import com.example.project_01.model.product.qna.dao.QnaDAO;
 import com.example.project_01.model.product.qna.dto.QnaDTO;
 import com.example.project_01.model.product.qna.dto.SearchQnaDTO;
-import com.example.project_01.service.admin.board.ManageProductQnaService;
 import com.example.project_01.service.pagination.PageService;
+import com.example.project_01.service.product.qna.ProductQnaService;
 
 @Controller
 public class ManageProductQnaController {
 	@Autowired
-	ManageProductQnaService qnaService;
+	@Qualifier("ManageProductQna")
+	ProductQnaService qnaService;
 	@Autowired
 	QnaDAO qnaDao;
 	@Autowired
