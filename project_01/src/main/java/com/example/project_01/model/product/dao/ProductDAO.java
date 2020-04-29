@@ -28,4 +28,6 @@ public interface ProductDAO {
 	public void delProductMainDisplayByProduct(int product_idx);
 	//판매횟수 업데이트
 	public void updateSaleCount(int product_idx, int count);
+	//별점 업데이트
+	public void updateRating(int product_idx, int product_rating);
 }

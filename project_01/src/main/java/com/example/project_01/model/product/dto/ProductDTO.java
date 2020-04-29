@@ -12,8 +12,15 @@ public class ProductDTO {
 	//메인진열시 진열순서
 	private int display_order;
 	private int product_salecount;
+	private float product_rating;
 
 	
+	public float getProduct_rating() {
+		return product_rating;
+	}
+	public void setProduct_rating(float product_rating) {
+		this.product_rating = product_rating;
+	}
 	public int getProduct_salecount() {
 		return product_salecount;
 	}
@@ -81,8 +88,9 @@ public class ProductDTO {
 				+ product_price + ", product_brand=" + product_brand + ", product_category=" + product_category
 				+ ", product_contents=" + product_contents + ", product_image=" + product_image + ", product_isDisplay="
 				+ product_isDisplay + ", display_order=" + display_order + ", product_salecount=" + product_salecount
-				+ "]";
+				+ ", product_rating=" + product_rating + "]";
 	}
+	
 	
 	
 	

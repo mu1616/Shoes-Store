@@ -10,6 +10,25 @@ public class ProductEntity {
 	private String product_contents;
 	private String product_image;
 	private int product_isDisplay;
+	private int procut_salecount;
+	private float product_rating;
+	
+	
+	public float getProduct_rating() {
+		return product_rating;
+	}
+	public void setProduct_rating(float product_rating) {
+		this.product_rating = product_rating;
+	}
+	public int getProcut_salecount() {
+		return procut_salecount;
+	}
+	public void setProcut_salecount(int procut_salecount) {
+		this.procut_salecount = procut_salecount;
+	}
+	public int getProduct_isDisplay() {
+		return product_isDisplay;
+	}
 	public int getProduct_idx() {
 		return product_idx;
 	}
@@ -63,11 +82,9 @@ public class ProductEntity {
 		return "ProductEntity [product_idx=" + product_idx + ", product_name=" + product_name + ", product_price="
 				+ product_price + ", product_brand=" + product_brand + ", product_category=" + product_category
 				+ ", product_contents=" + product_contents + ", product_image=" + product_image + ", product_isDisplay="
-				+ product_isDisplay + "]";
+				+ product_isDisplay + ", procut_salecount=" + procut_salecount + ", product_rating=" + product_rating
+				+ "]";
 	}
+	
 
-
-	
-	
-	
 }

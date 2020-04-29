@@ -27,7 +27,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .authorizeRequests()     //antMatchers() -> 앞에꺼 우선 적용
                 	.antMatchers("/product/qna/qnaShow").permitAll()
-                	.antMatchers("/product/qna/**", "/cart/**", "/order/**").authenticated()
+                	.antMatchers("/product/qna/**", "/cart/**", "/order/**", "/product/review/**").authenticated()
                 	.antMatchers("/admin/**").hasRole("ADMIN")
                     .antMatchers("/**","/static/**").permitAll()
                     .anyRequest().authenticated();
