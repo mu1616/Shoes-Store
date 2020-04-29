@@ -143,4 +143,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		delete from display
 		where display_product = #{product_idx}
 	</delete>
+	<!-- 총판매횟수 업데이트 -->
+	<update id="updateSaleCount">
+		update product 
+		set product_salecount = product_salecount + #{count}
+		where product_idx = #{product_idx}
+	</update>
 </mapper>

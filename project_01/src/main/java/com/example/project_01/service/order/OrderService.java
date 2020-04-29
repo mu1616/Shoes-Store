@@ -112,6 +112,7 @@ public class OrderService {
 			orderDao.insertOrder(orderDto);
 			int stock = stockDao.getStock(orderDto.getProduct_idx(), orderDto.getSize());
 			stockDao.updateStock(orderDto.getProduct_idx(), orderDto.getSize(), stock - orderDto.getCount());
+			productDao.updateSaleCount(orderDto.getProduct_idx(), orderDto.getCount());
 		}
 		PaymentInfo payment = new PaymentInfo();
 		payment.setMerchant_uid(merchant_uid);
@@ -146,6 +147,7 @@ public class OrderService {
 		memberDao.updateTotal(memberDto.getMem_id(), -orderDto.getPay());
 		int stock = stockDao.getStock(orderDto.getProduct_idx(), orderDto.getSize());
 		stockDao.updateStock(orderDto.getProduct_idx(), orderDto.getSize(), stock + orderDto.getCount());
+		productDao.updateSaleCount(orderDto.getProduct_idx(), -orderDto.getCount());
 	}
 
 	public void updateState(String order_code) {

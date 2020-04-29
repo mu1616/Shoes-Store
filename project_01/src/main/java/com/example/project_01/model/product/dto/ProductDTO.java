@@ -11,8 +11,15 @@ public class ProductDTO {
 	private int product_isDisplay;
 	//메인진열시 진열순서
 	private int display_order;
+	private int product_salecount;
 
 	
+	public int getProduct_salecount() {
+		return product_salecount;
+	}
+	public void setProduct_salecount(int product_salecount) {
+		this.product_salecount = product_salecount;
+	}
 	public int getProduct_idx() {
 		return product_idx;
 	}
@@ -68,15 +75,16 @@ public class ProductDTO {
 	public void setDisplay_order(int display_order) {
 		this.display_order = display_order;
 	}
-	
-
 	@Override
 	public String toString() {
 		return "ProductDTO [product_idx=" + product_idx + ", product_name=" + product_name + ", product_price="
 				+ product_price + ", product_brand=" + product_brand + ", product_category=" + product_category
 				+ ", product_contents=" + product_contents + ", product_image=" + product_image + ", product_isDisplay="
-				+ product_isDisplay + ", display_order=" + display_order + "]";
+				+ product_isDisplay + ", display_order=" + display_order + ", product_salecount=" + product_salecount
+				+ "]";
 	}
+	
+	
 	
 
 	

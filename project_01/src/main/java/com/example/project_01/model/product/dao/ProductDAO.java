@@ -26,4 +26,6 @@ public interface ProductDAO {
 	public void delProductMainDisplay(int display_md);
 	//특정 상품을 메인진열에서 제거
 	public void delProductMainDisplayByProduct(int product_idx);
+	//판매횟수 업데이트
+	public void updateSaleCount(int product_idx, int count);
 }
