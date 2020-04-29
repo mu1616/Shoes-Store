@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper
+	namespace="com.example.project_01.model.review.dao.ReviewDAO">
+	<!-- 리뷰 작성 -->
+	<insert id="insert" parameterType = "com.example.project_01.model.review.dto.ReviewDTO">
+		insert into review
+		(review_product, review_contents, review_rating, review_member, review_ordercode)
+		values 
+		(#{review_product}, #{review_contents}, #{review_rating}, #{review_member}, #{review_ordercode})
+	</insert>
+	<!-- review_ordercode에 맞는 레코드 Select -->
+	<select id="selectOne" resultType="com.example.project_01.model.review.dto.ReviewDTO">
+		select * from review
+		where review_ordercode = #{review_ordercode}
+	</select>
+</mapper>

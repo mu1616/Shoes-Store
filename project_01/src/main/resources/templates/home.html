@@ -17,6 +17,9 @@
 .swiper-slide img {
 	max-width:100%; /* 이미지 최대너비를 제한, 슬라이드에 이미지가 여러개가 보여질때 필요 */
 }
+.card{
+	background-color:#f9f9f9
+}
 </style>
 </head>
 
@@ -116,7 +119,7 @@
 			<div class="swiper-wrapper">
 				<th:block th:each="productDto:${saleProducts}">
 				<div class="swiper-slide">
-					<div class="card">
+					<div class="card" >
 			            <a th:href="'/product/detail?product_idx='+${productDto.product_idx}"><img th:src="${productDto.product_image}" alt="" class="card-img-top" width="200" height="220"/></a>
 			            <div class="card-body">
 			              <b>[ <span style="font-size:14px;"th:text="${productDto.product_brand}"></span> ]</b>

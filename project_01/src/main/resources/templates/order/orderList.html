@@ -143,7 +143,7 @@ th,td {
 		<td th:if="${orderDto.order_state} == '배송준비중'"style="vertical-align:middle;">배송준비중<br><button th:onclick="'orderCancel('+${orderDtoStat.count}+')'">구매취소</button></td>
 		<td th:if="${orderDto.order_state} == '배송중'"style="vertical-align:middle;">배송중<br><button>배송조회</button></td>
 		<td th:if="${orderDto.order_state} == '배송완료'"style="vertical-align:middle;">배송완료<br><button th:onclick="'updateState('+${orderDtoStat.count}+',this)'">구매확정</button></td>
-		<td th:if="${orderDto.order_state} == '구매확정'"style="vertical-align:middle;">구매확정<br><button>후기작성</button></td>
+		<td th:if="${orderDto.order_state} == '구매확정'"style="vertical-align:middle;">구매확정<br><button th:onclick="'reviewBtn('+${orderDtoStat.count}+')'">후기작성</button></td>
 		</tr>
 		</th:block>
 		</table>
@@ -291,6 +291,26 @@ function closeModal(){
 //3자리마다 점찍어주는 함수
 function numberFormat(inputNumber) {
 	   return inputNumber.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+}
+
+function reviewBtn(num){
+	var check;
+	var order_code = document.getElementById('code'+num).innerHTML;
+	$.ajax({
+		url: "/product/review/check/"+order_code,
+		type: "POST",
+		error:function(request,status,error){
+	        alert("code = "+ request.status + " message = " + request.responseText + " error = " + error); // 실패 시 처리
+	       },
+	    success : function(data) {
+	    	if(data == 1){
+	    		window.open("/product/review/writeForm/"+order_code,"review","width=550, height=600");
+	    	} else {
+	    		alert('이미 리뷰를 작성했습니다.');
+	    	}
+	    }
+	});
+
 }
 </script>    
 

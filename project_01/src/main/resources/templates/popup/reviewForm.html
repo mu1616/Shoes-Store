@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Shoes Factory</title>
+<th:block th:include="./bootstrap.html::bootstrap"></th:block>
+<link rel="stylesheet" href="/static/starRating/css/star-rating.css" media="all" type="text/css"/>
+<script src="/static/starRating/js/star-rating.js" type="text/javascript"></script>
+<style>
+img{
+	border: 1px solid #d7d7d7;
+}
+.rating {
+      float:left;
+    }
+
+    /* :not(:checked) is a filter, so that browsers that don’t support :checked don’t 
+      follow these rules. Every browser that supports :checked also supports :not(), so
+      it doesn’t make the test unnecessarily selective */
+    .rating:not(:checked) > input {
+        position:absolute;
+        top:-9999px;
+        clip:rect(0,0,0,0);
+    }
+
+    .rating:not(:checked) > label {
+        float:right;
+        width:1em;
+        /* padding:0 .1em; */
+        overflow:hidden;
+        white-space:nowrap;
+        cursor:pointer;
+        font-size:170%;
+        /* line-height:1.2; */
+        color:#ddd;
+    }
+
+    .rating:not(:checked) > label:before {
+        content: '★ ';
+    }
+
+    .rating > input:checked ~ label {
+        color: #F781D8
+        
+    }
+
+    .rating:not(:checked) > label:hover,
+    .rating:not(:checked) > label:hover ~ label {
+        color: #F781D8
+        
+    }
+
+    .rating > input:checked + label:hover,
+    .rating > input:checked + label:hover ~ label,
+    .rating > input:checked ~ label:hover,
+    .rating > input:checked ~ label:hover ~ label,
+    .rating > label:hover ~ input:checked ~ label {
+        color: #F781D8
+        
+    }
+
+    .rating > label:active {
+        position:relative;
+        top:2px;
+        left:2px;
+    }
+</style>
+</head>
+<body>
+	<div class="container">
+		<br>
+		<h4 style="font-weight: 600">구매후기</h4>
+		<hr>
+		<div class="row">
+			<div class="col-4">
+				<img th:src="${productDto.product_image}" onclick="openInNewTab();"
+					style="width: 170px; height: 160px; cursor: pointer;"></a>
+			</div>
+			<div class="col-8">
+				<br>
+				<table class="table" style="font-size: 13px">
+					<tr>
+						<th scope="row" class="info">상품명</th>
+						<td th:text="${productDto.product_name}"></td>
+					</tr>
+					<tr>
+						<th scope="row" class="info">판매가</th>
+						<td
+							th:text="${#numbers.formatInteger(productDto.product_price, 0, 'COMMA')}+'원'"></td>
+					</tr>
+					<tr>
+						<th scope="row" class="info">상품요약정보</th>
+						<td
+							th:text="${productDto.product_brand}+' '+${productDto.product_category}"></td>
+					</tr>
+					<tr><td></td><td></td></tr>
+				</table>
+			</div>
+		</div>
+		<div style="font-size:14px;">
+			<table class="table table-bordered">
+				<tr>
+					<th class="align-middle table-active">별점</th>
+					<td>
+						<div class="rating">
+					      <input type="radio" id="star5" name="rating" value="5" /><label for="star5" >5 stars</label>
+					      <input type="radio" id="star4" name="rating" value="4" /><label for="star4" >4 stars</label>
+					      <input type="radio" id="star3" name="rating" value="3" /><label for="star3" >3 stars</label>
+					      <input type="radio" id="star2" name="rating" value="2" /><label for="star2" >2 stars</label>
+					      <input type="radio" id="star1" name="rating" value="1" /><label for="star1" >1 star</label>
+    					</div>
+					</td>
+				</tr>
+				<tr>
+					<th class="align-middle table-active" >구매후기</th>
+					<td><textarea id="contents" style="width:370px;height:170px"></textarea></td>
+				</tr>
+			</table>
+			<div align="center">
+				<input type="button" value="답변작성" class="btn btn-primary btn-sm" onclick="writeBtn()">
+				<input type="button" value="취소" class="btn btn-sm btn-dark" onclick="window.close()">
+			</div>
+			<input type="hidden" id="order_code" th:value="${order_code}">
+		</div>
+	</div>
+<script>
+function openInNewTab() {
+	var product_idx = [[${productDto.product_idx}]];
+	var url = "/product/detail?product_idx="+product_idx;
+    var win = window.open(url, '_blank');
+    win.focus();
+}
+function writeBtn(){
+	var review_contents = document.getElementById('contents').value;
+	if(review_contents=="") {
+		alert('내용을 입력해주세요.');
+		return;
+	}
+	var ratings = document.getElementsByName('rating');
+	var review_rating = 0;
+	for(var i=0; i< ratings.length; i++){
+		if(ratings[i].checked == true)
+			review_rating = ratings[i].value;
+	}
+	var order_code = document.getElementById('order_code').value;
+	if(confirm('작성을 완료하시겠습니까?')){
+		$.ajax({
+			url: "/product/review/write/"+order_code,
+			type: "POST",
+			data: {"review_contents":review_contents,"review_rating":review_rating},
+			error:function(request,status,error){
+		        alert("code = "+ request.status + " message = " + request.responseText + " error = " + error); // 실패 시 처리
+		       },
+		    success : function(data) {
+		    	alert('작성이 완료되었습니다.');
+		    	window.opener.location.reload();
+		    	window.opener.focus();
+		    	window.close();
+		    	
+		    }
+		});
+	}
+}
+</script>
+</body>
+</html>
