@@ -10,4 +10,6 @@ public interface ReviewDAO {
 	public void insert(ReviewDTO reviewDto);
 	//review_ordercode 에 맞는 레코드 Select
 	public ReviewDTO selectOne(String review_ordercode);
+	//특정 상품 리뷰횟수 조회
+	public int countByProduct(int review_product);
 }

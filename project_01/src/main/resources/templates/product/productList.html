@@ -7,8 +7,14 @@
 <title>Shoes Factory</title>
 <th:block th:include="./bootstrap.html::bootstrap"></th:block>
 <style>
-.card{
-	background-color:#f9f9f9
+.card {
+	padding: 1px;
+}
+.card:hover{
+	border:1px solid #424242;
+}
+.checked{
+	color:orange;
 }
 </style>
 </head>
@@ -22,11 +28,11 @@
 <h4 th:if="${category} eq null"style="font-weight:bold;" th:text="${searchWord}+' 검색결과'"></h4>
 </div>
 <div class="col-4"></div>
-<div class="col-4">
+<div class="col-4" style="float:right;">
 <a style="cursor:pointer" onclick="productSort(1);"><font class="sort" color="grey">신상품순</font></a>&nbsp
 <a style="cursor:pointer" onclick="productSort(2);"><font class="sort" color="grey">높은가격순</font></a>&nbsp
 <a style="cursor:pointer" onclick="productSort(3);"><font class="sort" color="grey">낮은가격순</font></a>&nbsp
-<font color="grey">인기순</font>&nbsp
+<a style="cursor:pointer" onclick="productSort(4);"><font class="sort" color="grey">인기순</font></a>
 </div>
 </div>
 <font color="grey"><p>[총 <font color="red" th:text="${pageDto.countRecord}"></font>개]</p></font>
@@ -40,6 +46,12 @@
               <b>[ <span style="font-size:14px;"th:text="${productDto.product_brand}"></span> ]</b>
               <p style="font-weight: 300;font-size:14px"th:text="${productDto.product_name}"></p>
               <b style="font-size:18px;"th:text="${#numbers.formatInteger(productDto.product_price, 0, 'COMMA')}"></b> 원
+           	  <br>
+           	  <th:block th:each="num:${#numbers.sequence(1,5)}">
+              <span th:if="${productDto.round_rating} >= ${num}" class="fa fa-star checked"></span>
+              <span th:if="${productDto.round_rating} < ${num}" class="fa fa-star"></span>
+             </th:block>
+             <span th:text="'('+${productDto.product_reviewcount}+')'"></span>	            
             </div>
           </div>
           <br><br>

@@ -40,7 +40,7 @@ public class ProductReviewController {
 	public void write(@PathVariable("order_code")String order_code, String review_contents, int review_rating,
 			Principal principal) {
 		OrderDTO orderDto = orderDao.selectByCode(order_code);
-		//구매정보와 현재 로그인한 사용자 정보가 다르다면 return
+		//상품후기를 작성할 수 있는 권한이 없다면 return
 		if(!orderDto.getMem_id().equals(principal.getName())) return;
 		ReviewDTO reviewDto = new ReviewDTO();
 		reviewDto.setReview_contents(review_contents);

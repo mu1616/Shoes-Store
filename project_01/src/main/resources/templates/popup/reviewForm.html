@@ -4,7 +4,6 @@
 <meta charset="UTF-8">
 <title>Shoes Factory</title>
 <th:block th:include="./bootstrap.html::bootstrap"></th:block>
-<link rel="stylesheet" href="/static/starRating/css/star-rating.css" media="all" type="text/css"/>
 <script src="/static/starRating/js/star-rating.js" type="text/javascript"></script>
 <style>
 img{
@@ -117,8 +116,8 @@ img{
 				</tr>
 			</table>
 			<div align="center">
-				<input type="button" value="답변작성" class="btn btn-primary btn-sm" onclick="writeBtn()">
-				<input type="button" value="취소" class="btn btn-sm btn-dark" onclick="window.close()">
+				<input type="button" value="답변작성" class="btn btn-outline-primary btn-sm" onclick="writeBtn()">
+				<input type="button" value="취소" class="btn btn-sm btn-outline-dark" onclick="window.close()">
 			</div>
 			<input type="hidden" id="order_code" th:value="${order_code}">
 		</div>

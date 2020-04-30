@@ -17,4 +17,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		select * from review
 		where review_ordercode = #{review_ordercode}
 	</select>
+	<!-- 특정상품의 리뷰 횟수 조회 -->
+	<select id="countByProduct" resultType="int">
+		select count(*) from review
+		where review_product = #{review_product}
+	</select>
 </mapper>

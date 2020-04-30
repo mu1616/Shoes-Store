@@ -8,7 +8,11 @@
 <th:block th:include="./bootstrap.html::bootstrap"></th:block>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Swiper/4.5.1/css/swiper.min.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Swiper/4.5.1/js/swiper.min.js"></script>
+<link rel="stylesheet" href="/static/css/rating.css">
 <style>
+.checked{
+	color:orange;
+}
 .swiper-container {
 	height:400px;
 }
@@ -17,8 +21,11 @@
 .swiper-slide img {
 	max-width:100%; /* 이미지 최대너비를 제한, 슬라이드에 이미지가 여러개가 보여질때 필요 */
 }
-.card{
-	background-color:#f9f9f9
+.card {
+	padding: 1px;
+}
+.card:hover{
+	border:1px solid #424242;
 }
 </style>
 </head>
@@ -99,6 +106,12 @@
 			              <b>[ <span style="font-size:14px;"th:text="${productDto.product_brand}"></span> ]</b>
 			              <p style="font-weight: 300;font-size:14px"th:text="${productDto.product_name}"></p>
 			              <b style="font-size:18px;"th:text="${#numbers.formatInteger(productDto.product_price, 0, 'COMMA')}"></b> 원
+		             	  <br>
+		             	  <th:block th:each="num:${#numbers.sequence(1,5)}">
+				              <span th:if="${productDto.round_rating} >= ${num}" class="fa fa-star checked"></span>
+				              <span th:if="${productDto.round_rating} < ${num}" class="fa fa-star"></span>
+			              </th:block>
+			              <span th:text="'('+${productDto.product_reviewcount}+')'"></span>			              
 			            </div>
 		            </div>
 				</div>
@@ -124,9 +137,16 @@
 			            <div class="card-body">
 			              <b>[ <span style="font-size:14px;"th:text="${productDto.product_brand}"></span> ]</b>
 			              <p style="font-weight: 300;font-size:14px"th:text="${productDto.product_name}"></p>
-			              <b style="font-size:18px;"th:text="${#numbers.formatInteger(productDto.product_price, 0, 'COMMA')}"></b> 원
+			              <b style="font-size:18px;"th:text="${#numbers.formatInteger(productDto.product_price, 0, 'COMMA')}"></b> 원	
+			              <br>
+		             	  <th:block th:each="num:${#numbers.sequence(1,5)}">
+				              <span th:if="${productDto.round_rating} >= ${num}" class="fa fa-star checked"></span>
+				              <span th:if="${productDto.round_rating} < ${num}" class="fa fa-star"></span>
+			              </th:block>
+			              <span th:text="'('+${productDto.product_reviewcount}+')'"></span>
 			            </div>
 		            </div>
+		            
 				</div>
 				</th:block>
 			</div>
@@ -148,6 +168,12 @@
 			              <b>[ <span style="font-size:14px;"th:text="${productDto.product_brand}"></span> ]</b>
 			              <p style="font-weight: 300;font-size:14px"th:text="${productDto.product_name}"></p>
 			              <b style="font-size:18px;"th:text="${#numbers.formatInteger(productDto.product_price, 0, 'COMMA')}"></b> 원
+		             	  <br>
+		             	  <th:block th:each="num:${#numbers.sequence(1,5)}">
+				              <span th:if="${productDto.round_rating} >= ${num}" class="fa fa-star checked"></span>
+				              <span th:if="${productDto.round_rating} < ${num}" class="fa fa-star"></span>
+			              </th:block>
+			              <span th:text="'('+${productDto.product_reviewcount}+')'"></span>			            
 			            </div>
 		            </div>
 				</div>

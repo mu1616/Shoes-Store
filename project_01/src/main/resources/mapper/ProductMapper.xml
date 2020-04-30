@@ -65,6 +65,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<if test="searchDto.sort == 3">
 		ORDER BY product_price asc
 		</if>
+		<if test="searchDto.sort == 4">
+		ORDER BY product_salecount desc
+		</if>
 		LIMIT #{start},#{length}
 	</select>
 	<insert id="insertStock">
@@ -130,6 +133,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		update product 
 		set product_rating = (product_rating + #{product_rating}) / 
 			(select count(*) from review where review_product = #{product_idx})
+		where product_idx = #{product_idx}
+	</update>
+	<!-- 리뷰횟수 업데이트 -->
+	<update id="updateReviewCount">
+		update product
+		set product_reviewcount = product_reviewcount + #{count}
 		where product_idx = #{product_idx}
 	</update>
 </mapper>

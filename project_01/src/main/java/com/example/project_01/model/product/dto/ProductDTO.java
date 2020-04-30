@@ -13,13 +13,27 @@ public class ProductDTO {
 	private int display_order;
 	private int product_salecount;
 	private float product_rating;
-
+	private int round_rating;
+	private int product_reviewcount;
 	
+	public int getProduct_reviewcount() {
+		return product_reviewcount;
+	}
+	public void setProduct_reviewcount(int product_reviewcount) {
+		this.product_reviewcount = product_reviewcount;
+	}
+	public int getRound_rating() {
+		return round_rating;
+	}
+	public void setRound_rating(int round_rating) {
+		this.round_rating = round_rating;
+	}
 	public float getProduct_rating() {
 		return product_rating;
 	}
 	public void setProduct_rating(float product_rating) {
 		this.product_rating = product_rating;
+		this.round_rating = Math.round(product_rating);
 	}
 	public int getProduct_salecount() {
 		return product_salecount;

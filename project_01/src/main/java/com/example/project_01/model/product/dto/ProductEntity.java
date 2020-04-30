@@ -11,9 +11,15 @@ public class ProductEntity {
 	private String product_image;
 	private int product_isDisplay;
 	private int procut_salecount;
-	private float product_rating;
+	private float product_rating;	
+	private int product_reviewcount;
 	
-	
+	public int getProduct_reviewcount() {
+		return product_reviewcount;
+	}
+	public void setProduct_reviewcount(int product_reviewcount) {
+		this.product_reviewcount = product_reviewcount;
+	}
 	public float getProduct_rating() {
 		return product_rating;
 	}

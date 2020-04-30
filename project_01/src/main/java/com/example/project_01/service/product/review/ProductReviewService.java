@@ -20,5 +20,6 @@ public class ProductReviewService {
 	public void insert(ReviewDTO reviewDto) {
 		reviewDao.insert(reviewDto);
 		productDao.updateRating(reviewDto.getReview_product(), reviewDto.getReview_rating());
+		productDao.updateReviewCount(reviewDto.getReview_product(), 1);
 	}
 }

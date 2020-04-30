@@ -30,4 +30,6 @@ public interface ProductDAO {
 	public void updateSaleCount(int product_idx, int count);
 	//별점 업데이트
 	public void updateRating(int product_idx, int product_rating);
+	//리뷰 횟수 업데이트
+	public void updateReviewCount(int product_idx, int count);
 }
