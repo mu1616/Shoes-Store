@@ -38,8 +38,8 @@ public class ProductDaoTest {
 		ProductEntity dto = new ProductEntity();
 		dto.setProduct_name("상품명");
 		dto.setProduct_price(10000);
-		dto.setProduct_brand(1);
-		dto.setProduct_category(1);
+		dto.setProduct_brand("Nike");
+		dto.setProduct_category("운동화");
 		dto.setProduct_contents("상세설명");
 		dto.setProduct_image("이미지경로");
 		dto.setProduct_isDisplay(1);

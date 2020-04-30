@@ -41,12 +41,12 @@ textarea {
 							<td><select class="custom-select mr-sm-2"
 								name="product_brand" id="product_brand" style="width: 200px;">
 									<option selected>제조 브랜드</option>
-									<option value="1">Nike</option>
-									<option value="2">Adidas</option>
-									<option value="3">Puma</option>
-									<option value="4">NewBalance</option>
-									<option value="5">Reebok</option>
-									<option value="6">Vans</option>
+									<option value="Nike" id="Nike">Nike</option>
+									<option value="Adidas" id="Adidas">Adidas</option>
+									<option value="Puma" id="Puma">Puma</option>
+									<option value="Newbalance" id="Newbalance">NewBalance</option>
+									<option value="Reebok" id="Reebok">Reebok</option>
+									<option value="Vans" id="Vans">Vans</option>
 							</select></td>
 						</tr>
 						<tr>
@@ -55,12 +55,12 @@ textarea {
 								name="product_category" id="product_category"
 								style="width: 200px;">
 									<option selected>상품 분류</option>
-									<option value="1">운동화</option>
-									<option value="2">스니커즈</option>
-									<option value="3">슬리퍼</option>
-									<option value="4">샌들</option>
-									<option value="5">축구/농구</option>
-									<option value="6">슬립온</option>
+									<option value="운동화" id="운동화">운동화</option>
+									<option value="스니커즈" id="스니커즈">스니커즈</option>
+									<option value="슬리퍼" id="슬리퍼">슬리퍼</option>
+									<option value="샌들" id="샌들">샌들</option>
+									<option value="축구/농구" id="축구/농구">축구/농구</option>
+									<option value="슬립온" id="슬립온">슬립온</option>
 							</select></td>
 						</tr>
 						<tr>
@@ -97,7 +97,6 @@ textarea {
 
 					</table>
 				</form>
-				<hr>
 				<div align="center">
 					<input type="button" class="btn btn-outline-primary btn-lg"
 						style="width: 200pt;" value="수정" onclick="register();">
@@ -136,14 +135,12 @@ function setContents(){
 }
 
 function setBrand() {
-	var num = [[${productEntity.product_brand}]];
-	$("#product_brand").children().eq(0).prop("selected",false);
-	$("#product_brand").children().eq(num).prop("selected",true);
+	var brand = [[${productEntity.product_brand}]];
+	document.getElementById(brand).selected = true;
 }
 function setCategory(){
-	var num = [[${productEntity.product_category}]];
-	$("#product_category").children().eq(0).prop("selected",false);
-	$("#product_category").children().eq(num).prop("selected",true);
+	var category = [[${productEntity.product_category}]];
+	document.getElementById(category).selected = true;
 }
 function setIsDisplay(){
 	var isDisplay = [[${productEntity.product_isdisplay}]];

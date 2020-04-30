@@ -53,12 +53,12 @@
 						<input type="hidden" name="sort" id="sort" value="1">
 					</form>
 					</div>
-					<a class="nav-item nav-link" style="cursor:pointer" onclick="categoryBtn(1);">&nbsp&nbsp운동화&nbsp </a> 
-					<a class="nav-item nav-link" style="cursor:pointer" onclick="categoryBtn(2);">스니커즈&nbsp </a>
-					<a class="nav-item nav-link" style="cursor:pointer" onclick="categoryBtn(3);">슬리퍼&nbsp </a> 
-					<a class="nav-item nav-link" style="cursor:pointer" onclick="categoryBtn(4);">샌들&nbsp </a>
-					<a class="nav-item nav-link" style="cursor:pointer" onclick="categoryBtn(5);">축구/농구&nbsp </a>
-					<a class="nav-item nav-link" style="cursor:pointer" onclick="categoryBtn(6);">슬립온&nbsp </a>
+					<a class="nav-item nav-link" style="cursor:pointer" onclick="categoryBtn('운동화');">&nbsp&nbsp운동화&nbsp </a> 
+					<a class="nav-item nav-link" style="cursor:pointer" onclick="categoryBtn('스니커즈');">스니커즈&nbsp </a>
+					<a class="nav-item nav-link" style="cursor:pointer" onclick="categoryBtn('슬리퍼');">슬리퍼&nbsp </a> 
+					<a class="nav-item nav-link" style="cursor:pointer" onclick="categoryBtn('샌들');">샌들&nbsp </a>
+					<a class="nav-item nav-link" style="cursor:pointer" onclick="categoryBtn('축구');">축구/농구&nbsp </a>
+					<a class="nav-item nav-link" style="cursor:pointer" onclick="categoryBtn('슬립온');">슬립온&nbsp </a>
 					<a class="nav-item nav-link" href="#">브랜드&nbsp </a>
 					
 					
@@ -74,9 +74,9 @@
 			
 		</nav>
 		<script>
-		function categoryBtn(num){
+		function categoryBtn(category){
 			document.getElementById('sort').value = '1';
-			document.getElementById('product_category').value = num;
+			document.getElementById('product_category').value = category;
 			document.getElementById('frm1').submit();
 		}		
 		function searchBtn() {

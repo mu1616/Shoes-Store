@@ -61,8 +61,7 @@ public class ProductController {
 		model.addAttribute("searchDto",searchDto);
 
 		if(searchWord == null) //카테고리를 통해 요청한 경우 
-			model.addAttribute("category", categoryDao.getCategoryName(
-				Integer.parseInt(searchDto.getProduct_category())));
+			model.addAttribute("category", searchDto.getProduct_category());
 		else  //검색어를 통해 요청한 경우
 			model.addAttribute("searchWord",searchWord);
 		return "product/productList";

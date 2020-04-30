@@ -26,48 +26,36 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		resultType="int">
 		SELECT count(*)        
 		FROM product
-		JOIN brand AS b
-		ON product_brand = brand_idx
-		JOIN category AS c 
-		ON product_category = category_idx
 		<if test="option == 0">
 		where product_name like '${product_name}' and
 			product_idx like '${product_idx}' and
 			product_category like '${product_category}' and
-			product_brand like '${product_brand}' and
-			product_isDisplay like '${product_isDisplay}'
+			product_brand like '${product_brand}' 
 		</if>
 		<if test="option == 1">
 		where (product_name like '${product_name}' or
-			c.category_name like '${product_category}' or
-			b.brand_name like '${product_brand}' )and
-			product_isDisplay like '${product_isDisplay}'
+			product_category like '${product_category}' or
+			product_brand like '${product_brand}' )
 		</if>
+			and product_isDisplay like '${product_isDisplay}'
 	</select>
 
 	<select id="selectProduct"  parameterType="com.example.project_01.model.search.dto.SearchDTO"
 		resultType="com.example.project_01.model.product.dto.ProductDTO">
-		SELECT product_idx, product_name, product_price, 
-			product_contents, product_image, product_isDisplay, 
-			b.brand_name AS product_brand, c.category_name AS product_category
+		SELECT *
 		FROM product
-		JOIN brand AS b
-		ON product_brand = brand_idx
-		JOIN category AS c 
-		ON product_category = category_idx
 		<if test="searchDto.option == 0">
 		where product_name like '${searchDto.product_name}' and
 			product_idx like '${searchDto.product_idx}' and
 			product_category like '${searchDto.product_category}' and
-			product_brand like '${searchDto.product_brand}' and
-			product_isDisplay like '${searchDto.product_isDisplay}'
+			product_brand like '${searchDto.product_brand}' 
 		</if>
 		<if test="searchDto.option == 1">
 		where (product_name like '${searchDto.product_name}' or
-			c.category_name like '${searchDto.product_category}' or
-			b.brand_name like '${searchDto.product_brand}' )and
-			product_isDisplay like '${searchDto.product_isDisplay}'
+			product_category like '${searchDto.product_category}' or
+			product_brand like '${searchDto.product_brand}' )
 		</if>
+			and product_isDisplay like '${searchDto.product_isDisplay}'
 		<if test="searchDto.sort == 1">
 		ORDER BY product_idx desc
 		</if>
@@ -109,25 +97,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</update>
 	
 	<select id="selectProductDTO" resultType="com.example.project_01.model.product.dto.ProductDTO">
-		SELECT product_idx, product_name, product_price, 
-				product_contents, product_image, product_isDisplay, 
-				b.brand_name AS product_brand, c.category_name AS product_category
-			FROM product
-			JOIN brand AS b
-			ON product_brand = brand_idx
-			JOIN category AS c 
-			ON product_category = category_idx
-			where product_idx = #{product_idx}
+		SELECT *
+		FROM product
+		where product_idx = #{product_idx}
 	</select>
 	<select id="selectProductByDisplay" resultType="com.example.project_01.model.product.dto.ProductDTO">
-		SELECT product_idx, product_name, product_price, 
-				product_contents, product_image, product_isDisplay, display_order,
-				b.brand_name AS product_brand, c.category_name AS product_category
+		SELECT p.*, d.*
 		from display as d, product as p
-		JOIN brand AS b
-		ON product_brand = brand_idx
-		JOIN category AS c 
-		ON product_category = category_idx
 		where display_md = #{display_md} and p.product_idx = d.display_product
 		order by display_order asc
 	</select>

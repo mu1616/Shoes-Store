@@ -49,21 +49,21 @@ th,td {
         <td colspan="2" class="left">
         	<select class="custom-select mr-sm-2" name="product_category"id="product_category" style="width:200px;">
 		        <option value="%" selected>상품 분류</option>
-		        <option value="1">운동화</option>
-		        <option value="2">스니커즈</option>
-		        <option value="3">슬리퍼</option>
-		        <option value="4">샌들</option>
-		        <option value="5">축구/농구</option>
-	        <option value="6">슬립온</option>
+		        <option value="운동화" id="운동화">운동화</option>
+		        <option value="스니커즈" id="스니커즈">스니커즈</option>
+		        <option value="슬리퍼" id="슬리퍼">슬리퍼</option>
+		        <option value="샌들" id="샌들">샌들</option>
+		        <option value="축구/농구" id="축구/농구">축구/농구</option>
+	        <option value="슬립온" id="슬립온">슬립온</option>
      		 </select>
      		 <select class="custom-select mr-sm-2" name="product_brand"id="product_brand" style="width:200px;">
 		        <option value="%" selected>제조 브랜드</option>
-		        <option value="1">Nike</option>
-		        <option value="2">Adidas</option>
-		        <option value="3">Puma</option>
-		        <option value="4">NewBalance</option>
-		        <option value="5">Reebok</option>
-		        <option value="6">Vans</option>
+		        <option value="Nike" id="Nike">Nike</option>
+		        <option value="Adidas" id="Adidas">Adidas</option>
+		        <option value="Puma" id="Puma">Puma</option>
+		        <option value="Newbalance" id="Newbalance">NewBalance</option>
+		        <option value="Reebok" id="Reebok">Reebok</option>
+		        <option value="Vans" id="Vans">Vans</option>
      		 </select>
         </td>
         </tr>
@@ -88,15 +88,15 @@ th,td {
         <table class="table" style="font-size:13px">
         <thead class="thead-light">
         <tr>
-        <th scope="col"><input type="checkbox" id="allCheck"></th>
-        <th scop="col">상품번호</th>
-        <th scope="col" colspan="2">상품명</th>
-        <th scope="col">판매가</th>
-        <th scope="col">브랜드</th>
-        <th scope="col">상품분류</th>
-        <th scope="col">진열상태</th>
-        <th scope="col">재고</th>
-        <th scope="col"></th>
+        <th scope="col"><input type="checkbox" id="allCheck" width="5%;"></th>
+        <th scop="col" width="10%;">상품번호</th>
+        <th scope="col" colspan="2" >상품정보</th>
+        <th scope="col" width="10%;">판매가</th>
+        <th scope="col" width="10%;">브랜드</th>
+        <th scope="col" width="10%;">상품분류</th>
+        <th scope="col" width="10%;">진열상태</th>
+        <th scope="col" width="10%;">재고</th>
+        <th scope="col" width="10%;"></th>
         </tr>
         </thead>
         <th:block th:each="productDto:${productList}">
@@ -186,16 +186,12 @@ function searchOption(){
 	
 	var category = [[${searchDto.product_category}]];
 	if(category != "%") {
-		var num = category;
-		$("#product_category").children().eq(0).prop("selected",false);
-		$("#product_category").children().eq(num).prop("selected",true);
+		document.getElementById(category).selected = true;
 	}
 	
 	var brand = [[${searchDto.product_brand}]];
 	if(brand != "%") {
-		var num = brand;
-		$("#product_brand").children().eq(0).prop("selected",false);
-		$("#product_brand").children().eq(num).prop("selected",true);
+		document.getElementById(brand).selected = true;
 	}
 	
 	var isDisplay = [[${searchDto.product_isDisplay}]];

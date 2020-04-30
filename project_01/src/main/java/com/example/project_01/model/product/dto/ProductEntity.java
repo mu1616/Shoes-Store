@@ -5,8 +5,8 @@ public class ProductEntity {
 	private int product_idx;
 	private String product_name;
 	private int product_price;
-	private int product_brand;
-	private int product_category;
+	private String product_brand;
+	private String product_category;
 	private String product_contents;
 	private String product_image;
 	private int product_isDisplay;
@@ -47,16 +47,16 @@ public class ProductEntity {
 	public void setProduct_price(int product_price) {
 		this.product_price = product_price;
 	}
-	public int getProduct_brand() {
+	public String getProduct_brand() {
 		return product_brand;
 	}
-	public void setProduct_brand(int product_brand) {
+	public void setProduct_brand(String product_brand) {
 		this.product_brand = product_brand;
 	}
-	public int getProduct_category() {
+	public String getProduct_category() {
 		return product_category;
 	}
-	public void setProduct_category(int product_category) {
+	public void setProduct_category(String product_category) {
 		this.product_category = product_category;
 	}
 	public String getProduct_contents() {
