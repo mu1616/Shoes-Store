@@ -8,6 +8,15 @@
 <th:block th:include="./bootstrap.html::bootstrap"></th:block>
 <!-- 부모 요소의 크기에 맞기 이미지 크기 조절 -->
 <style>
+.reviewbox{
+	border : 1px solid #d7d7d7;
+	padding: 15px;
+	font-size: 15px;
+	margin: 10px;
+}
+.checked{
+	color:orange;
+}
 img {
   max-width: 100%;
   height: auto;
@@ -112,14 +121,16 @@ th,td {
 <div style="border: 1px solid #D8D8D8; height:auto; width:900px;min-height:500px" align="left" >
 <br>
 <div class="container">
-<h5 style="font-weight:600">구매후기 (0)</h5><br>
+<h5 style="font-weight:600">구매후기 (<span th:text="${productDto.product_reviewcount}"></span>)</h5><br>
 	<ul>
 		<li>구매후기 작성은 주문/배송 조회 -> 후기작성을 통해 작성할 수 있습니다.</li>
-	</ul><br><hr>
-<div align="center"><br><img src="/static/img/noExist.png" style="width:700px;height:250px"></div>
+	</ul><hr>
+<div id="review">
+	<img th:if="${productDto.product_reviewcount} == 0"src="/static/img/noExist.png" style="width:100em;height:20em;">
 </div>
 </div>
 </div>
+</div><br>
 <div align="center">
 <div style="border: 1px solid #D8D8D8; height:auto; width:900px;min-height:500px" align="left" >
 <br>
@@ -182,6 +193,8 @@ function qnaDetail_secret(qna_idx,obj,qna_product){
 </script>
 <script th:inline="javascript" >
 qna_page(1);
+if([[${productDto.product_reviewcount}]] >0)
+	reviewShow(1);
 var contents = [[${productDto.product_contents}]];
 document.getElementById('contents').innerHTML = contents;
 
@@ -374,6 +387,31 @@ function order(){
 	}else {
 		document.body.removeChild(form);
 	}
+}
+
+function reviewShow(num){
+	var currentPage = num;
+	var totalRecord = [[${productDto.product_reviewcount}]];
+	var review_product = [[${productDto.product_idx}]];
+	$.ajax({
+		url: "/product/review/show",
+		type: "POST",
+		data: {"currentPage":currentPage, "totalRecord":totalRecord, "review_product":review_product},
+		dataType:"html",
+		error:function(request,status,error){
+	        alert("code = "+ request.status + " message = " + request.responseText + " error = " + error); // 실패 시 처리
+	       },
+	    success : function(data) {
+	    	document.getElementById('review').innerHTML = data;
+	    	var btns = document.getElementsByClassName('review-page');
+	    	for(var i=0; i<btns.length; i++) {
+	    		if(btns[i].innerText == currentPage){
+	    			btns[i].classList.remove('btn-outline-secondary');
+	    			btns[i].classList.add('btn-outline-primary');
+	    		}
+	    	}
+	    }
+	});
 }
 </script>
 </body>

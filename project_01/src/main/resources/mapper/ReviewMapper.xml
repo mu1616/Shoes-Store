@@ -22,4 +22,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		select count(*) from review
 		where review_product = #{review_product}
 	</select>
+	
+	<select id="selectByProduct" resultType = "com.example.project_01.model.review.dto.ReviewDTO">
+		select * from review
+		where review_product = #{review_product}
+		limit #{start}, #{length}
+	</select>
 </mapper>

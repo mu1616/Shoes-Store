@@ -1,5 +1,7 @@
 package com.example.project_01.model.review.dao;
 
+import java.util.List;
+
 import org.apache.ibatis.annotations.Mapper;
 
 import com.example.project_01.model.review.dto.ReviewDTO;
@@ -12,4 +14,5 @@ public interface ReviewDAO {
 	public ReviewDTO selectOne(String review_ordercode);
 	//특정 상품 리뷰횟수 조회
 	public int countByProduct(int review_product);
+	public List<ReviewDTO> selectByProduct(int review_product, int start, int length);
 }

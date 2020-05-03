@@ -1,6 +1,7 @@
 package com.example.project_01.controller.product.review;
 
 import java.security.Principal;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -11,10 +12,12 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.example.project_01.model.order.dao.OrderDAO;
 import com.example.project_01.model.order.dto.OrderDTO;
+import com.example.project_01.model.pagination.dto.PageDTO;
 import com.example.project_01.model.product.dao.ProductDAO;
 import com.example.project_01.model.product.dto.ProductDTO;
 import com.example.project_01.model.review.dao.ReviewDAO;
 import com.example.project_01.model.review.dto.ReviewDTO;
+import com.example.project_01.service.pagination.PageService;
 import com.example.project_01.service.product.review.ProductReviewService;
 
 @Controller
@@ -27,6 +30,9 @@ public class ProductReviewController {
 	ReviewDAO reviewDao;
 	@Autowired
 	ProductReviewService productReviewService;
+	@Autowired
+	PageService pageService;
+	
 	@RequestMapping("/product/review/writeForm/{order_code}")
 	public String writeForm(@PathVariable("order_code")String order_code, Model model) {
 		ProductDTO productDto = productDao.selectProductDTO(orderDao.selectByCode(order_code).getProduct_idx());
@@ -62,6 +68,15 @@ public class ProductReviewController {
 		else 
 			check = 0;
 		return check;
+	}
+	
+	@RequestMapping("/product/review/show")
+	public String show(int currentPage, int review_product, int totalRecord, Model model) {
+		PageDTO pageDto = pageService.calPage(1, 10, totalRecord, 5);
+		List<ReviewDTO> reviewList = productReviewService.selectByProduct(currentPage, 10, review_product);
+		model.addAttribute("pageDto", pageDto);
+		model.addAttribute("reviewList", reviewList);
+		return "product/reviewTable";
 	}
 	
 }
