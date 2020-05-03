@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<!-- 레이아웃 참고한 소스 -->
+<!-- view-source:https://getbootstrap.com/docs/4.1/examples/dashboard/# -->
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+
+<meta charset="UTF-8">
+<title>Shoes Factory</title>
+<th:block th:include="./bootstrap.html::bootstrap"></th:block>
+<style>
+.nothing{
+	text-align:center;
+}
+.review{
+	min-height:200px;
+}
+.checked{
+	color:orange;
+}
+th, td {
+	text-align: center;
+}
+
+.left {
+	text-align: left;
+}
+
+table {
+	font-size: 13px;
+}
+.link {
+	cursor:pointer;
+	color: gray;
+}
+.link:hover{
+	text-decoration: underline;
+}
+</style>
+</head>
+<body>
+<div class="container">
+	<th:block th:include="./home.html::header"></th:block>
+	<br>
+	<div class="container-fluid">
+		<div class="row">
+			<th:block th:include="order/orderList.html::side"></th:block>
+			<main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
+				<div
+					class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+					<h3 style="font-weight: 600">구매후기</h3>
+				</div>
+				<span style="color:gray">* 주문/배송조회에서 구매확정 이후에 후기작성을 할 수 있습니다.</span>
+				<div class="review">
+					<table class="table">
+						<thead class="table-active">
+							<tr>
+								<th colspan="2" style="width:35%;">상품정보</th>
+								<th>내용</th>
+							</tr>
+						</thead>
+						<tbody>
+							<th:block th:each="reviewDto:${reviewList}">
+								<tr>
+									<td class="align-middle"><a th:href="'/product/detail?product_idx='+${reviewDto.review_product}"><img class="image" style="width:100px;height:80px"></a></td>
+									<td class="align-middle" style="text-align:left;">
+										<span class="brand"></span><br>
+       									<span class="pName"></span><br>
+									</td>
+									<td class="left">
+										<th:block th:each="num:${#numbers.sequence(1,5)}">
+									        <span th:if="${reviewDto.review_rating} >= ${num}" class="fa fa-star checked"></span>
+									        <span th:if="${reviewDto.review_rating} < ${num}" class="fa fa-star"></span>
+										</th:block>&nbsp;<span style="color:gray">|</span>
+										<span style="color:gray;" th:text="${#calendars.format(reviewDto.review_date,'yyyy-MM-dd')}"></span>&nbsp;
+										<span style="color:gray">|</span>
+										<span class="link" th:onclick="deleteBtn([[${reviewDto.review_ordercode}]])">삭제</span><br><br>
+										<span th:text="${reviewDto.review_contents}"></span>
+									</td>
+								</tr>
+							</th:block>
+								<tr><td colspan="3"></td></tr>
+						</tbody>
+					</table>
+					<div id="nothing" class="nothing"></div>
+					<div align="center">
+						<th:block th:include="admin/admin_productQna.html::page"></th:block>	
+					</div><br>						
+				</div>
+			</main>
+		</div>
+	</div>
+	<hr>
+	<th:block th:include="./home.html::footer"></th:block>
+	<br>
+</div>
+<script src="/static/js/make_pageBtn.js"></script>
+<script th:inline="javascript">
+makePageBtn([[${pageDto.currentPage}]]);
+setImage();
+if([[${reviewList}]].length ==0) {
+	document.getElementById('nothing').innerHTML = '작성한 구매후기가 없습니다.';
+}
+function setImage(){
+	var imageList = document.getElementsByClassName('image');
+	var brandList = document.getElementsByClassName('brand');
+	var nameList = document.getElementsByClassName('pName');
+	for(var i=0; i<imageList.length; i++){
+		imageList[i].src = [[${productList}]][i].product_image;
+		brandList[i].innerHTML = "["+[[${productList}]][i].product_brand+"]";
+		nameList[i].innerHTML = [[${productList}]][i].product_name;
+	}
+	
+}
+function clickPageBtn(num){
+	location.href = "/product/review/myReview/"+num;
+}
+
+function deleteBtn(review_ordercode){
+	if(confirm('삭제하시겠습니까?')){
+		$.ajax({
+			url: "/product/review/delete",
+			type: "POST",
+			data: {"review_ordercode":review_ordercode},
+			error:function(request,status,error){
+		        alert("code = "+ request.status + " message = " + request.responseText + " error = " + error); // 실패 시 처리
+		       },
+		    success : function(data) {
+		    	alert('삭제하였습니다.');
+		    	location.reload();
+		    }
+		});
+	}
+}
+</script>
+</body>
+</html>

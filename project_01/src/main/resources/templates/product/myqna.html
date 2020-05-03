@@ -8,6 +8,9 @@
 <title>Shoes Factory</title>
 <th:block th:include="./bootstrap.html::bootstrap"></th:block>
 <style>
+.nothing{
+	text-align:center;
+}
 th, td {
 	text-align: center;
 }
@@ -72,13 +75,15 @@ table {
 									</span>
 								</th:block>
 							</tbody>
-						</table><hr>				
-					</div>
+						</table><hr>
+						<div class="nothing" id="nothing"></div>				
+					</div><br>
 					<div align="center">
 						<th:block th:include="admin/admin_productQna.html::page"></th:block>	
 					</div>	
 				</main>
 			</div>
+		<br><br><hr>
 		</div>
 		<th:block th:include="./home.html::footer"></th:block>
 		<br>
@@ -88,6 +93,9 @@ table {
 <script th:inline="javascript">
 makePageBtn([[${pageDto.currentPage}]]);
 setImage();
+if([[${qnaList}]].length ==0){
+	document.getElementById('nothing').innerHTML = '작성한 상품문의가 없습니다.';
+}
 function setImage(){
 	var imageList = document.getElementsByClassName('image');
 	var brandList = document.getElementsByClassName('brand');

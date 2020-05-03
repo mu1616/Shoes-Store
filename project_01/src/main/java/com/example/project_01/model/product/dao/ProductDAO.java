@@ -29,7 +29,9 @@ public interface ProductDAO {
 	//판매횟수 업데이트
 	public void updateSaleCount(int product_idx, int count);
 	//별점 업데이트
-	public void updateRating(int product_idx, int product_rating);
+	public void updateRating(int product_idx);
 	//리뷰 횟수 업데이트
 	public void updateReviewCount(int product_idx, int count);
+	// 별점 0점으로 초기화
+	public void initRating(int product_idx);
 }

@@ -5,13 +5,13 @@
 				<td class="align-middle"style="color:red;width:30%;">Question</td>
 				<td class="align-middle"th:text="${noticeDto.notice_title}" style="text-align: left;"></td>
 			</tr>
-			<tr style="display:none;" class="answer">
-				<td class="align-middle"style="color:blue;">Answer</td>
-				<td class="align-middle"th:utext="${noticeDto.notice_contents}" style="text-align: left;"></td>
+			<tr style="display:none;height:70px;" class="answer">
+				<td class="align-middle" style="color:blue;">Answer</td>
+				<td class="align-middle" th:utext="${noticeDto.notice_contents}" style="text-align: left;"></td>
 			</tr>
 		</th:block>
+		<tr><td colspan="2"></td></tr>
 	</tbody>
-	<tr><td></td></tr>
 </table>
 <br>
 <div align="center">

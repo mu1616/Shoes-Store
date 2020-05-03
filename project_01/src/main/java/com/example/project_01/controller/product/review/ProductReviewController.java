@@ -1,6 +1,7 @@
 package com.example.project_01.controller.product.review;
 
 import java.security.Principal;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +16,7 @@ import com.example.project_01.model.order.dto.OrderDTO;
 import com.example.project_01.model.pagination.dto.PageDTO;
 import com.example.project_01.model.product.dao.ProductDAO;
 import com.example.project_01.model.product.dto.ProductDTO;
+import com.example.project_01.model.product.qna.dto.QnaDTO;
 import com.example.project_01.model.review.dao.ReviewDAO;
 import com.example.project_01.model.review.dto.ReviewDTO;
 import com.example.project_01.service.pagination.PageService;
@@ -79,4 +81,27 @@ public class ProductReviewController {
 		return "product/reviewTable";
 	}
 	
+	@RequestMapping("/product/review/myReview/{currentPage}")
+	public String myReview(@PathVariable("currentPage")int currentPage, Model model, Principal principal) {
+		int totalRecord = reviewDao.countByMember(principal.getName());
+		PageDTO pageDto = pageService.calPage(currentPage, 10, totalRecord, 10);
+		List<ReviewDTO> reviewList = productReviewService.selectByMember(currentPage, 10, principal.getName());
+		List<ProductDTO> productList = new ArrayList<>();
+		for(ReviewDTO reviewDto : reviewList)
+			productList.add(productDao.selectProductDTO(reviewDto.getReview_product()));
+		model.addAttribute("pageDto", pageDto);
+		model.addAttribute("reviewList", reviewList);
+		model.addAttribute("productList", productList);
+		return "product/myReview";
+	}
+	
+	@ResponseBody
+	@RequestMapping("/product/review/delete")
+	public void deleteReview(String review_ordercode, Principal principal) {
+		ReviewDTO reviewDto = reviewDao.selectOne(review_ordercode);
+		if(principal.getName().equals(reviewDto.getReview_member())) {
+			productReviewService.deleteReview(reviewDto);
+		}
+			
+	}
 }

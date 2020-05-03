@@ -35,8 +35,15 @@ th,td {
 .left{
 	text-align: left;
 }
-
-
+.ratingBox{
+	margin: 10px;
+	padding: 15px;
+	height: 4em;
+}
+.contents {
+	padding-left: 30px;
+	padding-right: 30px;
+}
 </style>
 </head>
 <body>
@@ -120,21 +127,36 @@ th,td {
 <div align="center">
 <div style="border: 1px solid #D8D8D8; height:auto; width:900px;min-height:500px" align="left" >
 <br>
-<div class="container">
-<h5 style="font-weight:600">구매후기 (<span th:text="${productDto.product_reviewcount}"></span>)</h5><br>
+<div class="contents" style="min-height:600px;">
+
+	<h5 style="font-weight:600;">구매후기 (<span th:text="${productDto.product_reviewcount}"></span>)</h5><br>
 	<ul>
+		<li>구매후기 작성은 상품구매 이후에 작성할 수 있습니다.</li>
 		<li>구매후기 작성은 주문/배송 조회 -> 후기작성을 통해 작성할 수 있습니다.</li>
-	</ul><hr>
-<div id="review">
-	<img th:if="${productDto.product_reviewcount} == 0"src="/static/img/noExist.png" style="width:100em;height:20em;">
-</div>
+	</ul>
+	<hr>
+	<div th:if="${productDto.product_reviewcount} > 0">
+		<div class="row ratingBox">
+			<div class="col-6" style="text-align:center;"><h2 th:text="'상품평점 '" ></h2></div>
+			<div class="col-6" style="text-algin:center;">
+			  	<th:block th:each="num:${#numbers.sequence(1,5)}">
+				     <span th:if="${productDto.round_rating} >= ${num}" class="fa fa-star checked fa-2x"></span>
+				     <span th:if="${productDto.round_rating} < ${num}" class="fa fa-star fa-2x"></span>
+			    </th:block>&nbsp;
+			    <h2 th:text="'('+${#numbers.formatDecimal(productDto.product_rating,1,1)}+')'" style="display:inline;"></h2>
+		    </div>
+	    </div><hr><br>
+    </div>
+	<div id="review">
+		<img th:if="${productDto.product_reviewcount} == 0"src="/static/img/noExist.png" style="width:100em;height:20em;">
+	</div><br>
 </div>
 </div>
 </div><br>
 <div align="center">
 <div style="border: 1px solid #D8D8D8; height:auto; width:900px;min-height:500px" align="left" >
 <br>
-<div class="container" id="qna"></div>
+<div class="container" id="qna"></div><br>
 </div>
 </div>
 <br><br><hr>

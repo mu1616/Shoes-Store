@@ -28,4 +28,20 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		where review_product = #{review_product}
 		limit #{start}, #{length}
 	</select>
+	
+	<select id="selectByMember" resultType = "com.example.project_01.model.review.dto.ReviewDTO">
+		select * from review
+		where review_member = #{review_member}
+		limit #{start}, #{length}
+	</select>
+	
+	<select id="countByMember" resultType="int">
+		select count(*) from review
+		where review_member = #{review_member}
+	</select>
+	
+	<delete id="deleteOne">
+		delete from review
+		where review_ordercode = #{review_ordercode}
+	</delete>
 </mapper>

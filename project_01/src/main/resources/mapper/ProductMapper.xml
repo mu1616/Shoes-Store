@@ -131,14 +131,22 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<!-- 별점 업데이트 -->
 	<update id="updateRating">
 		update product 
-		set product_rating = (product_rating + #{product_rating}) / 
-			(select count(*) from review where review_product = #{product_idx})
+		set product_rating = 
+			(select sum(review_rating) from review 
+			where review_product = #{product_idx}) / 
+			product_reviewcount
 		where product_idx = #{product_idx}
 	</update>
 	<!-- 리뷰횟수 업데이트 -->
 	<update id="updateReviewCount">
 		update product
 		set product_reviewcount = product_reviewcount + #{count}
+		where product_idx = #{product_idx}
+	</update>
+	
+	<update id="initRating">
+		update product
+		set product_rating = 0
 		where product_idx = #{product_idx}
 	</update>
 </mapper>
