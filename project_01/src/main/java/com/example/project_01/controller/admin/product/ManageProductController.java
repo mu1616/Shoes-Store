@@ -1,14 +1,6 @@
 package com.example.project_01.controller.admin.product;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.io.PrintWriter;
 import java.util.List;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -23,13 +15,13 @@ import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.example.project_01.model.brand.dao.BrandDAO;
+import com.example.project_01.model.category.dao.CategoryDAO;
 import com.example.project_01.model.pagination.dto.PageDTO;
 import com.example.project_01.model.product.dao.ProductDAO;
 import com.example.project_01.model.product.dto.ProductDTO;
 import com.example.project_01.model.product.dto.ProductEntity;
 import com.example.project_01.model.search.dto.SearchDTO;
-import com.example.project_01.model.stock.dao.StockDAO;
-import com.example.project_01.model.stock.dto.StockDTO;
 import com.example.project_01.service.admin.product.ManageProductService;
 import com.example.project_01.service.pagination.PageService;
 
@@ -45,9 +37,15 @@ public class ManageProductController {
 	ProductDAO productDao;
 	@Autowired
 	PageService pageService;
+	@Autowired
+	CategoryDAO categoryDao;
+	@Autowired
+	BrandDAO brandDao;
 	
 	@RequestMapping(value = "/admin/product/register", method = RequestMethod.GET)
-	public String registerPage() {
+	public String registerPage(Model model) {
+		model.addAttribute("categoryList",categoryDao.selectAll());
+		model.addAttribute("brandList",brandDao.selectAll());
 		return "admin/admin";
 	}
 
@@ -87,6 +85,8 @@ public class ManageProductController {
 		searchDto.setProduct_idx(searchWord);
 		model.addAttribute("searchDto",searchDto);
 		model.addAttribute("searchOption",searchOption);
+		model.addAttribute("categoryList",categoryDao.selectAll());
+		model.addAttribute("brandList",brandDao.selectAll());
 		return "/admin/admin_productlist";
 	}
 	
@@ -101,6 +101,8 @@ public class ManageProductController {
 	public String modifyPage(int product_idx, Model model) {
 		ProductEntity productEntity = productDao.selectOne(product_idx);
 		model.addAttribute("productEntity",productEntity);
+		model.addAttribute("categoryList",categoryDao.selectAll());
+		model.addAttribute("brandList",brandDao.selectAll());
 		return "admin/admin_productmodify";
 	}
 	

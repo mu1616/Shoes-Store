@@ -49,21 +49,15 @@ th,td {
         <td colspan="2" class="left">
         	<select class="custom-select mr-sm-2" name="product_category"id="product_category" style="width:200px;">
 		        <option value="%" selected>상품 분류</option>
-		        <option value="운동화" id="운동화">운동화</option>
-		        <option value="스니커즈" id="스니커즈">스니커즈</option>
-		        <option value="슬리퍼" id="슬리퍼">슬리퍼</option>
-		        <option value="샌들" id="샌들">샌들</option>
-		        <option value="축구/농구" id="축구/농구">축구/농구</option>
-	        <option value="슬립온" id="슬립온">슬립온</option>
+		        <th:block th:each="category:${categoryList}">
+		        	<option th:value="${category}" th:id="${category}" th:text="${category}"></option>
+		        </th:block>
      		 </select>
      		 <select class="custom-select mr-sm-2" name="product_brand"id="product_brand" style="width:200px;">
 		        <option value="%" selected>제조 브랜드</option>
-		        <option value="Nike" id="Nike">Nike</option>
-		        <option value="Adidas" id="Adidas">Adidas</option>
-		        <option value="Puma" id="Puma">Puma</option>
-		        <option value="Newbalance" id="Newbalance">NewBalance</option>
-		        <option value="Reebok" id="Reebok">Reebok</option>
-		        <option value="Vans" id="Vans">Vans</option>
+				<th:block th:each="brand:${brandList}">
+		        	<option th:value="${brand}" th:id="${brand}" th:text="${brand}"></option>
+		        </th:block>
      		 </select>
         </td>
         </tr>

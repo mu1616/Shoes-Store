@@ -29,7 +29,7 @@ public class HomeController {
 	
 	@RequestMapping("/admin")
 	public String admin() {
-		return "admin/admin";
+		return "redirect:/admin/product/register";
 	}
 	
 	@RequestMapping("/access-denied")

@@ -122,12 +122,9 @@ textarea{
                                 <select class="custom-select mr-sm-2" name="product_brand" id="product_brand"
                                     style="width:200px;">
                                     <option selected>제조 브랜드</option>
-                                    <option value="NIKE">Nike</option>
-                                    <option value="ADIDAS">Adidas</option>
-                                    <option value="PUMA">Puma</option>
-                                    <option value="NEWBALANCE">NewBalance</option>
-                                    <option value="REEBOK">Reebok</option>
-                                    <option value="VANS">Vans</option>
+									<th:block th:each="brand:${brandList}">
+							        	<option th:value="${brand}" th:id="${brand}" th:text="${brand}"></option>
+							        </th:block>                                    
                                 </select>
                             </td>
                         </tr>
@@ -137,12 +134,9 @@ textarea{
                                 <select class="custom-select mr-sm-2" name="product_category" id="product_category"
                                     style="width:200px;">
                                     <option selected>상품 분류</option>
-                                    <option value="운동화">운동화</option>
-                                    <option value="스니커즈">스니커즈</option>
-                                    <option value="슬리퍼">슬리퍼</option>
-                                    <option value="샌들">샌들</option>
-                                    <option value="축구/농구">축구/농구</option>
-                                    <option value="슬립온">슬립온</option>
+							        <th:block th:each="category:${categoryList}">
+							        	<option th:value="${category}" th:id="${category}" th:text="${category}"></option>
+							        </th:block>
                                 </select>
                             </td>
                         </tr>

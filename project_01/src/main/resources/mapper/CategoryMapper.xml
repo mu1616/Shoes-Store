@@ -12,5 +12,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	where category_idx = #{category_idx}
 </select>
 
+<select id="selectAll" resultType="string">
+	select category_name
+	from category
+</select>
+
 
 </mapper>
