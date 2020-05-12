@@ -1,5 +1,8 @@
 package com.example.project_01.controller.member;
 
+import java.security.Principal;
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
@@ -18,6 +21,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.example.project_01.model.member.dao.MemberDAO;
 import com.example.project_01.model.member.dto.MemberDTO;
+import com.example.project_01.model.member.dto.RoleDTO;
 import com.example.project_01.service.member.MemberService;
 import com.example.project_01.validation.MemberValidator;
 
@@ -82,6 +86,17 @@ public class MemberController {
 		} else {
 			return 1;
 		}
+	}
+	
+	@RequestMapping("/member/role/state")
+	public String role(Principal principal, Model model) {
+		String mem_id = principal.getName();
+		MemberDTO memberDto = memberDao.findById(mem_id);
+		List<RoleDTO> roleList = memberDao.selectRole();
+		roleList.remove(0);
+		model.addAttribute("memberDto",memberDto);
+		model.addAttribute("roleList",roleList);
+		return "member/role";
 	}
 
 }

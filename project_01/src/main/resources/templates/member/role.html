@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<!-- 레이아웃 참고한 소스 -->
+<!-- view-source:https://getbootstrap.com/docs/4.1/examples/dashboard/# -->
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+
+<meta charset="UTF-8">
+<title>Shoes Factory</title>
+<th:block th:include="./bootstrap.html::bootstrap"></th:block>
+<style>
+.myrole{
+	background-color: #f2f2f2;
+}
+.explain{
+	color: grey;
+	font-size: 14px;
+}
+</style>
+</head>
+<body>
+	<div class="container">
+		<th:block th:include="./home.html::header"></th:block>
+		<br>
+		<div class="container-fluid">
+			<div class="row">
+				<th:block th:include="order/orderList.html::side"></th:block>
+				<main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
+					<div
+						class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+						<h3 style="font-weight: 600">회원등급</h3>
+					</div>
+					<br>
+					<div class="role row">
+						<div class="col-6">
+							<table class="table">
+								<thead>
+									<tr>
+										<th>등급</th>
+										<th>구매금액</th>
+									</tr>
+								</thead>
+								<tbody>
+									<th:block th:each="roleDto:${roleList}">
+									<tr>
+										<td th:text="${roleDto.role_name}"></td>
+										<td th:text="${#numbers.formatInteger(roleDto.role_price, 0, 'COMMA')}+'원'"></td>
+									</tr>
+									</th:block>
+									<tr><td colspan="2"></td></tr>
+								</tbody>
+							</table>
+						</div>
+						<div class="col-6">
+							<table class="table myrole">
+								<tr>
+									<th>나의 등급</th>
+									<td th:text="${memberDto.mem_role}"></td>
+								</tr>
+								<tr>
+									<th>총 주문금액</th>
+									<td th:text="${#numbers.formatInteger(memberDto.mem_total, 0, 'COMMA')}+'원'"></td>
+								</tr>								
+							</table>
+							<p class="explain">* 총 주문금액은 구매, 구매취소시 변동됩니다.</p>
+							<p class="explain">* 회원등급은 실시간 반영됩니다.</p>
+						</div>
+					</div>
+				</main>
+			</div>
+		</div>
+		<hr>
+		<th:block th:include="./home.html::footer"></th:block>
+		<br>
+	</div>
+</body>
+</html>
