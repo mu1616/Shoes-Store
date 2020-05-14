@@ -98,5 +98,20 @@ public class MemberController {
 		model.addAttribute("roleList",roleList);
 		return "member/role";
 	}
+	
+	@RequestMapping(value = "/member/info", method = RequestMethod.GET)
+	public String checkMember() {
+		return "/member/checkMember";
+	}
+	
+	@RequestMapping(value = "/member/info", method = RequestMethod.POST)
+	public String memberInfo(Principal principal, String mem_pw) {
+		String mem_id = principal.getName();
+		if(memberService.checkPw(mem_id, mem_pw)) {
+			return "/member/memberInfo";
+		}
+		return "/member/fail";
+	}
+
 
 }

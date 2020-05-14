@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<!-- 레이아웃 참고한 소스 -->
+<!-- view-source:https://getbootstrap.com/docs/4.1/examples/dashboard/# -->
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+
+<meta charset="UTF-8">
+<title>Shoes Factory</title>
+<th:block th:include="./bootstrap.html::bootstrap"></th:block>
+<style>
+#contents {
+	height: 300px;
+	font-size: 12px;
+}
+
+#mem_pw {
+	width: 50%;
+	display: inline;
+}
+
+#submit {
+	
+}
+</style>
+</head>
+<body>
+	<div class="container">
+		<th:block th:include="./home.html::header"></th:block>
+		<br>
+		<div class="container-fluid">
+			<div class="row">
+				<th:block th:include="order/orderList.html::side"></th:block>
+				<main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
+					<div
+						class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+						<h3 style="font-weight: 600">회원정보수정</h3>
+					</div>
+					<br>
+					<div id="contents">
+						<form action="/member/info" method="post">
+							<table class="table">
+								<tr>
+									<td class="table-active align-middle">비밀번호</td>
+									<td class="align-middle"><input type="password"
+										class="form-control" name="mem_pw" id="mem_pw">&nbsp;
+										<input type="submit" value="확인" class="btn btn-primary btn-sm"
+										id="submit"></td>
+								</tr>
+								<tr>
+									<td colspan="2">
+								</tr>
+							</table>
+						</form>
+						<font color="grey">* 개인정보를 안전하게 보호하기 위해 비밀번호 확인 후 변경할 수
+							있습니다.</font>
+					</div>
+				</main>
+			</div>
+		</div>
+		<hr>
+		<th:block th:include="./home.html::footer"></th:block>
+		<br>
+	</div>
+</body>
+</html>

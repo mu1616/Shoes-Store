@@ -23,19 +23,18 @@ public class MemberService implements UserDetailsService{
 	@Autowired
 	BCryptPasswordEncoder encoder;
 	
-	/*
-	 * spring-security 이용하지 않는 로그인 메소드
-	public MemberDTO login(MemberDTO memberDto) {
-		MemberDTO memberDto_select = memberDao.findById(memberDto.getMem_id());
-		if (memberDto_select == null) {
-			return null;
+
+	public boolean checkPw(String mem_id, String mem_pw) {
+		MemberDTO memberDto = memberDao.findById(mem_id);
+		if (memberDto == null) {
+			return false;
 		} 
-		if (!encoder.matches(memberDto.getMem_pw(),memberDto_select.getMem_pw())) {
-			return null;
+		if (encoder.matches(mem_pw,memberDto.getMem_pw())) {
+			return true;
 		}
-		return memberDto_select;
+		return false;
 	}
-	*/
+	
 
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
