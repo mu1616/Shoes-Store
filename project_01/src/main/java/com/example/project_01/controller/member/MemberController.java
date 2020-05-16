@@ -105,9 +105,11 @@ public class MemberController {
 	}
 	
 	@RequestMapping(value = "/member/info", method = RequestMethod.POST)
-	public String memberInfo(Principal principal, String mem_pw) {
+	public String memberInfo(Principal principal, String mem_pw, Model model) {
 		String mem_id = principal.getName();
 		if(memberService.checkPw(mem_id, mem_pw)) {
+			MemberDTO memberDto = memberDao.findById(mem_id);
+			model.addAttribute("memberDto",memberDto);
 			return "/member/memberInfo";
 		}
 		return "/member/fail";

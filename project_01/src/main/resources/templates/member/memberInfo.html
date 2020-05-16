@@ -8,6 +8,19 @@
 <title>Shoes Factory</title>
 <th:block th:include="./bootstrap.html::bootstrap"></th:block>
 <style>
+#info{
+	font-size:14px;
+	text-align:center;
+}
+#info td{
+	text-align:left;
+}
+.pw{
+	margin:1px;
+}
+#password{
+	display:none;
+}
 </style>
 </head>
 <body>
@@ -22,14 +35,73 @@
 						class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
 						<h3 style="font-weight: 600">회원정보수정</h3>
 					</div>
+					<br>
+					<div id="info">
+						<table class="table table-bordered">
+							<tr>
+								<th class="table-active">아이디</th>
+								<td th:text="${memberDto.mem_id}" style="text-align:left;"></td>
+							</tr>
+							<tr>
+								<th class="table-active">생년월일</th>
+								<td th:text="${#calendars.format(memberDto.mem_birth,'yyyy-MM-dd')}"></td>
+							</tr>
+							<tr>
+								<th class="table-active">이름</th>
+								<td th:text="${memberDto.mem_name}"></td>
+							</tr>							
+							<tr>
+								<th class="table-active align-middle">비밀번호</th>
+								<td>
+									<button onclick="pwChange();" id="pwChangeBtn">변경</button>
+									<div id="password">
+										<input type="password" placeholder="비밀번호" class="pw"> (영문/숫자/특수문자 조합 8자 이상)<br>
+										<input type="password" placeholder="비밀번호확인" class="pw">
+										<br>
+										<button>변경</button> <button onclick="cancel();">취소</button>
+									</div>
+								</td>
+							</tr>	
+							<tr>
+								<th class="table-active">휴대폰번호</th>
+								<td><input type="text" th:value="${memberDto.mem_phone}"></td>
+							</tr>
+							<tr>
+								<th class="table-active">이메일</th>
+								<td><input type="text" placeholder="이메일"></td>
+							</tr>															
+							<tr>
+								<th class="table-active align-middle">주소</th>
+								<td class="left">
+									<input type="text"  id="sample6_postcode" placeholder="우편번호" th:value="${memberDto.mem_postcode}"readonly>&nbsp<input type="button" placeholder="우편번호" onclick="sample6_execDaumPostcode()" value="주소찾기"><br>
+									<input type="text"  style="width:300px;"id="sample6_address" name="mem_addr1" th:value="${memberDto.mem_addr1}" placeholder="주소" readonly>
+									<input type="text"  id="sample6_detailAddress" name="mem_addr2" th:value="${memberDto.mem_addr2}" placeholder="상세주소">		
+								</td>	
+							</tr>																			
+						</table>
+						<p style="color:grey;font-size:13px;text-align:left;">* 아이디, 생년월일, 이름은 수정이 불가능합니다.</p>
+						<p style="color:grey;font-size:13px;text-align:left;">* 이메일은 인증 이후에 변경할 수 있습니다.</p>
+						<br>
+						<button class="btn  btn-primary">수정</button>
+					</div>
 				</main>
 			</div>
 		</div>
+		<br><br><br>
 		<hr>
 		<th:block th:include="./home.html::footer"></th:block>
 		<br>
 	</div>
 
-
+<script th:inline="javascript">
+function pwChange(){
+	document.getElementById('password').style.display="block";
+	document.getElementById('pwChangeBtn').style.display="none";
+}
+function cancel(){
+	document.getElementById('password').style.display="none";
+	document.getElementById('pwChangeBtn').style.display="inline";
+}
+</script>
 </body>
 </html>
