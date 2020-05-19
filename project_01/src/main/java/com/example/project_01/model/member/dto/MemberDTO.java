@@ -19,10 +19,17 @@ public class MemberDTO {
 	private String mem_role;
 	private int mem_total;
 	private String mem_postcode;
+	private String mem_mail;
 	private String birth;
 	private String regdate;
 	
 	
+	public String getMem_mail() {
+		return mem_mail;
+	}
+	public void setMem_mail(String mem_mail) {
+		this.mem_mail = mem_mail;
+	}
 	public String getBirth() {
 		return birth;
 	}
@@ -114,8 +121,10 @@ public class MemberDTO {
 		return "MemberDTO [mem_idx=" + mem_idx + ", mem_name=" + mem_name + ", mem_birth=" + mem_birth + ", mem_id="
 				+ mem_id + ", mem_pw=" + mem_pw + ", mem_phone=" + mem_phone + ", mem_addr1=" + mem_addr1
 				+ ", mem_addr2=" + mem_addr2 + ", mem_regdate=" + mem_regdate + ", mem_role=" + mem_role
-				+ ", mem_total=" + mem_total + "]";
+				+ ", mem_total=" + mem_total + ", mem_postcode=" + mem_postcode + ", mem_mail=" + mem_mail + ", birth="
+				+ birth + ", regdate=" + regdate + "]";
 	}
+	
 	
 	
 	

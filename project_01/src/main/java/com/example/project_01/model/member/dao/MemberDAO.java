@@ -1,5 +1,6 @@
 package com.example.project_01.model.member.dao;
 
+import java.util.HashMap;
 import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
@@ -34,4 +35,14 @@ public interface MemberDAO {
 	public void deleteRole(String role_name);
 	//Role 레코드 수정
 	public void updateRoleInfo(RoleDTO roleDto);
+	//이메일인증 테이블 조회
+	public HashMap<String, String> selectAuthMailInfo(String mem_id);
+	//이메일 인증 정보 수정
+	public void updateAuthMailInfo(String mem_id, String mail, String auth_key);
+	//이메일 인증 정보 생성
+	public void insertAuthMailInfo(String mem_id, String mail, String auth_key);
+	//회원의 이메일속성 수정
+	public void updateMemberMail(String mem_id, String mail);
+	//회원정보(핸드폰, 주소) 수정
+	public void updateMemberInfo(String mem_id, String mem_phone, String mem_postcode, String mem_addr1, String mem_addr2);
 }

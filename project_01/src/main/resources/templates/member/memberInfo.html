@@ -7,6 +7,7 @@
 <meta charset="UTF-8">
 <title>Shoes Factory</title>
 <th:block th:include="./bootstrap.html::bootstrap"></th:block>
+<script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 <style>
 #info{
 	font-size:14px;
@@ -19,6 +20,9 @@
 	margin:1px;
 }
 #password{
+	display:none;
+}
+#email{
 	display:none;
 }
 </style>
@@ -53,22 +57,35 @@
 							<tr>
 								<th class="table-active align-middle">비밀번호</th>
 								<td>
-									<button onclick="pwChange();" id="pwChangeBtn">변경</button>
+									<button onclick="pwForm();" id="pwChangeBtn">변경</button>
 									<div id="password">
-										<input type="password" placeholder="비밀번호" class="pw"> (영문/숫자/특수문자 조합 8자 이상)<br>
+										<input type="password" placeholder="기존 비밀번호" class="pw"><br>
+										<input type="password" placeholder="변경할 비밀번호" class="pw"> (영문/숫자/특수문자 조합 8자 이상)<br>
 										<input type="password" placeholder="비밀번호확인" class="pw">
 										<br>
-										<button>변경</button> <button onclick="cancel();">취소</button>
+										<button>변경</button> <button onclick="pwCancel();">취소</button>
 									</div>
 								</td>
 							</tr>	
 							<tr>
 								<th class="table-active">휴대폰번호</th>
-								<td><input type="text" th:value="${memberDto.mem_phone}"></td>
+								<td><input type="text" id="mem_phone" th:value="${memberDto.mem_phone}"></td>
 							</tr>
 							<tr>
 								<th class="table-active">이메일</th>
-								<td><input type="text" placeholder="이메일"></td>
+								<td>
+									<div id="currentMail">
+										<span th:text="${memberDto.mem_mail}"></span>
+										<button onclick="mailForm();">변경</button>
+									</div>
+									<div id="email">
+										<input type="text" id="mailaddr" placeholder="이메일" style="width:40%;">&nbsp;
+										<button onclick="authMail()">인증</button><br>
+										<input type="text" id="auth_key" placeholder="인증번호"><br>
+										<button onclick="changeMail()">변경</button>
+										<button onclick="mailCancel()">취소</button>
+									</div>
+								</td>
 							</tr>															
 							<tr>
 								<th class="table-active align-middle">주소</th>
@@ -82,7 +99,7 @@
 						<p style="color:grey;font-size:13px;text-align:left;">* 아이디, 생년월일, 이름은 수정이 불가능합니다.</p>
 						<p style="color:grey;font-size:13px;text-align:left;">* 이메일은 인증 이후에 변경할 수 있습니다.</p>
 						<br>
-						<button class="btn  btn-primary">수정</button>
+						<button class="btn  btn-primary" onclick="modify()">수정</button>
 					</div>
 				</main>
 			</div>
@@ -94,13 +111,138 @@
 	</div>
 
 <script th:inline="javascript">
-function pwChange(){
+function pwForm(){
 	document.getElementById('password').style.display="block";
 	document.getElementById('pwChangeBtn').style.display="none";
 }
-function cancel(){
+function pwCancel(){
 	document.getElementById('password').style.display="none";
 	document.getElementById('pwChangeBtn').style.display="inline";
+}
+function mailForm(){
+	document.getElementById('email').style.display = "block";
+	document.getElementById('currentMail').style.display = "none";
+}
+function mailCancel(){
+	document.getElementById('email').style.display = "none";
+	document.getElementById('currentMail').style.display = "inline";
+}
+function authMail(){
+	var mail = document.getElementById('mailaddr').value;
+	if(!isEmail(mail)) {
+		alert('이메일 양식이 아닙니다.');
+		return;
+	}
+	$.ajax({
+		url: "/member/info/authMail",
+		type: "POST",
+		data: {"mail":mail},
+		success: function(data) {
+			alert('인증 메일이 전송되었습니다.');
+		}
+	});
+}
+function changeMail(){
+	var auth_key = document.getElementById('auth_key').value;
+	$.ajax({
+		url: "/member/info/changeMail",
+		type: "POST",
+		data: {"auth_key":auth_key},
+		success: function(data) {
+			if(data==0){
+				alert('인증번호를 확인해주세요.')
+			}else {
+				alert('이메일이 변경되었습니다.');
+				location.reload();
+			}
+		}
+	});
+}
+function modify(){
+	if(!confirm('수정하시겠습니까?')){
+		return;
+	}
+	var mem_phone = document.getElementById('mem_phone').value;
+	var mem_postcode = document.getElementById('sample6_postcode').value;
+	var mem_addr1 = document.getElementById('sample6_address').value;
+	var mem_addr2 = document.getElementById('sample6_detailAddress').value;
+	if(!phoneCheck(mem_phone)){
+		alert('휴대폰번호를 확인해주세요.');
+		return;
+	}
+	var obj = {"mem_phone":mem_phone, "mem_postcode":mem_postcode, "mem_addr1":mem_addr1, "mem_addr2":mem_addr2};
+	$.ajax({
+		url: "/member/info/modify",
+		type: "POST",
+		contentType : "application/json",
+		data: JSON.stringify(obj),
+		success: function(data) {
+			alert('수정하였습니다.');
+			location.reload();
+		}
+	});
+	
+}
+function isEmail(asValue) {
+	var regExp = /^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i;
+	return regExp.test(asValue);	
+
+}
+function phoneCheck(phone){
+	var re = /^[0-9]{10,11}$/;
+	if(!re.test(phone)){
+		return false;
+	}else {
+		return true;
+	}
+}
+
+function sample6_execDaumPostcode() {
+    new daum.Postcode({
+        oncomplete: function(data) {
+            // 팝업에서 검색결과 항목을 클릭했을때 실행할 코드를 작성하는 부분.
+
+            // 각 주소의 노출 규칙에 따라 주소를 조합한다.
+            // 내려오는 변수가 값이 없는 경우엔 공백('')값을 가지므로, 이를 참고하여 분기 한다.
+            var addr = ''; // 주소 변수
+            var extraAddr = ''; // 참고항목 변수
+
+            //사용자가 선택한 주소 타입에 따라 해당 주소 값을 가져온다.
+            if (data.userSelectedType === 'R') { // 사용자가 도로명 주소를 선택했을 경우
+                addr = data.roadAddress;
+            } else { // 사용자가 지번 주소를 선택했을 경우(J)
+                addr = data.jibunAddress;
+            }
+
+            // 사용자가 선택한 주소가 도로명 타입일때 참고항목을 조합한다.
+            if(data.userSelectedType === 'R'){
+                // 법정동명이 있을 경우 추가한다. (법정리는 제외)
+                // 법정동의 경우 마지막 문자가 "동/로/가"로 끝난다.
+                if(data.bname !== '' && /[동|로|가]$/g.test(data.bname)){
+                    extraAddr += data.bname;
+                }
+                // 건물명이 있고, 공동주택일 경우 추가한다.
+                if(data.buildingName !== '' && data.apartment === 'Y'){
+                    extraAddr += (extraAddr !== '' ? ', ' + data.buildingName : data.buildingName);
+                }
+                // 표시할 참고항목이 있을 경우, 괄호까지 추가한 최종 문자열을 만든다.
+                if(extraAddr !== ''){
+                    extraAddr = ' (' + extraAddr + ')';
+                }
+                // 조합된 참고항목을 해당 필드에 넣는다.
+                //document.getElementById("sample6_extraAddress").value = extraAddr;
+            
+            } else {
+               // document.getElementById("sample6_extraAddress").value = '';
+            }
+
+            // 우편번호와 주소 정보를 해당 필드에 넣는다.
+            document.getElementById('sample6_postcode').value = data.zonecode;
+            document.getElementById("sample6_address").value = addr;
+            // 커서를 상세주소 필드로 이동한다.
+            document.getElementById("sample6_detailAddress").focus();
+        }
+    }).open();
 }
 </script>
 </body>

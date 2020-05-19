@@ -6,7 +6,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 <mapper namespace="com.example.project_01.model.member.dao.MemberDAO">
 	<select id="findById" resultType="com.example.project_01.model.member.dto.MemberDTO">
 		select mem_idx,mem_name,mem_birth,mem_id,mem_pw,mem_phone,mem_addr1,mem_total,
-			mem_addr2,mem_regdate, mem_postcode, r.role_name as mem_role 
+			mem_addr2,mem_regdate, mem_postcode, mem_mail, r.role_name as mem_role 
 		from member 
 		join role as r 
 		on mem_role=role_idx 
@@ -47,7 +47,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	
 	<select id="findByIdx" resultType="com.example.project_01.model.member.dto.MemberDTO">
 		select mem_idx,mem_name,mem_birth,mem_id,mem_pw,mem_phone,mem_addr1,mem_total,
-			mem_addr2,mem_regdate,mem_postcode,r.role_name as mem_role from member 
+			mem_addr2,mem_regdate,mem_postcode,r.role_name as mem_role, mem_mail from member 
 		join role as r 
 		on mem_role=role_idx 
 		where mem_idx=#{mem_idx};
@@ -114,5 +114,37 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		update role
 		set role_name = #{role_name}, role_price = #{role_price}
 		where role_idx = #{role_idx}
+	</update>
+	
+	<!-- 이메일 인증테이블 조회 -->
+	<select id="selectAuthMailInfo" resultType="HashMap">
+		select * from auth_mail
+		where mem_id = #{mem_id}
+	</select>
+	<!-- 이메일 인증정보 수정 -->
+	<update id="updateAuthMailInfo">
+		update auth_mail
+		set auth_key = #{auth_key}, mail = #{mail}
+		where mem_id = #{mem_id}
+	</update>
+	<!-- 이메일 인증정보 생성 -->
+	<insert id="insertAuthMailInfo">
+		insert into auth_mail
+		(mem_id, auth_key, mail) 
+		values 
+		(#{mem_id}, #{auth_key}, #{mail})
+	</insert>
+	<!-- 회원의 이메일 속성 수정 -->
+	<update id="updateMemberMail">
+		update member
+		set mem_mail = #{mail}
+		where mem_id = #{mem_id}
+	</update>
+	<!-- 회원정보(연락처,주소) 수정 -->
+	<update id="updateMemberInfo">
+		update member
+		set mem_phone = #{mem_phone}, mem_postcode = #{mem_postcode},
+			mem_addr1 = #{mem_addr1}, mem_addr2 = #{mem_addr2}
+		where mem_id = #{mem_id}
 	</update>
 </mapper>

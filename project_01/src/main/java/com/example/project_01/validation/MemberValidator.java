@@ -3,6 +3,7 @@ package com.example.project_01.validation;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.ValidationUtils;
 import org.springframework.validation.Validator;
@@ -10,12 +11,13 @@ import org.springframework.validation.Validator;
 import com.example.project_01.model.member.dto.MemberDTO;
 
 public class MemberValidator implements Validator {
-	private static final String idRegExp = "^[a-zA-Z0-9]{4,16}$";
-	private static final String phoneRegExp = "^[0-9]{10,11}$";
-	private static final String pwRegExp = "^(?=.*[0-9])(?=.*[~`!@#$%\\\\^&*()-])(?=.*[a-zA-Z]).{8,}$";
-	private static final String postcodeRegExp = "^[0-9]{5}$";
+	public static final String idRegExp = "^[a-zA-Z0-9]{4,16}$";
+	public static final String phoneRegExp = "^[0-9]{10,11}$";
+	public static final String pwRegExp = "^(?=.*[0-9])(?=.*[~`!@#$%\\\\^&*()-])(?=.*[a-zA-Z]).{8,}$";
+	public static final String postcodeRegExp = "^[0-9]{5}$";
 	private Pattern pattern;
-
+	
+	
 	@Override
 	public boolean supports(Class<?> clazz) {
 		// TODO Auto-generated method stub

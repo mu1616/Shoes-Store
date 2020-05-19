@@ -15,6 +15,7 @@ import org.springframework.validation.BindException;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -68,7 +69,7 @@ public class MemberController {
 			throw new BindException(bindingResult);
 		}
 		memberDto.setMem_pw(encoder.encode(memberDto.getMem_pw()));
-		//동일정보 (동일한 핸드폰번호, 동일한 아이디) 있을 시 무결성예외 처리
+		//동일정보 (동일한 핸드폰번호, 동일한 아이디) 있을 시 예외 처리
 		try {
 			memberDao.join(memberDto);
 		} catch (DataIntegrityViolationException e) {
@@ -109,11 +110,40 @@ public class MemberController {
 		String mem_id = principal.getName();
 		if(memberService.checkPw(mem_id, mem_pw)) {
 			MemberDTO memberDto = memberDao.findById(mem_id);
+			if(memberDto.getMem_mail()==null) memberDto.setMem_mail("등록된 이메일이 없습니다.");			
 			model.addAttribute("memberDto",memberDto);
 			return "/member/memberInfo";
 		}
 		return "/member/fail";
 	}
-
+	
+	@ResponseBody
+	@RequestMapping("/member/info/authMail")
+	public void authMail(Principal principal, String mail) {
+		String mem_id = principal.getName();
+		memberService.authMail(mem_id, mail);
+	}
+	@ResponseBody
+	@RequestMapping("/member/info/changeMail")
+	public int changeMail(Principal principal, String auth_key) {
+		String mem_id = principal.getName();
+		if(memberService.changeMail(mem_id, auth_key)) {
+			return 1;
+		}else {
+			return 0;
+		}
+	}
+	@ResponseBody
+	@RequestMapping("/member/info/modify")
+	public void modify(Principal principal, @RequestBody MemberDTO memberDto, Errors errors, 
+			BindingResult bindingResult) throws BindException {
+			MemberValidator validator = new MemberValidator();
+			validator.regExpCheck("mem_phone", memberDto.getMem_phone(), validator.phoneRegExp, errors);
+			if (errors.hasErrors()) {
+				throw new BindException(bindingResult);
+			}
+			memberDao.updateMemberInfo(principal.getName(), memberDto.getMem_phone(), memberDto.getMem_postcode(), 
+					memberDto.getMem_addr1(), memberDto.getMem_addr2());
+	}
 
 }

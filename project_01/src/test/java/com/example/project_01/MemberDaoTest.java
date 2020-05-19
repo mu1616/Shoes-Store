@@ -1,5 +1,6 @@
 package com.example.project_01;
 
+import java.util.HashMap;
 import java.util.List;
 
 import org.junit.jupiter.api.Test;
@@ -35,7 +36,7 @@ class MemberDaoTest {
 			b++;
 		}
 	}
-	@Test
+
 	public void selectMember() {
 		SearchMemberDTO dto = new SearchMemberDTO();
 		List<MemberDTO> list = memberDao.selectMember(1,10,dto);
@@ -47,5 +48,10 @@ class MemberDaoTest {
 	public void countMember() {
 		SearchMemberDTO dto = new SearchMemberDTO();
 		System.out.println(memberDao.countMember(dto));
+	}
+	@Test
+	public void selectAuthMailInfo() {
+		HashMap<String, String> map = memberDao.selectAuthMailInfo("mu16161");
+		System.out.println(map);
 	}
 }
