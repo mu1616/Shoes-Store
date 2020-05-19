@@ -59,11 +59,11 @@
 								<td>
 									<button onclick="pwForm();" id="pwChangeBtn">변경</button>
 									<div id="password">
-										<input type="password" placeholder="기존 비밀번호" class="pw"><br>
-										<input type="password" placeholder="변경할 비밀번호" class="pw"> (영문/숫자/특수문자 조합 8자 이상)<br>
-										<input type="password" placeholder="비밀번호확인" class="pw">
+										<input type="password" id="mem_pw" placeholder="기존 비밀번호" class="pw"><br>
+										<input type="password" id="password1" placeholder="변경할 비밀번호" class="pw" onkeyup="pwCheck(this.value);isMatch(document.getElementById('password2').value);"> <span id="pwText1">(영문/숫자/특수문자 조합 8자 이상)</span><br>
+										<input type="password" id="password2" placeholder="비밀번호확인" class="pw" onkeyup="isMatch(this.value);"> <span id="pwText2"></span>
 										<br>
-										<button>변경</button> <button onclick="pwCancel();">취소</button>
+										<button onclick="changePassword();">변경</button> <button onclick="pwCancel();">취소</button>
 									</div>
 								</td>
 							</tr>	
@@ -183,6 +183,33 @@ function modify(){
 	});
 	
 }
+function changePassword(){
+	if(!confirm('변경하시겠습니까?')){
+		return;
+	}
+	var mem_pw = document.getElementById('mem_pw').value;
+	var newPassword = document.getElementById('password1').value;
+	var newPassword2 = document.getElementById('password2').value;
+	if(!pwCheck(newPassword) || !isMatch(newPassword2)){
+		alert('비밀번호를 확인해주세요.');
+		return;
+	}
+	var obj = {"mem_pw":mem_pw, "newPassword":newPassword};
+	$.ajax({
+		url: "/member/info/changePassword",
+		type: "POST",
+		contentType : "application/json",
+		data: JSON.stringify(obj),
+		success: function(data) {
+			if(data==0){
+				alert('기존 비밀번호를 확인해주세요.')
+			}else {
+				alert('변경하였습니다.');
+				pwCancel();
+			}
+		}
+	});
+}
 function isEmail(asValue) {
 	var regExp = /^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i;
 	return regExp.test(asValue);	
@@ -196,7 +223,28 @@ function phoneCheck(phone){
 		return true;
 	}
 }
-
+function pwCheck(value){
+	var re = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]{8,}$/;
+    if(!re.test(value)) {
+    	document.getElementById('pwText1').style.color='red';
+    	return false;
+    } else {
+    	document.getElementById('pwText1').style.color='green';
+    	return true;
+    }
+}
+function isMatch(pw2){
+	var pw1 = document.getElementById('password1').value;
+	if(!(pw1==pw2)){
+		document.getElementById('pwText2').style.color='red';
+		document.getElementById('pwText2').innerHTML='비밀번호를 확인해주세요';
+		return false;
+	}else {
+		document.getElementById('pwText2').style.color='green';
+		document.getElementById('pwText2').innerHTML='비밀번호가 일치합니다';
+		return true;
+	}
+}
 function sample6_execDaumPostcode() {
     new daum.Postcode({
         oncomplete: function(data) {

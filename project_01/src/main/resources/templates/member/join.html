@@ -41,7 +41,7 @@ table {
 		</tr>
 		<tr>
 		<th scope="row">비밀번호&nbsp</th>
-		<td><input type="password" class="form-control mb-2 mr-sm-2" placeholder="Password" id="password1" name="mem_pw" onkeyup="pwCheck(this);"></td>
+		<td><input type="password" class="form-control mb-2 mr-sm-2" placeholder="Password" id="password1" name="mem_pw" onkeyup="pwCheck(this);isMatch(document.getElementById('password2'));"></td>
 		<td colspan="2" id='pwText1'> (영문/숫자/특수문자 조합 8자 이상)</td>
 		</tr>
 		<tr>

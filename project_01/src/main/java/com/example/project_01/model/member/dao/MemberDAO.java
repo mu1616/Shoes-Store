@@ -45,4 +45,6 @@ public interface MemberDAO {
 	public void updateMemberMail(String mem_id, String mail);
 	//회원정보(핸드폰, 주소) 수정
 	public void updateMemberInfo(String mem_id, String mem_phone, String mem_postcode, String mem_addr1, String mem_addr2);
+	//패스워드 변경
+	public void updatePassword(String mem_id, String mem_pw);
 }

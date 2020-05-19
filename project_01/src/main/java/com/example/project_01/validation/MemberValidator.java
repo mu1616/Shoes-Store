@@ -17,16 +17,16 @@ public class MemberValidator implements Validator {
 	public static final String postcodeRegExp = "^[0-9]{5}$";
 	private Pattern pattern;
 	
-	
+	//컨트롤러에서  error 객체는 반드시 @ModelAttribute, @Valid, @RequestBody 등 vo 뒤에 와야한다.
+	//스프링MVC는 VO와 연결된 Errors 객체를 생성해서 파라미터로 전달한다.
 	@Override
 	public boolean supports(Class<?> clazz) {
-		// TODO Auto-generated method stub
-		return MemberDTO.class.isAssignableFrom(clazz);
+		return MemberDTO.class.isAssignableFrom(clazz);  //MemberValidor는 MemberDTO만 검증 가능 
 	}
 
+	//회원가입시 유효성 검증
 	@Override
 	public void validate(Object target, Errors errors) {
-		// TODO Auto-generated method stub
 		MemberDTO memberDto = (MemberDTO) target;
 		regExpCheck("mem_id", memberDto.getMem_id(), idRegExp, errors);
 		regExpCheck("mem_phone", memberDto.getMem_phone(), phoneRegExp, errors);
@@ -37,7 +37,8 @@ public class MemberValidator implements Validator {
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "mem_birth", "required");
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "mem_name", "required");
 	}
-
+	
+	//error 객체를 이용하여 정규화 검사
 	public void regExpCheck(String field, String value, String regExp, Errors errors) {
 		if (value == null || value.trim().isEmpty()) {
 			errors.rejectValue(field, "required");
@@ -47,6 +48,21 @@ public class MemberValidator implements Validator {
 			if (!matcher.matches())
 				errors.rejectValue(field, "bad");
 		}
+		
+	}
+	
+	//true, false 리턴하는 정규화 검사
+	public boolean regExpCheck(String value, String regExp) {
+		if (value == null || value.trim().isEmpty()) {
+			return false;
+		} else {
+			pattern = Pattern.compile(regExp);
+			Matcher matcher = pattern.matcher(value);
+			if (!matcher.matches())
+				return false;
+		}
+		return true;
+		
 	}
 
 }

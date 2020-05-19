@@ -147,4 +147,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			mem_addr1 = #{mem_addr1}, mem_addr2 = #{mem_addr2}
 		where mem_id = #{mem_id}
 	</update>
+	<!-- 비밀번호 변경 -->
+	<update id="updatePassword">
+		update member
+		set mem_pw = #{mem_pw}
+		where mem_id = #{mem_id}
+	</update>
 </mapper>

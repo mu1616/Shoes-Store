@@ -1,6 +1,7 @@
 package com.example.project_01.controller.member;
 
 import java.security.Principal;
+import java.util.HashMap;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -14,6 +15,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindException;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.Errors;
+import org.springframework.validation.ValidationUtils;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -137,13 +139,38 @@ public class MemberController {
 	@RequestMapping("/member/info/modify")
 	public void modify(Principal principal, @RequestBody MemberDTO memberDto, Errors errors, 
 			BindingResult bindingResult) throws BindException {
+			//데이터 유효성 검증
 			MemberValidator validator = new MemberValidator();
 			validator.regExpCheck("mem_phone", memberDto.getMem_phone(), validator.phoneRegExp, errors);
-			if (errors.hasErrors()) {
+			validator.regExpCheck("mem_postcode", memberDto.getMem_postcode(), validator.postcodeRegExp, errors);
+			ValidationUtils.rejectIfEmptyOrWhitespace(errors, "mem_addr1", "required");
+			ValidationUtils.rejectIfEmptyOrWhitespace(errors, "mem_addr2", "required");
+			if (errors.hasErrors()) { 
 				throw new BindException(bindingResult);
 			}
+			//
 			memberDao.updateMemberInfo(principal.getName(), memberDto.getMem_phone(), memberDto.getMem_postcode(), 
 					memberDto.getMem_addr1(), memberDto.getMem_addr2());
+	}
+	
+	@ResponseBody
+	@RequestMapping("/member/info/changePassword")
+	public int changePassword(Principal principal, @RequestBody HashMap<String, String> map, Errors errors, 
+			BindingResult bindingResult) throws BindException {
+		String mem_id = principal.getName();
+		if(!memberService.checkPw(mem_id, map.get("mem_pw"))) { //기존 비밀번호 확인
+			return 0;
+		}else {
+			String mem_pw = map.get("newPassword");
+			//데이터 유효성 검증
+			MemberValidator validator = new MemberValidator();
+			if (!validator.regExpCheck(mem_pw, validator.pwRegExp)) { 
+				throw new BindException(bindingResult);
+			}
+			//
+			memberDao.updatePassword(mem_id, encoder.encode(mem_pw));
+			return 1;
+		}
 	}
 
 }
