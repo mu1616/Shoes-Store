@@ -4,7 +4,6 @@ import java.security.Principal;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -16,6 +15,7 @@ import com.example.project_01.model.cart.dao.CartDAO;
 import com.example.project_01.model.cart.dto.CartDTO;
 import com.example.project_01.model.product.dao.ProductDAO;
 import com.example.project_01.model.product.dto.ProductDTO;
+import com.example.project_01.service.cart.CartService;
 
 @Controller
 public class CartController {
@@ -23,15 +23,13 @@ public class CartController {
 	CartDAO cartDao;
 	@Autowired
 	ProductDAO productDao;
+	@Autowired
+	CartService cartService;
 	
 	@ResponseBody
 	@RequestMapping("/cart/insert")
 	public String insertCart(@RequestBody CartDTO [] cartList, Principal principal) {
-		System.out.println("gg");
-		for(CartDTO cartDto : cartList) {
-			cartDto.setCart_member(principal.getName());
-			cartDao.insertCart(cartDto);
-		}
+		cartService.insertCart(cartList, principal.getName());
 		return "hi";
 	}
 	
@@ -52,14 +50,12 @@ public class CartController {
 	@ResponseBody
 	@RequestMapping("/cart/deleteProduct")
 	public void deleteProduct(@RequestParam("idx") String[] idx, Principal principal) {
-		for(String a : idx) System.out.println(a);
 		CartDTO cartDto = null;
 		if(idx !=null) {
 			cartDto = cartDao.selectOne(Integer.parseInt(idx[0]));
 		}
-		if(cartDto.getCart_member().equals(principal.getName())) {
-			for(String cart_idx : idx)
-				cartDao.deleteOne(Integer.valueOf(cart_idx));
+		if(cartDto.getCart_member().equals(principal.getName())) {  //삭제하려는 사람이 현재로그인중인 사용자가 맞는지 확인
+			cartService.deleteProduct(idx);
 		}
 		/*
 		CartDTO cartDto = cartDao.selectOne(Integer.parseInt(idx[0]));
