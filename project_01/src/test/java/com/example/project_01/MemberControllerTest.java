@@ -23,7 +23,7 @@ public class MemberControllerTest {
 	@Autowired
 	private MockMvc mockMvc;
 
-	
+	@Test
 	public void joinTest() throws Exception {
 		MemberDTO memberDto = new MemberDTO();
 		memberDto.setMem_id("mu1616");
