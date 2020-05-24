@@ -28,7 +28,7 @@ Front-end: HTML, JS, BootStrap, AJAX
 
 
 ## 사용자 페이지
-<img width="900" alt="캡처" src="https://user-images.githubusercontent.com/26829633/82151791-61b62780-9898-11ea-9d1f-9ef909c855ca.PNG">
+![localhost_8080_](https://user-images.githubusercontent.com/26829633/82759490-cd643b80-9e28-11ea-9af0-7967caa3c4b7.png)
 
 ## 관리자 페이지
 <img width="900" alt="캡처" src="https://user-images.githubusercontent.com/26829633/79899853-54984b00-8448-11ea-8a5f-078b05eec7d5.PNG">
