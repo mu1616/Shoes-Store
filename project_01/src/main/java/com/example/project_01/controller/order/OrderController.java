@@ -34,6 +34,7 @@ public class OrderController {
 	@Autowired
 	OrderDAO orderDao;
 	
+	//주문 폼 페이지
 	@RequestMapping("/order/orderForm")
 	public String orderForm(int[] size, int[] count, int[] product, Model model) {
 		List<CartDTO> soldOutList = orderService.checkSoldOut(size, product, count);
@@ -48,6 +49,7 @@ public class OrderController {
 		return "order/orderForm";
 	}
 
+	//기존 주소지 체크시 처리
 	@ResponseBody
 	@RequestMapping("/order/orderForm/setDest")
 	public MemberDTO setDestination(Principal principal) {
@@ -57,6 +59,7 @@ public class OrderController {
 		return memberDto;
 	}
 
+	//주문조회 페이지
 	@RequestMapping("/order/list")
 	public String orderList(Model model, Principal principal, String year) {
 		Calendar calendar = Calendar.getInstance();
@@ -71,6 +74,7 @@ public class OrderController {
 		return "order/orderList";
 	}
 
+	//주문취소 요청시 처리
 	@ResponseBody
 	@RequestMapping("/order/cancel")
 	public String orderCancel(Principal principal, String order_code) {
@@ -78,7 +82,7 @@ public class OrderController {
 		String mem_id = principal.getName();
 		MemberDTO memberDto = memberDao.findById(mem_id);
 		OrderDTO orderDto = orderDao.selectByCode(order_code);
-		if (orderDto.getMem_id().equals(mem_id)) {
+		if (orderDto.getMem_id().equals(mem_id)) {  //취소요청한 회원과 상품을 주문한 회원의 정보가 일치하는지 확인
 			orderService.cancelOne(memberDto, orderDto);
 			msg = "구매를 취소하였습니다.";
 		} else {
@@ -87,12 +91,14 @@ public class OrderController {
 		return msg;
 	}
 	
+	//주문상태 변경시 처리
 	@ResponseBody
 	@RequestMapping("/order/updateState")
 	public void updateState(String order_code) {
 		orderService.updateState(order_code);		
 	}
 	
+	//주문 상세정보 페이지
 	@ResponseBody
 	@RequestMapping("/order/detail")
 	public OrderDTO orderDetail(String order_code) {
@@ -101,6 +107,7 @@ public class OrderController {
 		return orderDto;
 	}
 	
+	//결제요청 유효성 검사
 	@ResponseBody
 	@RequestMapping("/order/validate")
 	public int paymentComplete(String imp_uid, String merchant_uid, Principal principal) {
@@ -110,6 +117,7 @@ public class OrderController {
 		return complete;
 	}
 	
+	//결제정보 생성 후 리턴
 	@ResponseBody
 	@RequestMapping("/order/makeInfo")
 	public PaymentInfo makeInfo(int[] size, int[] count, int[] product,String mem_name, String mem_addr1, 
@@ -141,6 +149,7 @@ public class OrderController {
 		return payment;
 	}
 	
+	//결제 취소요청시 처리
 	@ResponseBody
 	@RequestMapping("/order/payCancel")
 	public void payCancel(String merchant_uid, Principal principal) {
@@ -155,6 +164,7 @@ public class OrderController {
 		}
 	}
 	
+	//주문완료 시 처리
 	@RequestMapping("/order/complete")
 	public String orderComplete() {
 		return "/order/orderComplete";

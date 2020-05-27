@@ -20,6 +20,7 @@ public class ManageStockController {
 	@Autowired
 	ProductDAO productDao;
 	
+	//상품재고 페이지
 	@RequestMapping("/admin/product/stock")
 	public String showStock(Model model, int product_idx) {
 		List<StockDTO> stockList = stockDao.selectByProduct(product_idx);
@@ -30,18 +31,21 @@ public class ManageStockController {
 		return "popup/stock";
 	}
 	
+	//재고 생성시 처리
 	@ResponseBody
 	@RequestMapping("/admin/product/stock/insert")
 	public void addStock(int product_idx, int size, int count) {
 		stockDao.insertStock(product_idx, size, count);		
 	}
 	
+	//재고 추가시 처리
 	@ResponseBody
 	@RequestMapping("/admin/product/stock/add")
 	public void modifyStock(int product_idx, int size, int add) {
 		stockDao.addStock(product_idx, size, add);		
 	}
 	
+	//재고 삭제시 처리
 	@ResponseBody
 	@RequestMapping("/admin/product/stock/delete")
 	public void deleteStock(int product_idx, int size) {

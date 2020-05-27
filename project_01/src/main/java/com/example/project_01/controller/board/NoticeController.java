@@ -23,11 +23,13 @@ public class NoticeController {
 	@Autowired
 	NoticeService noticeService;
 	
+	//공지글 페이지
 	@RequestMapping("/board/list")
 	public String noticeList(Model model) {
 		return "board/noticeList";
 	}
 	
+	//공지글 가져와서 데이터 뿌려주기
 	@RequestMapping("/board/getList")
 	public String getList(String notice_type, int currentPage, Model model) {
 		if(notice_type.equals("notice")) notice_type = "공지사항";
@@ -36,13 +38,16 @@ public class NoticeController {
 		List<NoticeDTO> noticeList = noticeService.selectNotice(notice_type, currentPage, 15);
 		model.addAttribute("noticeList",noticeList);
 		model.addAttribute("pageDto",pageDto);
+		//공지사항 요청 시
 		if(notice_type.equals("공지사항"))
 			return "/board/noticeTable";
+		//FAQ 요청 시
 		if(notice_type.equals("faq"))
 			return "/board/faqTable";
 		return null;
 	}
 	
+	//공지사항 상세 페이지
 	@RequestMapping("/board/notice/contents")
 	public String contents(int notice_idx, Model model) {
 		NoticeDTO noticeDto = noticeDao.selectOne(notice_idx);

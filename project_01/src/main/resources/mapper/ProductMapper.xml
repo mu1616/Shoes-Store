@@ -2,9 +2,10 @@
 <!DOCTYPE mapper
 PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-
+<!-- 상품테이블, display(진열) 테이블  -->
 <mapper
 	namespace="com.example.project_01.model.product.dao.ProductDAO">
+	<!-- 상품 등록  -->
 	<insert id="productRegister"
 		parameterType="com.example.project_01.model.product.dto.ProductEntity"
 		useGeneratedKeys="true" keyProperty="product_idx">
@@ -16,12 +17,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			#{product_isdisplay})
 	</insert>
 	
-	<insert id="displayRegister" >
-		insert into display
-		(display_product, display_md) 
-		values (#{product_idx}, #{md_idx})
-	</insert>
-	
+	<!-- 조건에 맞는 상품 개수 가져오기 -->
 	<select id="countProduct"  parameterType="com.example.project_01.model.search.dto.SearchDTO" 
 		resultType="int">
 		SELECT count(*)        
@@ -40,6 +36,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			and product_isDisplay like '${product_isDisplay}'
 	</select>
 
+	<!-- 조건에 맞는 상품 가져오기 -->
 	<select id="selectProduct"  parameterType="com.example.project_01.model.search.dto.SearchDTO"
 		resultType="com.example.project_01.model.product.dto.ProductDTO">
 		SELECT *
@@ -70,12 +67,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		</if>
 		LIMIT #{start},#{length}
 	</select>
-	<insert id="insertStock">
-		insert into stock
-		(product_idx, size, count)
-		values (#{product_idx}, #{size}, #{count})
-	</insert>
 	
+	<!-- 상품 삭제 -->
 	<delete id="deleteProduct" parameterType="map">
 		delete from product
 		<where>
@@ -84,10 +77,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		</foreach>
 		</where>
 	</delete>
+	
+	<!-- prdocut_idx로 상품검색, ProductEntity 반환 -->
 	<select id="selectOne" resultType="com.example.project_01.model.product.dto.ProductEntity">
 		select * from product
 		where product_idx=#{product_idx}
 	</select>
+	
+	<!-- 상품정보 수정 -->
 	<update id="updateProduct" parameterType="com.example.project_01.model.product.dto.ProductEntity">
 		update product
 		set product_name = #{productEntity.product_name}, product_price = #{productEntity.product_price},
@@ -99,35 +96,46 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			where product_idx = #{product_idx}
 	</update>
 	
+	<!-- prdocut_idx로 상품검색, ProductDTO 반환 -->
 	<select id="selectProductDTO" resultType="com.example.project_01.model.product.dto.ProductDTO">
 		SELECT *
 		FROM product
 		where product_idx = #{product_idx}
 	</select>
+	
+	<!-- 메인진열 상품 가져오기 -->
 	<select id="selectProductByDisplay" resultType="com.example.project_01.model.product.dto.ProductDTO">
 		SELECT p.*, d.*
 		from display as d, product as p
 		where display_md = #{display_md} and p.product_idx = d.display_product
 		order by display_order asc
 	</select>
+	
+	<!-- 메인진열 상품추가 -->
 	<insert id="addProductMainDisplay">
 		INSERT INTO display (display_product,display_md,display_order) VALUES (#{product_idx},#{display_md},
 			(SELECT ifnull(MAX(display_order),"0") FROM display AS d WHERE display_md = #{display_md})+1)
 	</insert>
+	
+	<!-- 메인진열 상품삭제(모든상품) -->
 	<delete id="delProductMainDisplay">
 		DELETE FROM display 
 		WHERE display_md = #{display_md}
 	</delete>
+	
+	<!-- 특정 상품을 메인진열에서 제거 -->
 	<delete id="delProductMainDisplayByProduct">
 		delete from display
 		where display_product = #{product_idx}
 	</delete>
+	
 	<!-- 총판매횟수 업데이트 -->
 	<update id="updateSaleCount">
 		update product 
 		set product_salecount = product_salecount + #{count}
 		where product_idx = #{product_idx}
 	</update>
+	
 	<!-- 별점 업데이트 -->
 	<update id="updateRating">
 		update product 
@@ -137,6 +145,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			product_reviewcount
 		where product_idx = #{product_idx}
 	</update>
+	
 	<!-- 리뷰횟수 업데이트 -->
 	<update id="updateReviewCount">
 		update product
@@ -144,6 +153,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		where product_idx = #{product_idx}
 	</update>
 	
+	<!-- 별점 0점으로 초기화 -->
 	<update id="initRating">
 		update product
 		set product_rating = 0

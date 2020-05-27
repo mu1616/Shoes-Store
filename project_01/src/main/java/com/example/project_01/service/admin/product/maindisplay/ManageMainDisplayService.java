@@ -11,6 +11,7 @@ public class ManageMainDisplayService {
 	@Autowired
 	ProductDAO productDao;
 	
+	//메인진열 상태 저장
 	@Transactional
 	public void saveDisplay(int display_md, int[] product_idx) {
 		productDao.delProductMainDisplay(display_md);

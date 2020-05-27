@@ -24,6 +24,7 @@ public class ManageNoticeController {
 	@Autowired
 	ManageNoticeService noticeService;
 	
+	//공지사항 작성 폼
 	@RequestMapping("/admin/board/notice/write")
 	public String writeNotice(Model model, String notice_idx) {
 		List<String> typeList = noticeDao.selectNoticeType();
@@ -35,6 +36,7 @@ public class ManageNoticeController {
 		return "admin/admin_writeNotice";
 	}
 	
+	// 공지사항 작성요청 시 처리
 	@RequestMapping("/admin/board/notice/writeComplete")
 	public String writeComplete(NoticeDTO noticeDto, Principal principal) {
 		noticeDto.setNotice_id(principal.getName());
@@ -42,6 +44,7 @@ public class ManageNoticeController {
 		return "redirect:/admin/board/notice/1";
 	}
 	
+	//공지사항 수정요청 시 처리
 	@RequestMapping("/admin/board/notice/modify")
 	public String modify(NoticeDTO noticeDto, Principal principal) {
 		noticeDto.setNotice_id(principal.getName());
@@ -49,6 +52,7 @@ public class ManageNoticeController {
 		return "admin/admin_modifyComplete";
 	}
 	
+	//공지사항 리스트 페이지
 	@RequestMapping("/admin/board/notice/{currentPage}")
 	public String noticeList(@PathVariable("currentPage")int currentPage, Model model) {
 		int totalRecord = noticeDao.countRecord();
@@ -59,6 +63,7 @@ public class ManageNoticeController {
 		return "admin/admin_noticeList.html";
 	}
 	
+	//공지사항 삭제요청 처리
 	@RequestMapping("/admin/board/notice/delete")
 	public String deleteNotice(int notice_idx) {
 		noticeDao.deleteOne(notice_idx);

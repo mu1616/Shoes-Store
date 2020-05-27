@@ -13,11 +13,13 @@ public class ManageRoleService {
 	@Autowired
 	MemberDAO memberDao;
 	
+	//관리자 해임
 	@Transactional
 	public void depriveAdmin(MemberDTO memberDto) {
 		memberDao.updateRole(memberDto.getMem_idx(), 2);
 	}
 	
+	//등급 추가
 	@Transactional
 	public void addRole(RoleDTO roleDto) {
 		memberDao.insertRole(roleDto);
@@ -25,6 +27,7 @@ public class ManageRoleService {
 		memberDao.UpdateAllMemberRole();
 	}
 	
+	//등급 삭제
 	@Transactional
 	public void deleteRole(String role_name) {
 		memberDao.deleteRole(role_name);
@@ -32,6 +35,7 @@ public class ManageRoleService {
 		memberDao.UpdateAllMemberRole();
 	}
 	
+	//등급 수정
 	@Transactional
 	public void modifyRoleInfo(RoleDTO roleDto) {
 		memberDao.updateRoleInfo(roleDto);

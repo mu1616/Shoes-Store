@@ -15,6 +15,7 @@ public class HomeController {
 	@Autowired
 	ProductDAO productDao;
 	
+	//메인 페이지
 	@RequestMapping("/")
 	public String home(Model model) {
 		List<ProductDTO> bestProducts = productDao.selectProductByDisplay(1);
@@ -27,11 +28,13 @@ public class HomeController {
 		return "home";
 	}
 	
+	//관리자 페이지
 	@RequestMapping("/admin")
 	public String admin() {
 		return "redirect:/admin/product/register";
 	}
 	
+	//인가되지 않은 요청
 	@RequestMapping("/access-denied")
 	public String accessDenied() {
 		return "error/accessError";

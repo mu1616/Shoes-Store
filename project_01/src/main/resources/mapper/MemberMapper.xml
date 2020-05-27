@@ -4,6 +4,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.example.project_01.model.member.dao.MemberDAO">
+	
+	<!-- 회원아이디에 맞는 레코드 가져오기 -->
 	<select id="findById" resultType="com.example.project_01.model.member.dto.MemberDTO">
 		select mem_idx,mem_name,mem_birth,mem_id,mem_pw,mem_phone,mem_addr1,mem_total,
 			mem_addr2,mem_regdate, mem_postcode, mem_mail, r.role_name as mem_role 
@@ -12,6 +14,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		on mem_role=role_idx 
 		where mem_id=#{mem_id};
 	</select>
+	
+	<!-- 회원가입 -->
 	<insert id="join" parameterType="com.example.project_01.model.member.dto.MemberDTO">
 		insert into member
 		(mem_name, mem_birth, mem_id, mem_pw, mem_phone, mem_addr1, mem_addr2, mem_postcode) 
@@ -20,6 +24,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 				#{mem_addr2}, #{mem_postcode})
 	</insert>
 	
+	<!-- 특정 조건에 맞는 회원 레코드 가져오기 (SearchMemberDto로 조건 전달) -->
 	<select id="selectMember" parameterType = "com.example.project_01.model.member.dto.SearchMemberDTO"
 		resultType="com.example.project_01.model.member.dto.MemberDTO">
 		select mem_idx,mem_name,mem_birth,mem_id,mem_pw,mem_phone,mem_addr1,
@@ -33,6 +38,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
 	</select>
 	
+	<!-- 특정 조건에 맞는 회원 수 가져오기 (SearchMemberDto로 조건 전달) -->
 	<select id="countMember" parameterType = "com.example.project_01.model.member.dto.SearchMemberDTO" 
 		resultType="int">
 		select count(*)
@@ -40,11 +46,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		where mem_id like #{mem_id} and 
 			mem_role like #{mem_role}
 	</select>
+	
+	<!-- 회원탈퇴 -->
 	<delete id="deleteOne">
 		delete from member
 		where mem_idx = #{mem_idx}
 	</delete>
 	
+	<!-- 회원번호에 맞는 레코드 가져오기 -->
 	<select id="findByIdx" resultType="com.example.project_01.model.member.dto.MemberDTO">
 		select mem_idx,mem_name,mem_birth,mem_id,mem_pw,mem_phone,mem_addr1,mem_total,
 			mem_addr2,mem_regdate,mem_postcode,r.role_name as mem_role, mem_mail from member 
@@ -53,28 +62,33 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		where mem_idx=#{mem_idx};
 	</select>
 	
+	<!-- 등급정보 가격순으로 가져오기 -->
 	<select id="selectRole" resultType = "com.example.project_01.model.member.dto.RoleDTO">
 		select * from role
 		order by role_price asc
 	</select>
 	
+	<!-- 특정 Member의 Role을 지정한 Role로 변경 -->
 	<update id="updateRole">
 		UPDATE member 
 		SET mem_role = #{mem_role}
 		WHERE mem_idx = #{mem_idx}
 	</update>
 	
+	<!-- 특정 Member의 total(총 구매가격) 변경 -->
 	<update id="updateTotal">
 		UPDATE member 
 		SET mem_total = mem_total + (#{pay}) 
 		WHERE mem_id= #{mem_id}
 	</update>
 	
+	<!-- 등급명에 맞는 등급레코드 가져오기 -->
 	<select id="selectRoleByRoleName" resultType = "com.example.project_01.model.member.dto.RoleDTO">
 		select * from role
 		where role_name = #{role_name}
 	</select>
 	
+	<!-- 특정 Member의 Role을 total(총 구매가격)에 맞는 Role로 변경 -->
 	<update id="updateMemberRole">
 		UPDATE member AS m 
 		SET mem_role = 
@@ -84,12 +98,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		WHERE mem_role != 1 and mem_id = #{mem_id}
 	</update>
 	
+	<!-- 새로운 등급 생성 -->
 	<insert id="insertRole" parameterType = "com.example.project_01.model.member.dto.RoleDTO">
 		insert into role
 		(role_idx, role_name, role_price) 
 		values (0, upper(#{role_name}), #{role_price})
 	</insert>
 	
+	<!-- 가격 순으로 role_idx 정렬  (ADMIN 제외) -->
 	<update id="sortRole">
 		UPDATE role 
 		SET role_idx=@rank:=@rank+1 
@@ -97,6 +113,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		ORDER BY role_price;
 	</update>
 	
+	<!-- 모든 Member의 role을 업데이트시킴 (새로운 등급 생성하거나 수정 이후에) -->
 	<update id="UpdateAllMemberRole">
 		UPDATE member AS m 
 		SET mem_role = (SELECT r.role_idx from role AS r 
@@ -105,11 +122,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		WHERE mem_role != 1
 	</update>
 	
+	<!-- 해당 Role 삭제 -->
 	<delete id="deleteRole">
 		delete from role
 		where role_name = #{role_name}
 	</delete>
 	
+	<!-- Role 레코드 수정 -->
 	<update id="updateRoleInfo">
 		update role
 		set role_name = #{role_name}, role_price = #{role_price}
@@ -121,12 +140,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		select * from auth_mail
 		where mem_id = #{mem_id}
 	</select>
+	
 	<!-- 이메일 인증정보 수정 -->
 	<update id="updateAuthMailInfo">
 		update auth_mail
 		set auth_key = #{auth_key}, mail = #{mail}
 		where mem_id = #{mem_id}
 	</update>
+	
 	<!-- 이메일 인증정보 생성 -->
 	<insert id="insertAuthMailInfo">
 		insert into auth_mail
@@ -134,12 +155,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		values 
 		(#{mem_id}, #{auth_key}, #{mail})
 	</insert>
+	
 	<!-- 회원의 이메일 속성 수정 -->
 	<update id="updateMemberMail">
 		update member
 		set mem_mail = #{mail}
 		where mem_id = #{mem_id}
 	</update>
+	
 	<!-- 회원정보(연락처,주소) 수정 -->
 	<update id="updateMemberInfo">
 		update member
@@ -147,6 +170,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			mem_addr1 = #{mem_addr1}, mem_addr2 = #{mem_addr2}
 		where mem_id = #{mem_id}
 	</update>
+	
 	<!-- 비밀번호 변경 -->
 	<update id="updatePassword">
 		update member

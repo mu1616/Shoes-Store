@@ -21,11 +21,14 @@
 .swiper-slide img {
 	max-width:100%; /* 이미지 최대너비를 제한, 슬라이드에 이미지가 여러개가 보여질때 필요 */
 }
-.card {
-	padding: 1px;
-}
+
 .card:hover{
 	border:1px solid #424242;
+}
+.card p {
+	overflow: hidden;
+  	text-overflow: ellipsis;
+	white-space: nowrap;
 }
 </style>
 </head>
@@ -64,10 +67,8 @@
 					<a class="nav-item nav-link" style="cursor:pointer" onclick="categoryBtn('스니커즈');">스니커즈&nbsp </a>
 					<a class="nav-item nav-link" style="cursor:pointer" onclick="categoryBtn('슬리퍼');">슬리퍼&nbsp </a> 
 					<a class="nav-item nav-link" style="cursor:pointer" onclick="categoryBtn('샌들');">샌들&nbsp </a>
-					<a class="nav-item nav-link" style="cursor:pointer" onclick="categoryBtn('축구');">축구/농구&nbsp </a>
+					<a class="nav-item nav-link" style="cursor:pointer" onclick="categoryBtn('축구/농구');">축구/농구&nbsp </a>
 					<a class="nav-item nav-link" style="cursor:pointer" onclick="categoryBtn('슬립온');">슬립온&nbsp </a>
-					
-					<a class="nav-item nav-link" href="#">브랜드&nbsp </a>
 					
 					
 				</div>

@@ -35,6 +35,7 @@ public class ProductReviewController {
 	@Autowired
 	PageService pageService;
 	
+	//구매후기작성 페이지
 	@RequestMapping("/product/review/writeForm/{order_code}")
 	public String writeForm(@PathVariable("order_code")String order_code, Model model) {
 		ProductDTO productDto = productDao.selectProductDTO(orderDao.selectByCode(order_code).getProduct_idx());
@@ -43,6 +44,7 @@ public class ProductReviewController {
 		return "popup/reviewForm";
 	}
 	
+	//구매후기작성 요청시 처리
 	@ResponseBody
 	@RequestMapping("/product/review/write/{order_code}")
 	public void write(@PathVariable("order_code")String order_code, String review_contents, int review_rating,
@@ -59,7 +61,7 @@ public class ProductReviewController {
 		productReviewService.insert(reviewDto);
 	}
 	
-	//이미 리뷰를 작성했는지 판단
+	//이미 구매후기를 작성했는지 판단
 	@ResponseBody
 	@RequestMapping("/product/review/check/{order_code}")
 	public int checkReview(@PathVariable("order_code")String order_code) {
@@ -72,6 +74,7 @@ public class ProductReviewController {
 		return check;
 	}
 	
+	//구매후기 리스트 뿌려주기 -> 상품상세정보에 출력됨
 	@RequestMapping("/product/review/show")
 	public String show(int currentPage, int review_product, int totalRecord, Model model) {
 		PageDTO pageDto = pageService.calPage(1, 10, totalRecord, 5);
@@ -81,6 +84,7 @@ public class ProductReviewController {
 		return "product/reviewTable";
 	}
 	
+	//내가 작성한 구매후기 리스트 페이지
 	@RequestMapping("/product/review/myReview/{currentPage}")
 	public String myReview(@PathVariable("currentPage")int currentPage, Model model, Principal principal) {
 		int totalRecord = reviewDao.countByMember(principal.getName());
@@ -95,6 +99,7 @@ public class ProductReviewController {
 		return "product/myReview";
 	}
 	
+	//구매후기 삭제요청 시 처리
 	@ResponseBody
 	@RequestMapping("/product/review/delete")
 	public void deleteReview(String review_ordercode, Principal principal) {

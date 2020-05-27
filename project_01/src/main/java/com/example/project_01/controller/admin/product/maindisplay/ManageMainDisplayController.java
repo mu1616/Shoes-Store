@@ -22,7 +22,7 @@ public class ManageMainDisplayController {
 	@Autowired
 	ManageMainDisplayService MainDisplayService;
 	
-	
+	//메인진열 관리 페이지
 	@RequestMapping("/admin/product/mainDisplay")
 	public String mainDisplay(@RequestParam(value="display_md", defaultValue="1")int display_md,
 			Model model) {
@@ -32,12 +32,14 @@ public class ManageMainDisplayController {
 		return "admin/admin_mainDisplay";
 	}
 	
+	//메인진열 상품 추가하기위한 검색 폼 페이지
 	@RequestMapping(value="/admin/product/mainDisplay/add", method=RequestMethod.GET)
 	public String mainDisplayAdd(int display_md, Model model) {
 		model.addAttribute("display_md",display_md);
 		return "popup/mainDisplayAdd";
 	}
 	
+	//진열할 상품 검색요청시 처리
 	@RequestMapping(value="/admin/product/mainDisplay/add/search", method=RequestMethod.POST)
 	public String mainDisplayAdd_Search(String searchOption, String searchWord, Model model) {
 		SearchDTO searchDto = new SearchDTO();
@@ -51,6 +53,7 @@ public class ManageMainDisplayController {
 		return "popup/searchList";
 	}
 	
+	//메인진열 상품 추가시 처리
 	@ResponseBody
 	@RequestMapping("/admin/product/mainDisplay/add/save")
 	public void mainDisplayAdd_save(int []product_idx, int display_md) {
@@ -59,6 +62,7 @@ public class ManageMainDisplayController {
 		
 	}
 	
+	//메인진열 정보 저장
 	@ResponseBody
 	@RequestMapping("/admin/product/mainDisplay/save")
 	public void mainDisplay_save(int []product_idx, int display_md) {

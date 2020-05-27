@@ -42,7 +42,7 @@ public class ProductController {
 	ProductQnaServiceImpl qnaService;
 	@Autowired
 	PageService pageService;
-	
+	//상품 리스트 페이지
 	@RequestMapping("/product/list/{idx}")
 	public String productList(Model model, @PathVariable(value = "idx", required = false) int currentPage,
 			SearchDTO searchDto, String searchWord) {
@@ -66,7 +66,7 @@ public class ProductController {
 			model.addAttribute("searchWord",searchWord);
 		return "product/productList";
 	}
-	
+	//상품 상세정보 페이지
 	@RequestMapping("/product/detail")
 	public String productDetail(String product_idx, Model model) {
 		SearchDTO searchDto = new SearchDTO();

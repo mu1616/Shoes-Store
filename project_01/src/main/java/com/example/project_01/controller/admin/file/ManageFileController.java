@@ -24,6 +24,7 @@ public class ManageFileController {
 	@Autowired
 	ManageFileService fileService;
 	
+	//스마트에디터에 이미지 업로드시 처리
 	@ResponseBody
 	@RequestMapping("/admin/smarteditor/fileupload")
 	public void upload(HttpServletRequest request, HttpServletResponse response) {

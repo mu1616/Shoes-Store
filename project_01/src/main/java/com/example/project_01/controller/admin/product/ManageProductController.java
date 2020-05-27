@@ -42,6 +42,7 @@ public class ManageProductController {
 	@Autowired
 	BrandDAO brandDao;
 	
+	//상품등록 페이지
 	@RequestMapping(value = "/admin/product/register", method = RequestMethod.GET)
 	public String registerPage(Model model) {
 		model.addAttribute("categoryList",categoryDao.selectAll());
@@ -49,6 +50,7 @@ public class ManageProductController {
 		return "admin/admin";
 	}
 
+	//상품등록시 처리
 	@RequestMapping(value = "/admin/product/register", method = RequestMethod.POST)
 	public String registerProduct(@ModelAttribute ProductEntity productEntity, @RequestPart("profile") MultipartFile files,
 			@RequestParam(value = "mainDisplay", required = false) int[] mainDisplay, 
@@ -57,6 +59,7 @@ public class ManageProductController {
 		return "redirect:/admin/product/list/1";
 	}
 	
+	//상품관리 상품리스트 페이지
 	@RequestMapping("/admin/product/list/{currentPage}")
 	public String productList(@PathVariable(value = "currentPage", required = false) int currentPage, 
 			@ModelAttribute SearchDTO searchDto, Model model, String searchOption, 
@@ -90,6 +93,7 @@ public class ManageProductController {
 		return "/admin/admin_productlist";
 	}
 	
+	//상품삭제 
 	@ResponseBody
 	@RequestMapping("/admin/product/delete")
 	public void productDelete(@RequestParam("product_idx") String[] product_idx) {
@@ -97,6 +101,7 @@ public class ManageProductController {
 		productDao.deleteProduct(product_idx);
 	}
 	
+	//상품수정 페이지
 	@RequestMapping(value = "/admin/product/modify", method = RequestMethod.GET)
 	public String modifyPage(int product_idx, Model model) {
 		ProductEntity productEntity = productDao.selectOne(product_idx);
@@ -106,6 +111,7 @@ public class ManageProductController {
 		return "admin/admin_productmodify";
 	}
 	
+	//상품 수정요청시 처리
 	@RequestMapping(value = "/admin/product/modify", method = RequestMethod.POST)
 	public String modify(@ModelAttribute ProductEntity productEntity, int product_idx,
 			@RequestPart(value="profile", required=false) MultipartFile files) {

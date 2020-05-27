@@ -26,6 +26,7 @@ public class ManageOrderController {
 	@Autowired
 	PageService pageService;
 	
+	//주문관리 페이지
 	@RequestMapping("/admin/order/list/{page}")
 	public String orderList(SearchOrderDTO searchOrderDto, @PathVariable(value = "page")int currentPage,
 			Model model) {
@@ -38,12 +39,14 @@ public class ManageOrderController {
 		return "admin/admin_orderList";
 	}
 	
+	//주문상태 변경시 처리
 	@ResponseBody
 	@RequestMapping("/admin/order/updateState")
 	public void updateState(String order_code, String order_state) {
 		orderService.updateState(order_code, order_state);
 	}
 	
+	//주문 상세정보
 	@ResponseBody
 	@RequestMapping("/admin/order/detail")
 	public OrderDTO orderDetail(String order_code) {

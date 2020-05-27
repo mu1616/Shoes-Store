@@ -36,7 +36,8 @@ public class MemberController {
 	BCryptPasswordEncoder encoder;
 	@Autowired
 	MemberService memberService;
-
+	
+	//로그인 페이지
 	@RequestMapping(value = "/member/login", method = RequestMethod.GET)
 	public String login(HttpServletRequest request) {
 		// url에 주소를 쳐서 요청하는 경우 referer가 안생기고
@@ -45,29 +46,33 @@ public class MemberController {
 		request.getSession().setAttribute("prevPage", referer);
 		return "member/login";
 	}
-
+	
+	//로그인 실패시 처리
 	@RequestMapping("member/login/fail")
 	public String loginFail(Model model) {
 		model.addAttribute("loginFail", "로그인에 실패하였습니다.");
 		return "member/login";
 	}
-
+	
+	//로그아웃 
 	@RequestMapping("/member/logout")
 	public String logout(HttpSession session) {
 		session.invalidate();
 		return "home";
 	}
-
+	
+	//회원가입 페이지
 	@RequestMapping(value = "/member/join", method = RequestMethod.GET)
 	public String join() {
 		return "member/join";
 	}
-
+	
+	//회원가입 완료시 처리
 	@RequestMapping(value = "/member/join", method = RequestMethod.POST)
 	public String joinOk(@ModelAttribute MemberDTO memberDto, Errors errors, BindingResult bindingResult)
 			throws BindException {
 		new MemberValidator().validate(memberDto, errors);
-		if (errors.hasErrors()) {
+		if (errors.hasErrors()) {   //데이터 유효성 검증
 			throw new BindException(bindingResult);
 		}
 		memberDto.setMem_pw(encoder.encode(memberDto.getMem_pw()));
@@ -80,7 +85,8 @@ public class MemberController {
 
 		return "member/welcome";
 	}
-
+	
+	//아이디 중복검사
 	@ResponseBody
 	@RequestMapping("/member/join/idcheck")
 	public int idCheck(String mem_id) {
@@ -91,6 +97,7 @@ public class MemberController {
 		}
 	}
 	
+	//회원등급 페이지
 	@RequestMapping("/member/role/state")
 	public String role(Principal principal, Model model) {
 		String mem_id = principal.getName();
@@ -102,39 +109,49 @@ public class MemberController {
 		return "member/role";
 	}
 	
+	//회원정보수정 페이지 -> 패스워드 재입력 요청페이지
 	@RequestMapping(value = "/member/info", method = RequestMethod.GET)
 	public String checkMember() {
 		return "/member/checkMember";
 	}
 	
+	//회원정보수정 페이지
 	@RequestMapping(value = "/member/info", method = RequestMethod.POST)
 	public String memberInfo(Principal principal, String mem_pw, Model model) {
 		String mem_id = principal.getName();
+		//인증 성공 시
 		if(memberService.checkPw(mem_id, mem_pw)) {
 			MemberDTO memberDto = memberDao.findById(mem_id);
 			if(memberDto.getMem_mail()==null) memberDto.setMem_mail("등록된 이메일이 없습니다.");			
 			model.addAttribute("memberDto",memberDto);
 			return "/member/memberInfo";
 		}
+		//인증 실패 시
 		return "/member/fail";
 	}
 	
+	//이메일 변경,등록시 인증메일 전송
 	@ResponseBody
 	@RequestMapping("/member/info/authMail")
 	public void authMail(Principal principal, String mail) {
 		String mem_id = principal.getName();
 		memberService.authMail(mem_id, mail);
 	}
+	
+	//이메일 변경
 	@ResponseBody
 	@RequestMapping("/member/info/changeMail")
 	public int changeMail(Principal principal, String auth_key) {
 		String mem_id = principal.getName();
+		//이메일 인증 성공 시
 		if(memberService.changeMail(mem_id, auth_key)) {
 			return 1;
-		}else {
+		}else {  //이메일 인증 실패 시
 			return 0;
 		}
 	}
+	
+	//회원정보 수정요청 시  처리
 	@ResponseBody
 	@RequestMapping("/member/info/modify")
 	public void modify(Principal principal, @RequestBody MemberDTO memberDto, Errors errors, 
@@ -153,6 +170,7 @@ public class MemberController {
 					memberDto.getMem_addr1(), memberDto.getMem_addr2());
 	}
 	
+	//패스워드 변경요청 시 처리
 	@ResponseBody
 	@RequestMapping("/member/info/changePassword")
 	public int changePassword(Principal principal, @RequestBody HashMap<String, String> map, Errors errors, 

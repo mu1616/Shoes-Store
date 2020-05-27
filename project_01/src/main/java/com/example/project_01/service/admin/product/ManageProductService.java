@@ -25,6 +25,7 @@ public class ManageProductService extends ProductService {
 	@Autowired
 	ManageFileService fileService;
 
+	//상품 등록
 	@Transactional
 	public void register(ProductEntity productEntity, MultipartFile files, int[] mainDisplay, int size[], int count[]) {
 		String fullName = fileService.fileUpload(files);
@@ -37,7 +38,6 @@ public class ManageProductService extends ProductService {
 				productDao.addProductMainDisplay(productEntity.getProduct_idx(), mainDisplay[i]);
 			}
 		}
-
 		// stock 테이블에 추가
 		if (size != null) {
 			for (int i = 0; i < size.length; i++) {
@@ -45,7 +45,8 @@ public class ManageProductService extends ProductService {
 			}
 		}
 	}
-
+	
+	//상품정보 수정
 	@Transactional
 	public void modifyProduct(ProductEntity productEntity, MultipartFile files, int product_idx) {
 		if (files != null) {

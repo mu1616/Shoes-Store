@@ -12,12 +12,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		(product_idx, size, count)
 		values (#{product_idx}, #{size}, #{count})
 	</insert>
+	
 	<!-- 특정 상품의 재고정보 select -->
 	<select id="selectByProduct" resultType = "com.example.project_01.model.stock.dto.StockDTO">
 		select size, count
 		from stock
 		where product_idx=#{product_idx}
 	</select>
+	
 	<!-- 재고 추가 -->
 	<update id="addStock">
 		UPDATE stock AS a
@@ -28,16 +30,19 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			+ #{add}
 		WHERE a.product_idx = #{product_idx} AND a.size = #{size}
 	</update>
+	
 	<!-- 재고 삭제 -->
 	<delete id="deleteStock">
 		delete from stock
 		where product_idx=#{product_idx} and size=#{size}
 	</delete>
+	
 	<!-- 특정 상품,사이즈의 재고 select -->
 	<select id="getStock" resultType="int">
 		select count from stock
 		where product_idx=#{product_idx} and size=#{size}
 	</select>
+	
 	<!-- 재고 수정 -->
 	<update id="updateStock">
 		update stock

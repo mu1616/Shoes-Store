@@ -26,6 +26,7 @@ public class CartController {
 	@Autowired
 	CartService cartService;
 	
+	//장바구니에 상품 추가
 	@ResponseBody
 	@RequestMapping("/cart/insert")
 	public String insertCart(@RequestBody CartDTO [] cartList, Principal principal) {
@@ -33,6 +34,7 @@ public class CartController {
 		return "hi";
 	}
 	
+	//장바구니 리스트 페이지
 	@RequestMapping("/cart/list")
 	public String cartList(Principal principal, Model model) {
 		List<CartDTO> cartList = cartDao.selectCart(principal.getName());
@@ -47,6 +49,7 @@ public class CartController {
 		return "cart/cartList";
 	}
 	
+	//장바구니 상품 삭제시 처리
 	@ResponseBody
 	@RequestMapping("/cart/deleteProduct")
 	public void deleteProduct(@RequestParam("idx") String[] idx, Principal principal) {

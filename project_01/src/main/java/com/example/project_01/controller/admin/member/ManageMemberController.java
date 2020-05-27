@@ -27,6 +27,7 @@ public class ManageMemberController {
 	@Autowired
 	PageService pageService;
 	
+	//회원정보 리스트 페이지
 	@RequestMapping("/admin/member/list/{idx}")
 	public String memberList(Model model, 
 			@PathVariable(value = "idx", required = false) int currentPage, 
@@ -49,12 +50,15 @@ public class ManageMemberController {
 		model.addAttribute("roleList",memberDao.selectRole());
 		return "admin/admin_memberlist";
 	}
+	
+	//회원 삭제(탈퇴)시 처리
 	@ResponseBody
 	@RequestMapping("/admin/member/delete")
 	public void deleteMember(int mem_idx) {
 		memberDao.deleteOne(mem_idx);
 	}
 	
+	//회원 상세정보 페이지
 	@ResponseBody
 	@RequestMapping("/admin/member/detail")
 	public MemberDTO memberDetail(int mem_idx) {

@@ -31,7 +31,7 @@ public class ManageProductQnaController {
 	ProductDAO productDao;
 	@Autowired
 	PageService pageService;
-	
+	//상품문의 리스트페이지
 	@RequestMapping("/admin/board/qna/{idx}")
 	public String qnaList(@PathVariable("idx")int currentPage, Model model, SearchQnaDTO searchQnaDto) {
 		if(searchQnaDto.getQna_member().equals(""))
@@ -46,6 +46,7 @@ public class ManageProductQnaController {
 		model.addAttribute("searchQnaDto",searchQnaDto);
 		return "admin/admin_productQna";
 	}
+	//상품문의 상세정보 페이지
 	@RequestMapping(value= "/admin/board/qna/detail", method=RequestMethod.GET)
 	public String qnaDetail(int qna_idx,int qna_product, Model model) {
 		ProductDTO productDto = productDao.selectProductDTO(qna_product);
@@ -54,11 +55,15 @@ public class ManageProductQnaController {
 		model.addAttribute("qnaDto",qnaDto);
 		return "popup/qnaDetail";
 	}
+	
+	//상품문의 답변작성 요청시 처리
 	@ResponseBody
 	@RequestMapping(value= "/admin/board/qna/detail", method=RequestMethod.POST)
 	public void updateAnswer(int qna_idx, String qna_answer) {
 		qnaDao.updateAnswer(qna_idx, qna_answer);	
 	}
+	
+	//상품문의 삭제요청 처리
 	@ResponseBody
 	@RequestMapping("/admin/board/qna/delete")
 	public void deleteOne(int qna_idx) {

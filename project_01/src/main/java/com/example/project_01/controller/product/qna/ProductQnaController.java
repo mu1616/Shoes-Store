@@ -36,6 +36,7 @@ public class ProductQnaController {
 	@Autowired
 	ManageProductQnaService productQnaService;
 	
+	//상품문의 작성 폼 페이지
 	@RequestMapping(value="/product/qna/{product_idx}" , method = RequestMethod.GET)
 	public String qnaGet(@PathVariable(value = "product_idx", required = false)int product_idx,
 			Model model) {
@@ -44,14 +45,14 @@ public class ProductQnaController {
 		return "popup/productQnA";
 	}
 	
-	//QnA 등록
+	//상품문의 등록
 	@ResponseBody
 	@RequestMapping(value="/product/qna", method = RequestMethod.POST)
 	public void qnaPost(QnaDTO qnaDto) {
 		qnaDao.insert(qnaDto);
 	}
 	
-	//QnA 내용 출력
+	//상품문의 내용 출력
 	@RequestMapping("/product/qna/qnaShow")
 	public String qnaShow(int currentPage, int qna_product, Model model) {
 		SearchQnaDTO searchQnaDto = new SearchQnaDTO();
@@ -64,7 +65,7 @@ public class ProductQnaController {
 		return "product/qnaTable";
 	}
 	
-	//Qna 비밀글 보기
+	//상품문의 비밀글 보기
 	@ResponseBody
 	@RequestMapping("/product/qna/showSecret")
 	public QnaDTO showSecret(int qna_idx, Principal principal) {
@@ -74,7 +75,7 @@ public class ProductQnaController {
 		return qnaDto;
 	}
 	
-	//Qna 삭제
+	//상품문의 삭제
 	@ResponseBody
 	@RequestMapping("/product/qna/delete")
 	public String deleteOne(Principal principal, int qna_idx)  {
@@ -89,6 +90,7 @@ public class ProductQnaController {
 		return msg;
 	}
 	
+	//내가 작성한 상품문의 리스트 페이지
 	@RequestMapping("/product/qna/myqna/{currentPage}")
 	public String myqna(Principal principal, Model model,@PathVariable("currentPage")int currentPage) {
 		String mem_id = principal.getName();
