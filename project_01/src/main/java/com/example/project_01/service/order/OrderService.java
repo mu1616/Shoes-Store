@@ -12,6 +12,7 @@ import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -41,10 +42,10 @@ public class OrderService {
 	OrderDAO orderDao;
 	@Autowired
 	MemberDAO memberDao;
-
-	private static final String SECRET_KEY = "PJQ4LCn15b8PLKGZXAFnv5RjpUaG8LMYvD2gfqikBrancRm9r2xX7ogwjqdsc0rHDuYTUgewHoTUfg3H";
-	private static final String REST_KEY = "2481756821864944";
-	IamportClient client = new IamportClient(REST_KEY, SECRET_KEY);
+	@Value("${rest_key}")
+	String rest_key;
+	@Value("${secret_key}")
+	String secret_key;
 
 	// 품절 체크
 	public List<CartDTO> checkSoldOut(int[] size, int[] product, int[] count) {
@@ -127,6 +128,7 @@ public class OrderService {
 	// 구매 취소(한 상품 취소)
 	@Transactional
 	public void cancelOne(MemberDTO memberDto, OrderDTO orderDto) {
+		IamportClient client = new IamportClient(rest_key, secret_key);
 		//주문 취소 (DB작업)
 		orderCancel(memberDto, orderDto);
 		//결제취소
@@ -169,8 +171,9 @@ public class OrderService {
 
 	}
 	
-	//옳바른 주문요청인지 확인
+	//올바른 주문요청인지 확인
 	public int validate(String imp_uid, String merchant_uid, MemberDTO memberDto) {
+		IamportClient client = new IamportClient(rest_key, secret_key);
 		int amount = 0;
 		List<OrderDTO> orderList = orderDao.selectByMerchantUid(merchant_uid);
 		// 인증 체크
@@ -194,6 +197,7 @@ public class OrderService {
 				return 0;
 			}
 		} catch (IamportResponseException e) {
+			System.out.println("2");
 			System.out.println(e.getMessage());
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -203,12 +207,14 @@ public class OrderService {
 	}
 
 	public void getToken() {
+		IamportClient client = new IamportClient(rest_key, secret_key);
 		try {
 			IamportResponse<AccessToken> auth_response = client.getAuth();
 
 			assertNotNull(auth_response.getResponse());
 			assertNotNull(auth_response.getResponse().getToken());
 		} catch (IamportResponseException e) {
+			System.out.println("1");
 			System.out.println(e.getMessage());
 		} catch (IOException e) {
 			// 서버 연결 실패

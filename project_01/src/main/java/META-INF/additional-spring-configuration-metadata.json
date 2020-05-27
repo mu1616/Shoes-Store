@@ -8,5 +8,15 @@
     "name": "smarteditor.upload.directory",
     "type": "java.lang.String",
     "description": "A description for 'smarteditor.upload.directory'"
+  },
+  {
+    "name": "rest_key",
+    "type": "java.lang.String",
+    "description": "A description for 'restkey'"
+  },
+  {
+    "name": "secret_key",
+    "type": "java.lang.String",
+    "description": "A description for 'secret_key'"
   }
 ]}
