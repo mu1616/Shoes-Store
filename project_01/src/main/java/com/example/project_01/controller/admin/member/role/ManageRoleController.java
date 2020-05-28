@@ -25,8 +25,10 @@ public class ManageRoleController {
 	public String memberRole(int mem_idx, Model model) {
 		MemberDTO memberDto = memberDao.findByIdx(mem_idx);
 		List<RoleDTO> roleList = memberDao.selectRole();
+		
 		model.addAttribute("memberDto", memberDto);
 		model.addAttribute("roleList",roleList);
+		
 		return "popup/memberRole";
 	}
 	

@@ -23,7 +23,7 @@ import com.example.project_01.model.product.dto.ProductDTO;
 import com.example.project_01.model.product.dto.ProductEntity;
 import com.example.project_01.model.search.dto.SearchDTO;
 import com.example.project_01.service.admin.product.ManageProductService;
-import com.example.project_01.service.pagination.PageService;
+import com.example.project_01.util.Paging;
 
 @Controller
 public class ManageProductController {
@@ -36,7 +36,7 @@ public class ManageProductController {
 	@Autowired
 	ProductDAO productDao;
 	@Autowired
-	PageService pageService;
+	Paging pageService;
 	@Autowired
 	CategoryDAO categoryDao;
 	@Autowired

@@ -20,8 +20,8 @@ import com.example.project_01.model.product.qna.dao.QnaDAO;
 import com.example.project_01.model.product.qna.dto.QnaDTO;
 import com.example.project_01.model.product.qna.dto.SearchQnaDTO;
 import com.example.project_01.service.admin.board.ManageProductQnaService;
-import com.example.project_01.service.pagination.PageService;
 import com.example.project_01.service.product.qna.ProductQnaServiceImpl;
+import com.example.project_01.util.Paging;
 
 @Controller
 public class ProductQnaController {
@@ -30,7 +30,7 @@ public class ProductQnaController {
 	@Autowired
 	ProductDAO productDao;
 	@Autowired
-	PageService pageService;
+	Paging pageService;
 	@Autowired
 	ProductQnaServiceImpl qnaService;
 	@Autowired
@@ -59,9 +59,11 @@ public class ProductQnaController {
 		searchQnaDto.setQna_product(qna_product);
 		int totalRecord = qnaDao.countByProduct(qna_product);
 		PageDTO pageDto = pageService.calPage(currentPage, 10, totalRecord, 5);
-		model.addAttribute("qna_pageDto",pageDto);
 		List<QnaDTO> qnaList = qnaService.selectQna(currentPage, 10, searchQnaDto);
+		
+		model.addAttribute("qna_pageDto",pageDto);
 		model.addAttribute("qnaList",qnaList);
+		
 		return "product/qnaTable";
 	}
 	
@@ -69,9 +71,16 @@ public class ProductQnaController {
 	@ResponseBody
 	@RequestMapping("/product/qna/showSecret")
 	public QnaDTO showSecret(int qna_idx, Principal principal) {
-		if(principal == null) return new QnaDTO();
+		//비로그인 일때
+		if(principal == null) 
+			return new QnaDTO();
+		
 		QnaDTO qnaDto = qnaDao.selectOne(qna_idx, new SearchQnaDTO());
-		if(!principal.getName().equals(qnaDto.getQna_member())) return new QnaDTO();
+		
+		//인가되지않은 사용자일 때
+		if(!principal.getName().equals(qnaDto.getQna_member())) 
+			return new QnaDTO();
+		
 		return qnaDto;
 	}
 	
@@ -81,12 +90,14 @@ public class ProductQnaController {
 	public String deleteOne(Principal principal, int qna_idx)  {
 		String msg = null;
 		QnaDTO qnaDto = qnaDao.selectOne(qna_idx, new SearchQnaDTO());
+		
 		if(principal.getName().equals(qnaDto.getQna_member())) {
 			qnaDao.deleteOne(qna_idx);
 			msg = "삭제하였습니다.";
 		}else {
 			msg = "권한없음";
 		}
+		
 		return msg;
 	}
 	
@@ -96,15 +107,20 @@ public class ProductQnaController {
 		String mem_id = principal.getName();
 		SearchQnaDTO searchQnaDto = new SearchQnaDTO();
 		searchQnaDto.setQna_member(mem_id);
+		
 		int totalRecord = qnaDao.countQna(searchQnaDto);
 		PageDTO pageDto = pageService.calPage(currentPage, 10, totalRecord, 10);
 		List<QnaDTO> qnaList = productQnaService.selectQna(currentPage, 10, searchQnaDto);
 		List<ProductDTO> productList = new ArrayList<>();
+		
+		//상품문의에 해당하는 상품의 정보 가져오기
 		for(QnaDTO qnaDto : qnaList)
 			productList.add(productDao.selectProductDTO(qnaDto.getQna_product()));
+		
 		model.addAttribute("pageDto",pageDto);
 		model.addAttribute("qnaList",qnaList);
 		model.addAttribute("productList",productList);
+		
 		return "product/myqna";
 	}
 }

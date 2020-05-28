@@ -30,9 +30,12 @@ public class SetRoleAspect {
 		Object[] args = joinPoint.getArgs();
 		MemberDTO memberDto = (MemberDTO) args[0]; // 중요!
 		memberDto = memberDao.findById(memberDto.getMem_id());
+		
+		//어드민일 경우 변경 X
 		if (memberDto.getMem_role().equals("ADMIN"))
 			return result;
-		memberDao.updateMemberRole(memberDto.getMem_id());
+		
+		memberDao.updateMemberRole(memberDto.getMem_id());	
 		return result;
 	}
 

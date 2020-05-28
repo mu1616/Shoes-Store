@@ -17,8 +17,8 @@ import com.example.project_01.model.product.dto.ProductDTO;
 import com.example.project_01.model.product.qna.dao.QnaDAO;
 import com.example.project_01.model.product.qna.dto.QnaDTO;
 import com.example.project_01.model.product.qna.dto.SearchQnaDTO;
-import com.example.project_01.service.pagination.PageService;
 import com.example.project_01.service.product.qna.ProductQnaService;
+import com.example.project_01.util.Paging;
 
 @Controller
 public class ManageProductQnaController {
@@ -30,28 +30,36 @@ public class ManageProductQnaController {
 	@Autowired
 	ProductDAO productDao;
 	@Autowired
-	PageService pageService;
+	Paging pageService;
+	
 	//상품문의 리스트페이지
 	@RequestMapping("/admin/board/qna/{idx}")
 	public String qnaList(@PathVariable("idx")int currentPage, Model model, SearchQnaDTO searchQnaDto) {
+		//작성자 필터링 
 		if(searchQnaDto.getQna_member().equals(""))
 			searchQnaDto.setQna_member("%");
+		
 		int totalRecord = qnaDao.countQna(searchQnaDto);
 		PageDTO pageDto = pageService.calPage(currentPage, 20, totalRecord, 10);
 		List<QnaDTO> qnaList = qnaService.selectQna(currentPage, 20, searchQnaDto);
+		
 		model.addAttribute("pageDto",pageDto);
 		model.addAttribute("qnaList",qnaList);
+		
 		if(searchQnaDto.getQna_member().equals("%"))
 			searchQnaDto.setQna_member("");
 		model.addAttribute("searchQnaDto",searchQnaDto);
+		
 		return "admin/admin_productQna";
 	}
+	
 	//상품문의 상세정보 페이지
 	@RequestMapping(value= "/admin/board/qna/detail", method=RequestMethod.GET)
 	public String qnaDetail(int qna_idx,int qna_product, Model model) {
 		ProductDTO productDto = productDao.selectProductDTO(qna_product);
-		model.addAttribute("productDto",productDto);	
 		QnaDTO qnaDto = qnaDao.selectOne(qna_idx, new SearchQnaDTO());
+		
+		model.addAttribute("productDto",productDto);	
 		model.addAttribute("qnaDto",qnaDto);
 		return "popup/qnaDetail";
 	}

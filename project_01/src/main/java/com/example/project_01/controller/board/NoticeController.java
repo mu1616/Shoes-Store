@@ -12,14 +12,14 @@ import com.example.project_01.model.notice.dao.NoticeDAO;
 import com.example.project_01.model.notice.dto.NoticeDTO;
 import com.example.project_01.model.pagination.dto.PageDTO;
 import com.example.project_01.service.board.NoticeService;
-import com.example.project_01.service.pagination.PageService;
+import com.example.project_01.util.Paging;
 
 @Controller
 public class NoticeController {
 	@Autowired
 	NoticeDAO noticeDao;
 	@Autowired
-	PageService pageService;
+	Paging pageService;
 	@Autowired
 	NoticeService noticeService;
 	
@@ -33,17 +33,22 @@ public class NoticeController {
 	@RequestMapping("/board/getList")
 	public String getList(String notice_type, int currentPage, Model model) {
 		if(notice_type.equals("notice")) notice_type = "공지사항";
+		
 		int totalRecord = noticeDao.selectCountByType(notice_type);
 		PageDTO pageDto = pageService.calPage(currentPage, 15, totalRecord, 10);
 		List<NoticeDTO> noticeList = noticeService.selectNotice(notice_type, currentPage, 15);
+		
 		model.addAttribute("noticeList",noticeList);
 		model.addAttribute("pageDto",pageDto);
+		
 		//공지사항 요청 시
 		if(notice_type.equals("공지사항"))
 			return "/board/noticeTable";
+		
 		//FAQ 요청 시
 		if(notice_type.equals("faq"))
 			return "/board/faqTable";
+		
 		return null;
 	}
 	

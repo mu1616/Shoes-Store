@@ -72,10 +72,14 @@ public class MemberController {
 	public String joinOk(@ModelAttribute MemberDTO memberDto, Errors errors, BindingResult bindingResult)
 			throws BindException {
 		new MemberValidator().validate(memberDto, errors);
-		if (errors.hasErrors()) {   //데이터 유효성 검증
+		
+		//데이터 유효성 검증
+		if (errors.hasErrors()) {   
 			throw new BindException(bindingResult);
 		}
+		
 		memberDto.setMem_pw(encoder.encode(memberDto.getMem_pw()));
+		
 		//동일정보 (동일한 핸드폰번호, 동일한 아이디) 있을 시 예외 처리
 		try {
 			memberDao.join(memberDto);
@@ -104,8 +108,10 @@ public class MemberController {
 		MemberDTO memberDto = memberDao.findById(mem_id);
 		List<RoleDTO> roleList = memberDao.selectRole();
 		roleList.remove(0);
+		
 		model.addAttribute("memberDto",memberDto);
 		model.addAttribute("roleList",roleList);
+		
 		return "member/role";
 	}
 	
@@ -119,6 +125,7 @@ public class MemberController {
 	@RequestMapping(value = "/member/info", method = RequestMethod.POST)
 	public String memberInfo(Principal principal, String mem_pw, Model model) {
 		String mem_id = principal.getName();
+		
 		//인증 성공 시
 		if(memberService.checkPw(mem_id, mem_pw)) {
 			MemberDTO memberDto = memberDao.findById(mem_id);
@@ -126,6 +133,7 @@ public class MemberController {
 			model.addAttribute("memberDto",memberDto);
 			return "/member/memberInfo";
 		}
+		
 		//인증 실패 시
 		return "/member/fail";
 	}

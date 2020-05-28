@@ -19,8 +19,8 @@ import com.example.project_01.model.product.dto.ProductDTO;
 import com.example.project_01.model.product.qna.dto.QnaDTO;
 import com.example.project_01.model.review.dao.ReviewDAO;
 import com.example.project_01.model.review.dto.ReviewDTO;
-import com.example.project_01.service.pagination.PageService;
 import com.example.project_01.service.product.review.ProductReviewService;
+import com.example.project_01.util.Paging;
 
 @Controller
 public class ProductReviewController {
@@ -33,25 +33,30 @@ public class ProductReviewController {
 	@Autowired
 	ProductReviewService productReviewService;
 	@Autowired
-	PageService pageService;
+	Paging pageService;
 	
 	//구매후기작성 페이지
 	@RequestMapping("/product/review/writeForm/{order_code}")
 	public String writeForm(@PathVariable("order_code")String order_code, Model model) {
 		ProductDTO productDto = productDao.selectProductDTO(orderDao.selectByCode(order_code).getProduct_idx());
+		
 		model.addAttribute("productDto",productDto);
 		model.addAttribute("order_code",order_code);
+		
 		return "popup/reviewForm";
 	}
 	
-	//구매후기작성 요청시 처리
+	//구매후기 작성 요청시 처리
 	@ResponseBody
 	@RequestMapping("/product/review/write/{order_code}")
 	public void write(@PathVariable("order_code")String order_code, String review_contents, int review_rating,
 			Principal principal) {
 		OrderDTO orderDto = orderDao.selectByCode(order_code);
+		
 		//상품후기를 작성할 수 있는 권한이 없다면 return
-		if(!orderDto.getMem_id().equals(principal.getName())) return;
+		if(!orderDto.getMem_id().equals(principal.getName()))
+			return;
+		
 		ReviewDTO reviewDto = new ReviewDTO();
 		reviewDto.setReview_contents(review_contents);
 		reviewDto.setReview_product(orderDto.getProduct_idx());
@@ -79,8 +84,10 @@ public class ProductReviewController {
 	public String show(int currentPage, int review_product, int totalRecord, Model model) {
 		PageDTO pageDto = pageService.calPage(1, 10, totalRecord, 5);
 		List<ReviewDTO> reviewList = productReviewService.selectByProduct(currentPage, 10, review_product);
+		
 		model.addAttribute("pageDto", pageDto);
 		model.addAttribute("reviewList", reviewList);
+		
 		return "product/reviewTable";
 	}
 	
@@ -91,11 +98,15 @@ public class ProductReviewController {
 		PageDTO pageDto = pageService.calPage(currentPage, 10, totalRecord, 10);
 		List<ReviewDTO> reviewList = productReviewService.selectByMember(currentPage, 10, principal.getName());
 		List<ProductDTO> productList = new ArrayList<>();
+		
+		//구매후기에 해당하는 상품의 정보 가져오기
 		for(ReviewDTO reviewDto : reviewList)
 			productList.add(productDao.selectProductDTO(reviewDto.getReview_product()));
+		
 		model.addAttribute("pageDto", pageDto);
 		model.addAttribute("reviewList", reviewList);
 		model.addAttribute("productList", productList);
+		
 		return "product/myReview";
 	}
 	

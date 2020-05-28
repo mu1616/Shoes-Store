@@ -30,14 +30,17 @@ public class ManageProductService extends ProductService {
 	public void register(ProductEntity productEntity, MultipartFile files, int[] mainDisplay, int size[], int count[]) {
 		String fullName = fileService.fileUpload(files);
 		productEntity.setProduct_image(fullName);
+		
 		// prorduct테이블에 추가
 		productDao.productRegister(productEntity);
+		
 		// display 테이블에 추가
 		if (mainDisplay != null) {
 			for (int i = 0; i < mainDisplay.length; i++) {
 				productDao.addProductMainDisplay(productEntity.getProduct_idx(), mainDisplay[i]);
 			}
 		}
+		
 		// stock 테이블에 추가
 		if (size != null) {
 			for (int i = 0; i < size.length; i++) {
@@ -49,13 +52,16 @@ public class ManageProductService extends ProductService {
 	//상품정보 수정
 	@Transactional
 	public void modifyProduct(ProductEntity productEntity, MultipartFile files, int product_idx) {
-		if (files != null) {
+		if (files != null) {   //상품 이미지 변경할 때
 			String fullName = fileService.fileUpload(files);
 			productEntity.setProduct_image(fullName);
-		} else {
+		} else {   // 상품 이미지 변경 안할 때
 			productEntity.setProduct_image(null);
 		}
+		
 		productDao.updateProduct(productEntity, product_idx);
+		
+		//진열안함으로 바꿨다면 메인진열에서도 제거
 		if (productEntity.getProduct_isdisplay() == 0)
 			productDao.delProductMainDisplayByProduct(product_idx);
 	}

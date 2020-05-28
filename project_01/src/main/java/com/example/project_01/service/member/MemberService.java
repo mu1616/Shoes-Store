@@ -43,8 +43,10 @@ public class MemberService implements UserDetailsService{
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		MemberDTO memberDto = memberDao.findById(username);
+		
 		List<GrantedAuthority> authorities = new ArrayList<>();
 		authorities.add(new SimpleGrantedAuthority("ROLE_"+memberDto.getMem_role()));
+		
 		return new User(memberDto.getMem_id(),memberDto.getMem_pw(),authorities);
 	}
 	
@@ -53,9 +55,11 @@ public class MemberService implements UserDetailsService{
 	public void authMail(String mem_id, String mail) {
 		String auth_key = getRandomKey();
 		HashMap<String, String> map = memberDao.selectAuthMailInfo(mem_id);
+		
+		//처음 인증 요청했을 때 
 		if(map==null) {
 			memberDao.insertAuthMailInfo(mem_id, mail, auth_key);
-		}else {
+		}else { //이전에 인증 요청을 했었을 때 (DB에 정보 남아있음)
 			memberDao.updateAuthMailInfo(mem_id, mail, auth_key);
 			String to = mail;
 			String subject = "[Shoes Factory] 이메일 인증요청";
@@ -64,12 +68,13 @@ public class MemberService implements UserDetailsService{
 		}
 	}
 	
+	//메일 변경
 	@Transactional
 	public boolean changeMail(String mem_id, String auth_key) {
 		HashMap<String ,String> map = memberDao.selectAuthMailInfo(mem_id);
-		if(!auth_key.equals(map.get("auth_key"))){
+		if(!auth_key.equals(map.get("auth_key"))){ //인증 정보가 틀리다면
 			return false;
-		}else {
+		}else {  //인증정보가 맞다면
 			memberDao.updateMemberMail(mem_id, map.get("mail"));
 			return true;
 		}

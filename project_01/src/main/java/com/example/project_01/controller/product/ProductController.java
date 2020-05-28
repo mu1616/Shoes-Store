@@ -22,9 +22,9 @@ import com.example.project_01.model.product.qna.dto.SearchQnaDTO;
 import com.example.project_01.model.search.dto.SearchDTO;
 import com.example.project_01.model.stock.dao.StockDAO;
 import com.example.project_01.model.stock.dto.StockDTO;
-import com.example.project_01.service.pagination.PageService;
 import com.example.project_01.service.product.ProductService;
 import com.example.project_01.service.product.qna.ProductQnaServiceImpl;
+import com.example.project_01.util.Paging;
 
 @Controller
 public class ProductController {
@@ -41,21 +41,25 @@ public class ProductController {
 	@Autowired
 	ProductQnaServiceImpl qnaService;
 	@Autowired
-	PageService pageService;
+	Paging pageService;
+	
 	//상품 리스트 페이지
 	@RequestMapping("/product/list/{idx}")
 	public String productList(Model model, @PathVariable(value = "idx", required = false) int currentPage,
 			SearchDTO searchDto, String searchWord) {
 		searchDto.setProduct_isDisplay("1");
+		
 		if(searchWord != null) { //검색어를 통해 요청한 경우
 			searchDto.setOption(1);
 			searchDto.setProduct_brand("%"+searchWord+"%");
 			searchDto.setProduct_category("%"+searchWord+"%");
 			searchDto.setProduct_name("%"+searchWord+"%");
 		}			
+		
 		int totalRecord = productDao.countProduct(searchDto);
 		PageDTO pageDto = pageService.calPage(currentPage, 20, totalRecord, 10);
-		List<ProductDTO> productList = productService.selectProduct(currentPage, 20, searchDto);	
+		List<ProductDTO> productList = productService.selectProduct(currentPage, 20, searchDto);
+		
 		model.addAttribute("productList",productList);
 		model.addAttribute("pageDto", pageDto);
 		model.addAttribute("searchDto",searchDto);
@@ -64,8 +68,10 @@ public class ProductController {
 			model.addAttribute("category", searchDto.getProduct_category());
 		else  //검색어를 통해 요청한 경우
 			model.addAttribute("searchWord",searchWord);
+		
 		return "product/productList";
 	}
+	
 	//상품 상세정보 페이지
 	@RequestMapping("/product/detail")
 	public String productDetail(String product_idx, Model model) {
@@ -73,8 +79,10 @@ public class ProductController {
 		searchDto.setProduct_idx(product_idx);
 		ProductDTO productDto = productDao.selectProduct(0, 1, searchDto).get(0);
 		List<StockDTO> stockList = stockDao.selectByProduct(productDto.getProduct_idx());
+		
 		model.addAttribute("productDto",productDto);
 		model.addAttribute("stockList", stockList);
+		
 		return "product/productDetail";
 	}
 }

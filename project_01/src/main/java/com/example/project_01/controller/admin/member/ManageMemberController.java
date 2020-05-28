@@ -16,7 +16,7 @@ import com.example.project_01.model.member.dto.RoleDTO;
 import com.example.project_01.model.member.dto.SearchMemberDTO;
 import com.example.project_01.model.pagination.dto.PageDTO;
 import com.example.project_01.service.admin.member.ManageMemberService;
-import com.example.project_01.service.pagination.PageService;
+import com.example.project_01.util.Paging;
 
 @Controller
 public class ManageMemberController {
@@ -25,13 +25,14 @@ public class ManageMemberController {
 	@Autowired
 	ManageMemberService memberService;
 	@Autowired
-	PageService pageService;
+	Paging pageService;
 	
 	//회원정보 리스트 페이지
 	@RequestMapping("/admin/member/list/{idx}")
 	public String memberList(Model model, 
 			@PathVariable(value = "idx", required = false) int currentPage, 
 			String searchOption, SearchMemberDTO searchMemberDto, String search) {
+		// 검색조건 필터링
 		if(searchOption == null || searchOption.equals("검색분류"))
 			searchMemberDto.setMem_id("%");
 		else if(searchOption.equals("아이디")) {
@@ -39,15 +40,18 @@ public class ManageMemberController {
 			if(search.equals(""))
 				searchMemberDto.setMem_id("%");
 		}
+		
 		int totalRecord = memberDao.countMember(searchMemberDto);
 		PageDTO pageDto = pageService.calPage(currentPage, 20, totalRecord, 10);
 		List<MemberDTO> memberList = memberService.selectMember(currentPage, 20, searchMemberDto);
+		
 		model.addAttribute("memberList",memberList);
 		model.addAttribute("pageDto",pageDto);
 		model.addAttribute("searchOption",searchOption);
 		searchMemberDto.setMem_id(search);
 		model.addAttribute("searchMemberDto",searchMemberDto);
 		model.addAttribute("roleList",memberDao.selectRole());
+		
 		return "admin/admin_memberlist";
 	}
 	

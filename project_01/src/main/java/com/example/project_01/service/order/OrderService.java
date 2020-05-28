@@ -50,9 +50,10 @@ public class OrderService {
 	// 품절 체크
 	public List<CartDTO> checkSoldOut(int[] size, int[] product, int[] count) {
 		List<CartDTO> soldOutList = new ArrayList<>();
+		
 		for (int i = 0; i < product.length; i++) {
 			int stock = stockDao.getStock(product[i], size[i]);
-			if (stock < count[i]) {
+			if (stock < count[i]) {   //재고보다 구매하려는 상품의 수가 더 많다면
 				CartDTO dto = new CartDTO();
 				dto.setCart_count(stock);
 				dto.setCart_size(size[i]);
@@ -60,6 +61,7 @@ public class OrderService {
 				soldOutList.add(dto);
 			}
 		}
+		
 		return soldOutList;
 	}
 
@@ -78,19 +80,23 @@ public class OrderService {
 			cartDto.setProduct_price(productDto.getProduct_price());
 			orderList.add(cartDto);
 		}
+		
 		return orderList;
 	}
 	
 	//결제 요청 시 주문요청을 DB에 넣고, 결제 정보를 담아 Payment 객체 반환
 	@Transactional
 	public PaymentInfo insertOrder(MemberDTO memberDto, int[] size, int[] count, int[] product) {
+		// 고유 결제번호 생성
 		Calendar calendar = Calendar.getInstance();
 		Date date = calendar.getTime();
 		String time = (new SimpleDateFormat("yyyyMMddHHmmss").format(date));
 		String member_idx = Integer.toString(memberDao.findById(memberDto.getMem_id()).getMem_idx());
-		OrderDTO[] orderList = new OrderDTO[product.length];
 		String merchant_uid = memberDto.getMem_id() + time;
-		int amount = 0;
+		
+		//상품 주문정보 OrderDTO에 저장
+		OrderDTO[] orderList = new OrderDTO[product.length];
+		int amount = 0;	
 		for (int i = 0; i < orderList.length; i++) {
 			orderList[i] = new OrderDTO();
 			orderList[i].setProduct_idx(product[i]);
@@ -110,6 +116,7 @@ public class OrderService {
 			memberDao.updateTotal(memberDto.getMem_id(), orderList[i].getPay());
 			amount = amount + orderList[i].getPay();
 		}
+		
 		//주문 테이블에 추가, 재고업데이트, 상품판매수 업데이트
 		for (OrderDTO orderDto : orderList) {
 			orderDao.insertOrder(orderDto);
@@ -117,6 +124,7 @@ public class OrderService {
 			stockDao.updateStock(orderDto.getProduct_idx(), orderDto.getSize(), stock - orderDto.getCount());
 			productDao.updateSaleCount(orderDto.getProduct_idx(), orderDto.getCount());
 		}
+		
 		//결제정보 Payment 객체에 담고 반환
 		PaymentInfo payment = new PaymentInfo();
 		payment.setMerchant_uid(merchant_uid);
@@ -129,8 +137,10 @@ public class OrderService {
 	@Transactional
 	public void cancelOne(MemberDTO memberDto, OrderDTO orderDto) {
 		IamportClient client = new IamportClient(rest_key, secret_key);
+		
 		//주문 취소 (DB작업)
 		orderCancel(memberDto, orderDto);
+		
 		//결제취소
 		String merchant_uid = orderDto.getMerchant_uid();
 		getToken();
@@ -142,7 +152,6 @@ public class OrderService {
 		} catch (IamportResponseException e) {
 			System.out.println(e.getMessage());
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -152,11 +161,14 @@ public class OrderService {
 	public void orderCancel(MemberDTO memberDto, OrderDTO orderDto) {
 		//오더 테이블에서 주문 삭제
 		orderDao.deleteByCode(orderDto.getOrder_code());
+		
 		//멤버 테이블에서 총주문금액 업데이트
 		memberDao.updateTotal(memberDto.getMem_id(), -orderDto.getPay());
+		
 		//상품재고 업데이트
 		int stock = stockDao.getStock(orderDto.getProduct_idx(), orderDto.getSize());
 		stockDao.updateStock(orderDto.getProduct_idx(), orderDto.getSize(), stock + orderDto.getCount());
+		
 		//상품 판매수 업데이트
 		productDao.updateSaleCount(orderDto.getProduct_idx(), -orderDto.getCount());
 	}
@@ -176,31 +188,32 @@ public class OrderService {
 		IamportClient client = new IamportClient(rest_key, secret_key);
 		int amount = 0;
 		List<OrderDTO> orderList = orderDao.selectByMerchantUid(merchant_uid);
+		
 		// 인증 체크
 		if (!orderList.get(0).getMem_id().equals(memberDto.getMem_id()))
 			return 0;
+		
+		//결제금액 합산
 		for (OrderDTO orderDto : orderList)
 			amount = amount + orderDto.getPay();
-		getToken();
+		
+		getToken();	
 		try {
 			IamportResponse<Payment> payment_response = client.paymentByImpUid(imp_uid);
 			assertNotNull(payment_response.getResponse());
-			//System.out.println(payment_response.getResponse().getImpUid());
 			//System.out.println(payment_response.getResponse().getAmount());
+			
 			// 총 결제금액과 테이블에 저장된 금액이 다르다면 전액 취소, 테이블 롤백
 			if (payment_response.getResponse().getAmount().intValue() != amount) {
 				for (OrderDTO orderDto : orderList)
 					orderCancel(memberDto, orderDto);
 				CancelData cancel_data = new CancelData(imp_uid, true);
 				IamportResponse<Payment> cancel_response = client.cancelPaymentByImpUid(cancel_data);
-				//System.out.println(cancel_response.getMessage());
 				return 0;
 			}
 		} catch (IamportResponseException e) {
-			System.out.println("2");
 			System.out.println(e.getMessage());
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return 1;
@@ -214,7 +227,6 @@ public class OrderService {
 			assertNotNull(auth_response.getResponse());
 			assertNotNull(auth_response.getResponse().getToken());
 		} catch (IamportResponseException e) {
-			System.out.println("1");
 			System.out.println(e.getMessage());
 		} catch (IOException e) {
 			// 서버 연결 실패

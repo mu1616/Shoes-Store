@@ -13,14 +13,14 @@ import com.example.project_01.model.notice.dao.NoticeDAO;
 import com.example.project_01.model.notice.dto.NoticeDTO;
 import com.example.project_01.model.pagination.dto.PageDTO;
 import com.example.project_01.service.admin.board.ManageNoticeService;
-import com.example.project_01.service.pagination.PageService;
+import com.example.project_01.util.Paging;
 
 @Controller
 public class ManageNoticeController {
 	@Autowired
 	NoticeDAO noticeDao;
 	@Autowired
-	PageService pageService;
+	Paging pageService;
 	@Autowired
 	ManageNoticeService noticeService;
 	
@@ -29,10 +29,13 @@ public class ManageNoticeController {
 	public String writeNotice(Model model, String notice_idx) {
 		List<String> typeList = noticeDao.selectNoticeType();
 		model.addAttribute("typeList",typeList);
+		
+		//새 글 작성이 아니라 수정일 경우
 		if(notice_idx != null) {
 			NoticeDTO noticeDto = noticeDao.selectOne(Integer.parseInt(notice_idx));
 			model.addAttribute("noticeDto",noticeDto);
 		}
+		
 		return "admin/admin_writeNotice";
 	}
 	
@@ -58,8 +61,10 @@ public class ManageNoticeController {
 		int totalRecord = noticeDao.countRecord();
 		PageDTO pageDto = pageService.calPage(currentPage, 20, totalRecord, 10);
 		List<NoticeDTO> noticeList = noticeService.selectNotice(currentPage, 20);
+		
 		model.addAttribute("pageDto",pageDto);
 		model.addAttribute("noticeList",noticeList);
+		
 		return "admin/admin_noticeList.html";
 	}
 	

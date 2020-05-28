@@ -14,9 +14,11 @@ import com.example.project_01.model.pagination.dto.PageDTO;
 public class ManageOrderService {
 	@Autowired
 	OrderDAO orderDao;
-	//주문목록 조건에 맞게 필터링하여 리턴
+	//주문목록 검색조건에 맞게 필터링하여 리턴
 	public List<OrderDTO> orderList(int currentPage, int size, SearchOrderDTO searchOrderDto){
 		int start = (currentPage-1) * size;
+		
+		//검색조건 필터링
 		if(searchOrderDto.getSearchWord() != null && searchOrderDto.getSearchWord().equals(""))
 			searchOrderDto.setSearchWord("%");
 		
@@ -24,12 +26,14 @@ public class ManageOrderService {
 		
 		if(searchOrderDto.getSearchWord() != null && searchOrderDto.getSearchWord().equals("%"))
 			searchOrderDto.setSearchWord("");
+		
 		return orderList;
 	}
 	
 	//주문상태 업데이트
 	public void updateState(String order_code, String order_state) {
 		order_state = orderDao.selectByCode(order_code).getOrder_state();
+		
 		if(order_state.equals("배송준비중")) {
 			order_state = "배송중";
 		} else if(order_state.equals("배송중")) {
@@ -37,6 +41,7 @@ public class ManageOrderService {
 		} else if(order_state.equals("배송완료")) {
 			order_state = "구매확정";
 		}
+		
 		orderDao.updateState(order_code, order_state);
 	}
 }

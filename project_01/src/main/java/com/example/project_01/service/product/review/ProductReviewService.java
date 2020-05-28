@@ -24,13 +24,15 @@ public class ProductReviewService {
 		productDao.updateReviewCount(reviewDto.getReview_product(), 1);
 		productDao.updateRating(reviewDto.getReview_product());
 	}
-
+	
+	//특정 상품 구매후기 가져오기
 	public List<ReviewDTO> selectByProduct(int currentPage, int size, int review_product) {
 		int start = (currentPage - 1) * size;
 		List<ReviewDTO> reviewList = reviewDao.selectByProduct(review_product, start, size);
 		return reviewList;
 	}
 
+	//특정 회원 구매후기 가져오기
 	public List<ReviewDTO> selectByMember(int currentPage, int size, String review_member) {
 		int start = (currentPage - 1) * size;
 		List<ReviewDTO> reviewList = reviewDao.selectByMember(review_member, start, size);
@@ -41,6 +43,7 @@ public class ProductReviewService {
 	public void deleteReview(ReviewDTO reviewDto) {
 		reviewDao.deleteOne(reviewDto.getReview_ordercode());
 		productDao.updateReviewCount(reviewDto.getReview_product(), -1);
+		
 		//리뷰작성자가 0명이라면 0으로 나누지 못함 
 		if (productDao.selectOne(reviewDto.getReview_product()).getProduct_reviewcount() == 0) {
 			productDao.initRating(reviewDto.getReview_product()); //rating 을 0으로 초기화

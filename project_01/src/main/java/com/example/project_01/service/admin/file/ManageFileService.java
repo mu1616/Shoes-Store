@@ -44,6 +44,7 @@ public class ManageFileService {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		
 		// ex) /shoesfactory/img/filename 
 		return filePath + filename;   
 	}
