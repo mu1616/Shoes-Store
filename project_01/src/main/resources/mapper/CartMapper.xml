@@ -4,23 +4,23 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper
-	namespace="com.example.project_01.model.cart.dao.CartDAO">
+	namespace="com.example.store.model.cart.dao.CartDAO">
 
 <!-- 장바구니에  추가 -->
-<insert id="insertCart" parameterType = "com.example.project_01.model.cart.dto.CartDTO">
+<insert id="insertCart" parameterType = "com.example.store.model.cart.dto.CartDTO">
 	insert into cart
 	(cart_member, cart_product, cart_size, cart_count)
 	values (#{cart_member},#{cart_product},#{cart_size},#{cart_count})
 </insert>
 
 <!-- 특정 회원의 장바구니 정보 select -->
-<select id="selectCart" resultType="com.example.project_01.model.cart.dto.CartDTO">
+<select id="selectCart" resultType="com.example.store.model.cart.dto.CartDTO">
 	select * from cart
 	where cart_member = #{cart_member}
 </select>
 
 <!-- 장바구니에 담긴 특정 레코드 select -->
-<select id="selectOne" resultType="com.example.project_01.model.cart.dto.CartDTO">
+<select id="selectOne" resultType="com.example.store.model.cart.dto.CartDTO">
 	select * from cart
 	where cart_idx = #{cart_idx};
 </select>

@@ -4,10 +4,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <!-- 상품테이블, display(진열) 테이블  -->
 <mapper
-	namespace="com.example.project_01.model.product.dao.ProductDAO">
+	namespace="com.example.store.model.product.dao.ProductDAO">
 	<!-- 상품 등록  -->
 	<insert id="productRegister"
-		parameterType="com.example.project_01.model.product.dto.ProductEntity"
+		parameterType="com.example.store.model.product.dto.ProductEntity"
 		useGeneratedKeys="true" keyProperty="product_idx">
 		insert into product
 		(product_name,product_price,product_brand,product_category,
@@ -18,7 +18,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</insert>
 	
 	<!-- 조건에 맞는 상품 개수 가져오기 -->
-	<select id="countProduct"  parameterType="com.example.project_01.model.search.dto.SearchDTO" 
+	<select id="countProduct"  parameterType="com.example.store.model.search.dto.SearchDTO" 
 		resultType="int">
 		SELECT count(*)        
 		FROM product
@@ -37,8 +37,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</select>
 
 	<!-- 조건에 맞는 상품 가져오기 -->
-	<select id="selectProduct"  parameterType="com.example.project_01.model.search.dto.SearchDTO"
-		resultType="com.example.project_01.model.product.dto.ProductDTO">
+	<select id="selectProduct"  parameterType="com.example.store.model.search.dto.SearchDTO"
+		resultType="com.example.store.model.product.dto.ProductDTO">
 		SELECT *
 		FROM product
 		<if test="searchDto.option == 0">
@@ -79,13 +79,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</delete>
 	
 	<!-- prdocut_idx로 상품검색, ProductEntity 반환 -->
-	<select id="selectOne" resultType="com.example.project_01.model.product.dto.ProductEntity">
+	<select id="selectOne" resultType="com.example.store.model.product.dto.ProductEntity">
 		select * from product
 		where product_idx=#{product_idx}
 	</select>
 	
 	<!-- 상품정보 수정 -->
-	<update id="updateProduct" parameterType="com.example.project_01.model.product.dto.ProductEntity">
+	<update id="updateProduct" parameterType="com.example.store.model.product.dto.ProductEntity">
 		update product
 		set product_name = #{productEntity.product_name}, product_price = #{productEntity.product_price},
 			product_brand = #{productEntity.product_brand}, product_category = #{productEntity.product_category},
@@ -97,14 +97,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</update>
 	
 	<!-- prdocut_idx로 상품검색, ProductDTO 반환 -->
-	<select id="selectProductDTO" resultType="com.example.project_01.model.product.dto.ProductDTO">
+	<select id="selectProductDTO" resultType="com.example.store.model.product.dto.ProductDTO">
 		SELECT *
 		FROM product
 		where product_idx = #{product_idx}
 	</select>
 	
 	<!-- 메인진열 상품 가져오기 -->
-	<select id="selectProductByDisplay" resultType="com.example.project_01.model.product.dto.ProductDTO">
+	<select id="selectProductByDisplay" resultType="com.example.store.model.product.dto.ProductDTO">
 		SELECT p.*, d.*
 		from display as d, product as p
 		where display_md = #{display_md} and p.product_idx = d.display_product

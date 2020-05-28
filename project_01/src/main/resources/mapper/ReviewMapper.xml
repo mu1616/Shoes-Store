@@ -4,9 +4,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <!-- 구매후기 테이블 -->
 <mapper
-	namespace="com.example.project_01.model.review.dao.ReviewDAO">
+	namespace="com.example.store.model.review.dao.ReviewDAO">
 	<!-- 구매후기 작성 -->
-	<insert id="insert" parameterType = "com.example.project_01.model.review.dto.ReviewDTO">
+	<insert id="insert" parameterType = "com.example.store.model.review.dto.ReviewDTO">
 		insert into review
 		(review_product, review_contents, review_rating, review_member, review_ordercode)
 		values 
@@ -14,7 +14,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</insert>
 	
 	<!-- review_ordercode에 맞는 레코드 Select -->
-	<select id="selectOne" resultType="com.example.project_01.model.review.dto.ReviewDTO">
+	<select id="selectOne" resultType="com.example.store.model.review.dto.ReviewDTO">
 		select * from review
 		where review_ordercode = #{review_ordercode}
 	</select>
@@ -26,14 +26,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</select>
 	
 	<!-- 특정 상품의 구매후기가져오기 -->
-	<select id="selectByProduct" resultType = "com.example.project_01.model.review.dto.ReviewDTO">
+	<select id="selectByProduct" resultType = "com.example.store.model.review.dto.ReviewDTO">
 		select * from review
 		where review_product = #{review_product}
 		limit #{start}, #{length}
 	</select>
 	
 	<!-- 특정 회원의 구매후기 가져오기 -->
-	<select id="selectByMember" resultType = "com.example.project_01.model.review.dto.ReviewDTO">
+	<select id="selectByMember" resultType = "com.example.store.model.review.dto.ReviewDTO">
 		select * from review
 		where review_member = #{review_member}
 		limit #{start}, #{length}

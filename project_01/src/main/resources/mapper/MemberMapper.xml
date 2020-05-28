@@ -3,10 +3,10 @@
 PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.example.project_01.model.member.dao.MemberDAO">
+<mapper namespace="com.example.store.model.member.dao.MemberDAO">
 	
 	<!-- 회원아이디에 맞는 레코드 가져오기 -->
-	<select id="findById" resultType="com.example.project_01.model.member.dto.MemberDTO">
+	<select id="findById" resultType="com.example.store.model.member.dto.MemberDTO">
 		select mem_idx,mem_name,mem_birth,mem_id,mem_pw,mem_phone,mem_addr1,mem_total,
 			mem_addr2,mem_regdate, mem_postcode, mem_mail, r.role_name as mem_role 
 		from member 
@@ -16,7 +16,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</select>
 	
 	<!-- 회원가입 -->
-	<insert id="join" parameterType="com.example.project_01.model.member.dto.MemberDTO">
+	<insert id="join" parameterType="com.example.store.model.member.dto.MemberDTO">
 		insert into member
 		(mem_name, mem_birth, mem_id, mem_pw, mem_phone, mem_addr1, mem_addr2, mem_postcode) 
 		values (#{mem_name}, #{mem_birth}, #{mem_id},
@@ -25,8 +25,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</insert>
 	
 	<!-- 특정 조건에 맞는 회원 레코드 가져오기 (SearchMemberDto로 조건 전달) -->
-	<select id="selectMember" parameterType = "com.example.project_01.model.member.dto.SearchMemberDTO"
-		resultType="com.example.project_01.model.member.dto.MemberDTO">
+	<select id="selectMember" parameterType = "com.example.store.model.member.dto.SearchMemberDTO"
+		resultType="com.example.store.model.member.dto.MemberDTO">
 		select mem_idx,mem_name,mem_birth,mem_id,mem_pw,mem_phone,mem_addr1,
 			mem_addr2,mem_regdate,mem_total,r.role_name as mem_role from member 
 		join role as r 
@@ -39,7 +39,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</select>
 	
 	<!-- 특정 조건에 맞는 회원 수 가져오기 (SearchMemberDto로 조건 전달) -->
-	<select id="countMember" parameterType = "com.example.project_01.model.member.dto.SearchMemberDTO" 
+	<select id="countMember" parameterType = "com.example.store.model.member.dto.SearchMemberDTO" 
 		resultType="int">
 		select count(*)
 		from member
@@ -54,7 +54,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</delete>
 	
 	<!-- 회원번호에 맞는 레코드 가져오기 -->
-	<select id="findByIdx" resultType="com.example.project_01.model.member.dto.MemberDTO">
+	<select id="findByIdx" resultType="com.example.store.model.member.dto.MemberDTO">
 		select mem_idx,mem_name,mem_birth,mem_id,mem_pw,mem_phone,mem_addr1,mem_total,
 			mem_addr2,mem_regdate,mem_postcode,r.role_name as mem_role, mem_mail from member 
 		join role as r 
@@ -63,7 +63,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</select>
 	
 	<!-- 등급정보 가격순으로 가져오기 -->
-	<select id="selectRole" resultType = "com.example.project_01.model.member.dto.RoleDTO">
+	<select id="selectRole" resultType = "com.example.store.model.member.dto.RoleDTO">
 		select * from role
 		order by role_price asc
 	</select>
@@ -83,7 +83,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</update>
 	
 	<!-- 등급명에 맞는 등급레코드 가져오기 -->
-	<select id="selectRoleByRoleName" resultType = "com.example.project_01.model.member.dto.RoleDTO">
+	<select id="selectRoleByRoleName" resultType = "com.example.store.model.member.dto.RoleDTO">
 		select * from role
 		where role_name = #{role_name}
 	</select>
@@ -99,7 +99,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</update>
 	
 	<!-- 새로운 등급 생성 -->
-	<insert id="insertRole" parameterType = "com.example.project_01.model.member.dto.RoleDTO">
+	<insert id="insertRole" parameterType = "com.example.store.model.member.dto.RoleDTO">
 		insert into role
 		(role_idx, role_name, role_price) 
 		values (0, upper(#{role_name}), #{role_price})

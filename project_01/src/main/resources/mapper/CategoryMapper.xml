@@ -4,7 +4,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper
-	namespace="com.example.project_01.model.category.dao.CategoryDAO">
+	namespace="com.example.store.model.category.dao.CategoryDAO">
 
 <!-- 특정 카테고리명 가져오기 -->
 <select id="getCategoryName" resultType="string">

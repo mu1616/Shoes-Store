@@ -4,7 +4,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <!-- 주문 테이블 -->
 <mapper
-	namespace="com.example.project_01.model.order.dao.OrderDAO">
+	namespace="com.example.store.model.order.dao.OrderDAO">
 	<!-- 주문정보 삽입 -->
 	<insert id="insertOrder">
 		insert into order_
@@ -15,7 +15,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</insert>
 	
 	<!-- 사용자 아이디로 주문내역 조회 -->
-	<select id="selectById" resultType ="com.example.project_01.model.order.dto.OrderDTO">
+	<select id="selectById" resultType ="com.example.store.model.order.dto.OrderDTO">
 		SELECT o.*,p.*
 		FROM order_ AS o
 		JOIN product AS p
@@ -25,7 +25,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</select>
 	
 	<!-- 주문코드로 주문내역 조회 -->
-	<select id="selectByCode" resultType ="com.example.project_01.model.order.dto.OrderDTO">
+	<select id="selectByCode" resultType ="com.example.store.model.order.dto.OrderDTO">
 		select o.*, p.product_name 
 		from order_ as o
 		JOIN product AS p
@@ -54,7 +54,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</select>
 	
 	<!-- 조건에 맞는 주문 검색 -->
-	<select id="selectOrder" resultType="com.example.project_01.model.order.dto.OrderDTO">
+	<select id="selectOrder" resultType="com.example.store.model.order.dto.OrderDTO">
 		select o.*, p.*
 		from order_ as o
 		JOIN product AS p
@@ -80,7 +80,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</update>
 	
 	<!-- merchant_uid 에 맞는 주문내역 조회 -->
-	<select id="selectByMerchantUid" resultType = "com.example.project_01.model.order.dto.OrderDTO">
+	<select id="selectByMerchantUid" resultType = "com.example.store.model.order.dto.OrderDTO">
 		select * from order_
 		where merchant_uid = #{merchant_uid}
 	</select>

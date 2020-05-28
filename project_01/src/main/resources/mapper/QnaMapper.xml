@@ -3,11 +3,11 @@
 PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <!-- 상품문의 테이블 -->
-<mapper namespace="com.example.project_01.model.product.qna.dao.QnaDAO">
+<mapper namespace="com.example.store.model.product.qna.dao.QnaDAO">
 
 	<!-- 상품문의 등록 -->
 	<insert id="insert" 
-		parameterType="com.example.project_01.model.product.qna.dto.QnaDTO">
+		parameterType="com.example.store.model.product.qna.dto.QnaDTO">
 		insert into qna
 		(qna_type, qna_title, qna_question, qna_secret, qna_member, qna_product)
 		values 
@@ -16,7 +16,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	
 	<!-- 특정 상품에 맞는 상품문의 가져오기 -->
 	<select id="selectQnaByProduct" 
-		resultType="com.example.project_01.model.product.qna.dto.QnaDTO">
+		resultType="com.example.store.model.product.qna.dto.QnaDTO">
 		SELECT @rownum:=@rownum-1 as rownum,q.*
 		from qna AS q,
 			(SELECT @rownum:=(SELECT COUNT(*) 
@@ -34,8 +34,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</select>
 	
 	<!-- 특정 조건에 맞는 상품문의 가져오기 -->
-	<select id="selectQna" resultType="com.example.project_01.model.product.qna.dto.QnaDTO"
-		parameterType = "com.example.project_01.model.product.qna.dto.SearchQnaDTO">
+	<select id="selectQna" resultType="com.example.store.model.product.qna.dto.QnaDTO"
+		parameterType = "com.example.store.model.product.qna.dto.SearchQnaDTO">
 		SELECT @rownum:=@rownum-1 as rownum, q.*
 		from qna AS q,
 			(SELECT @rownum:=(SELECT COUNT(*) 
@@ -61,7 +61,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	
 	<!-- 특정 조건에 맞는 상품문의 개수 가져오기 -->
 	<select id="countQna" resultType="int" 
-		parameterType="com.example.project_01.model.product.qna.dto.SearchQnaDTO">
+		parameterType="com.example.store.model.product.qna.dto.SearchQnaDTO">
 		select count(*) 
 		from qna
 		where qna_member like #{qna_member}
@@ -77,8 +77,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</select>
 	
 	<!-- 상품문의(한개) 가져오기 -->
-	<select id="selectOne" parameterType="com.example.project_01.model.product.qna.dto.SearchQnaDTO"
-		resultType="com.example.project_01.model.product.qna.dto.QnaDTO">
+	<select id="selectOne" parameterType="com.example.store.model.product.qna.dto.SearchQnaDTO"
+		resultType="com.example.store.model.product.qna.dto.QnaDTO">
 		SELECT * 
 		from qna
 		where qna_idx = #{qna_idx}

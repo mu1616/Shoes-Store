@@ -4,7 +4,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper
-	namespace="com.example.project_01.model.brand.dao.BrandDAO">
+	namespace="com.example.store.model.brand.dao.BrandDAO">
 
 <!-- 모든 브랜드명 셀렉트 -->
 <select id="selectAll" resultType="string">
