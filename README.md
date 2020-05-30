@@ -40,4 +40,4 @@ Front-end: HTML, JS, BootStrap, AJAX
 ## 관리자 페이지
 ![그림1](https://user-images.githubusercontent.com/26829633/83317006-98128000-a264-11ea-98ac-41229c972edd.png)
 <br><br><br><br><br><br><br><br>
-<img width="900" alt="관리자" src="https://user-images.githubusercontent.com/26829633/83317223-0f94df00-a266-11ea-90d6-a739b8063b9a.PNG">
+<img width="900" alt="관리자" src="https://user-images.githubusercontent.com/26829633/83317400-43243900-a267-11ea-9db6-08a09672eba2.PNG">
