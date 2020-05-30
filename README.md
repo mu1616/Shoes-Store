@@ -31,6 +31,8 @@ Front-end: HTML, JS, BootStrap, AJAX
 
 ## 사용자 페이지
 ![localhost_8080_](https://user-images.githubusercontent.com/26829633/82759490-cd643b80-9e28-11ea-9af0-7967caa3c4b7.png)
+<img width="900" alt="사용자" src="https://user-images.githubusercontent.com/26829633/83316823-3c93c280-a263-11ea-8ab7-83941567432d.PNG">
 
 ## 관리자 페이지
-<img width="900" alt="캡처" src="https://user-images.githubusercontent.com/26829633/79899853-54984b00-8448-11ea-8a5f-078b05eec7d5.PNG">
+![그림1](https://user-images.githubusercontent.com/26829633/83317006-98128000-a264-11ea-98ac-41229c972edd.png)
+<img width="900" alt="관리자" src="https://user-images.githubusercontent.com/26829633/83317223-0f94df00-a266-11ea-90d6-a739b8063b9a.PNG">
