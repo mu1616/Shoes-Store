@@ -35,7 +35,7 @@ public class MemberControllerTest {
 					.param("mem_birth","19970816")
 					.param("mem_phone","01047156000")
 					.param("mem_id","test")
-					.param("mem_pw", "martial!!3!"))					
+					.param("mem_pw", ""))					
 				.andExpect(MockMvcResultMatchers.status().isOk())
 				.andExpect(redirectedUrl("/member/welcome"))
 				.andDo(print());

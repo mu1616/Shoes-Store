@@ -19,7 +19,7 @@ public class SecurityTest {
 	
 	@Test
 	public void test() {
-		String pw = "martial1!";
+		String pw = "";
 		System.out.println(encoder.encode(pw));
 		System.out.println(encoder.matches(pw,"$2a$10$.d4mKziRfPjuSOTNxAtHj.xfTVsNS2dpvlkOn3HWfGDQUfvsFf1zK"));
 	}
