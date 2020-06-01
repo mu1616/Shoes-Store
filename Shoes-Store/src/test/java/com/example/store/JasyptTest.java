@@ -20,8 +20,6 @@ public class JasyptTest {
 		jasypt.setAlgorithm("PBEWithMD5AndDES");
 		String encryptedText = jasypt.encrypt("");
 		String plainText = jasypt.decrypt(encryptedText);	
-		System.out.println(encryptedText);
-		System.out.println(plainText);
 
 	}
 }

@@ -20,6 +20,7 @@ public class MailServiceTest {
 		String to = "mu1616@naver.com";
 		String subject = "mail test";
 		String text = "testing....";
+		
 		mailService.sendMail(to, subject, text);
 	}
 }

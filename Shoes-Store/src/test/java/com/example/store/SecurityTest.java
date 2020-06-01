@@ -1,6 +1,8 @@
 package com.example.store;
 
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,8 +21,7 @@ public class SecurityTest {
 	
 	@Test
 	public void test() {
-		String pw = "";
-		System.out.println(encoder.encode(pw));
-		System.out.println(encoder.matches(pw,"$2a$10$.d4mKziRfPjuSOTNxAtHj.xfTVsNS2dpvlkOn3HWfGDQUfvsFf1zK"));
+		String pw = "abc";
+		assertThat(encoder.matches(pw,encoder.encode(pw))).isEqualTo(true);
 	}
 }

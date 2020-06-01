@@ -1,5 +1,7 @@
 package com.example.store;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import java.util.List;
 
 import org.junit.jupiter.api.Test;
@@ -8,9 +10,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.transaction.annotation.Transactional;
 
-import com.example.store.model.pagination.dto.PageDTO;
 import com.example.store.model.product.dao.ProductDAO;
 import com.example.store.model.product.dto.ProductDTO;
 import com.example.store.model.product.dto.ProductEntity;
@@ -29,7 +32,9 @@ public class ProductDaoTest {
 	String editorPath;
 	@Autowired
 	ManageProductService productService;
+	@Rollback(true)
 	
+	@Transactional
 	public void productRegister() {
 		/*
 		 * (product_name,product_price,product_brand,product_stock,product_category,
@@ -43,24 +48,26 @@ public class ProductDaoTest {
 		dto.setProduct_contents("상세설명");
 		dto.setProduct_image("이미지경로");
 		dto.setProduct_isDisplay(1);
+		
 		productDao.productRegister(dto);
-	
 	}
+	
 
+	@Transactional
 	public void displayRegister() {
-		productDao.addProductMainDisplay(1, 1);
-
+		productDao.addProductMainDisplay(338, 1);
+		List<ProductDTO> list = productDao.selectProductByDisplay(1);
+		assertThat(338).isEqualTo(list.get(list.size()-1).getProduct_idx());
 	}
 	
 	public void countProduct() {
 		
 	}
 	
+	@Test
 	public void selectProduct() {
-		List<ProductDTO> list = productDao.selectProduct(0, 9, new SearchDTO());
-		for(ProductDTO dto : list) {
-			System.out.println(dto);
-		}
+		List<ProductDTO> list = productDao.selectProduct(0, 3, new SearchDTO());
+		assertThat(list.size()).isEqualTo(3);
 	}
 	
 }

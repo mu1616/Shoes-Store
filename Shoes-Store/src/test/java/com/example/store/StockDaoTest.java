@@ -21,10 +21,8 @@ public class StockDaoTest {
 	
 	
 	public void selectByProduct() {
-		List<StockDTO> list= stockDao.selectByProduct(327);
-		for(StockDTO dto : list) {
-			System.out.println(dto);
-		}
+		List<StockDTO> list= stockDao.selectByProduct(337);
+
 	}
 	
 }

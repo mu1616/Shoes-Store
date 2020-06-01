@@ -1,5 +1,7 @@
 package com.example.store;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import java.util.List;
 
 import org.junit.jupiter.api.Test;
@@ -23,8 +25,8 @@ public class QnaDaoTest {
 	
 	@Test
 	public void selectQna() {
-		List<QnaDTO> qnaList = qnaDao.selectQna(0, 10, new SearchQnaDTO());
-		for(QnaDTO dto : qnaList)
-			System.out.println(dto);
+		List<QnaDTO> qnaList = qnaDao.selectQna(0, 5, new SearchQnaDTO());
+		
+		assertThat(qnaList.size()).isEqualTo(5);
 	}
 }
