@@ -1,7 +1,7 @@
 ## Shoes-Store    
-신발 쇼핑몰 웹 프로젝트
+- 신발 쇼핑몰 웹 프로젝트
 <br><br>
-자세한 프로젝트 내용은 프로젝트 요약.pdf 파일을 참고하세요.
+- 자세한 프로젝트 내용은 프로젝트 요약.pdf 파일을 참고하세요.
 <br><br>
 
 ### 개발기간  
@@ -13,15 +13,15 @@
 <br><br>
 
 ### 개발목적  
-웹 MVC 와 SpringBoot에 대한 공부목적
+- 웹 MVC 와 SpringBoot에 대한 공부목적
 <br><br>
 
 ## 사용한 기술스택
 
 
-Back-end: Spring Boot, Java, Mybatis, MySQL 
+- Back-End: Spring Boot, Java, Mybatis, MySQL 
 
-Front-end: HTML, JS, BootStrap, AJAX  
+- Front-End: HTML, JS, BootStrap, AJAX  
 <br><br>
 
 ## 구현기능
