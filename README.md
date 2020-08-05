@@ -18,11 +18,15 @@
 
 ## 사용한 기술스택
 
+|Back-End|Front-End|
+|---|---|
+|Sprgin Boot|HTML|
+|Mybatis|Bootstrap|
+|Mysql|Javascript|
+|  |AJAX|
 
-- Back-End: Spring Boot, Java, Mybatis, MySQL 
-
-- Front-End: HTML, JS, BootStrap, AJAX  
 <br><br>
+
 
 ## 구현기능
 
