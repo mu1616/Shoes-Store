@@ -20,10 +20,10 @@
 
 |Back-End|Front-End|
 |---|---|
-|Sprgin Boot|HTML|
+|Sprgin Boot 2.2|HTML|
 |Mybatis|Bootstrap|
-|Mysql|Javascript|
-|  |AJAX|
+|Mysql 5.7|Javascript|
+|Java 1.8|AJAX|
 
 <br><br>
 
